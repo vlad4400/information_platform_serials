@@ -12,8 +12,8 @@ class CategoryController extends Controller
         return Categories::all();
     }
 
-    public function show($slug)
+    public function show($id)
     {
-       return Categories::query()->where('slug', $slug)->first();
+       return Categories::query()->where('id', $id)->first();
     }
 }
