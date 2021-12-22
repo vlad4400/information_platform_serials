@@ -24,5 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {
-    Route::get('/users', [AdminUserController::class, 'index']);
+    Route::apiResource('/users', AdminUserController::class);
 });
