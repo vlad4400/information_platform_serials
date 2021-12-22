@@ -23,15 +23,12 @@ class CategorySeeder extends Seeder
         $data = [
             [
                 'title' => 'Комедия',
-                'description' => 'Смешное',
             ],
             [
                 'title' => 'Трагедия',
-                'description' => 'Грустное',
             ],
             [
                 'title' => 'Детектив',
-                'description' => 'Запутанное',
             ],
         ];
 
