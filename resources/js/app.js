@@ -9,9 +9,6 @@ import { Home } from './routes/Home';
 import { Profile } from './routes/Profile';
 import { Favorites } from './routes/Favorites';
 
-require('./bootstrap');
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 export default function App() {
     return (
         <>
