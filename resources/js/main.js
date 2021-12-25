@@ -7,6 +7,7 @@ import { Container, Navbar, Nav } from 'react-bootstrap';
 import { Home } from './routes/Home';
 import { Profile } from './routes/Profile';
 import { Favorites } from './routes/Favorites';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -25,7 +26,6 @@ export function Main() {
                                 <Link className="nav-link" to="/">Каталог сериалов</Link>
                                 <Link className="nav-link" to="favorites">Избранное</Link>
                                 <Link className="nav-link" to="profile">Профиль</Link>
-
                             </Nav>
                         </Container>
                     </Navbar>              </>
