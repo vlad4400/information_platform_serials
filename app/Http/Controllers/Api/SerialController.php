@@ -15,7 +15,9 @@ class SerialController extends Controller
      */
     public function index()
     {
-        return response()->json(Serial::get(), 200);
+        return response()->json([
+            'data' => Serial::get()
+        ], 200);
     }
 
     /**
@@ -33,6 +35,8 @@ class SerialController extends Controller
                 'message' => 'Serial not found'
             ], 404);
         }
-        return response()->json(Serial::find($id), 200);
+        return response()->json([
+            'data' => Serial::find($id)
+        ], 200);
     }
 }
