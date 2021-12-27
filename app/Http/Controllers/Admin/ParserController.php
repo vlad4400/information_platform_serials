@@ -22,14 +22,15 @@ class ParserController extends Controller
      */
     public function __invoke(Request $request, Parser $parser)
     {
-        for($i=1; $i<21; $i++) {
-            $link = "https://api.themoviedb.org/3/tv/" . $i . "?api_key=" . env('API_KEY') . "&language=ru";
+        for($i=1; $i<6; $i++) {
+            $link = "https://api.themoviedb.org/3/tv/popular?api_key=" . env('API_KEY') . "&language=ru&page=" . $i;
             $parser->setUrl($link)->start();
         }
-        //return redirect()->back();
+        $link_genres = "https://api.themoviedb.org/3/genre/tv/list?api_key=" . env('API_KEY') . "&language=ru";
+        $parser->setUrl($link_genres)->start_get_genres();
     }
 }
 
 
-//если парсим по 20 сериалов за раз по ссылке /tv/popular
-//$links[] = "https://api.themoviedb.org/3/tv/popular?api_key=" . env('API_KEY') . "&language=ru&page=" . $i;
+//если парсим по id сериалов за раз по ссылке /tv/id
+//$link = "https://api.themoviedb.org/3/tv/". $i ."?api_key=" . env('API_KEY') . "&language=ru";
