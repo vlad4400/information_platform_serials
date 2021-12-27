@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Serial extends Model
 {
@@ -14,9 +13,9 @@ class Serial extends Model
             'title', 'description', 'year'
     ];
 
-    public function category(): BelongsTo
+    public function categories()
     {
-        return $this->belongsTo(Categories::class, 'category_id', 'id');
+        return $this->belongsToMany(Category::class);
     }
 
 }
