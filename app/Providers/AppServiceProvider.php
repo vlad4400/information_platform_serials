@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Contracts\Parser;
 use App\Services\ParserService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+use Log;
 
 class AppServiceProvider extends ServiceProvider
 {
