@@ -1,1 +1,1 @@
-web: npm run prod && vendor/bin/heroku-php-apache2 public/
+web:npm postinstall && vendor/bin/heroku-php-apache2 public/
