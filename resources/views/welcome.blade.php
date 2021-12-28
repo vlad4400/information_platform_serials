@@ -11,6 +11,6 @@
     </head>
     <body class="antialiased">
         <div id="root"></div>
-        <script src="{{ asset('js/index.js') }}" defer></script>
+        <script src="{{ asset('js/index.js') }}" type="text/js" defer></script>
     </body>
 </html>
