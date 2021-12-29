@@ -1,7 +1,7 @@
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { Link, Outlet } from 'react-router-dom';
 
-export default function Header() {
+export const Header = () => {
     return (
         <header>
             <Navbar bg="dark" variant="dark">

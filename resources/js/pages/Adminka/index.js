@@ -1,8 +1,6 @@
 // страница - adminka - страница для администратора
 import { Navbar, Nav } from 'react-bootstrap';
-import { Routes, Route, Link, Outlet } from 'react-router-dom';
-import { Users } from '../Adminka/routes/Users';
-import { Serials } from '../Adminka/routes/Serials';
+import { Link, Outlet } from 'react-router-dom';
 
 
 export const Adminka = () => {
