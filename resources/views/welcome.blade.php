@@ -8,9 +8,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+        <script src="{{ asset('js/index.js') }}" type="text/javascript" defer></script>
     </head>
     <body class="antialiased">
         <div id="root"></div>
-        <script src="{{ asset('js/index.js') }}" type="text/js" defer></script>
     </body>
 </html>
