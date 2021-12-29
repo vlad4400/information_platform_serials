@@ -3,40 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SerialResource;
 use App\Models\Serial;
-use Illuminate\Http\Request;
 
 class SerialController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        return response()->json([
-            'data' => Serial::get()
-        ], 200);
+        return SerialResource::collection(Serial::all());
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return SerialResource
      */
-    public function show($id)
+    public function show(Serial $serial)
     {
-        $serial = Serial::find($id);
-        if(is_null($serial)) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Serial not found'
-            ], 404);
-        }
-        return response()->json([
-            'data' => Serial::find($id)
-        ], 200);
+        return new SerialResource($serial);
     }
 }

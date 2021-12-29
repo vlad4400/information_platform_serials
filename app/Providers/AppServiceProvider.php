@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\Parser;
-use App\Services\ParserService;
+use App\Services\ThemoviedbParserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Parser::class, ParserService::class);
+        $this->app->bind(Parser::class, ThemoviedbParserService::class);
     }
 
     /**
