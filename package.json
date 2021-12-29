@@ -29,7 +29,7 @@
     "devDependencies": {
         "@babel/preset-react": "^7.13.13",
         "@popperjs/core": "^2.10.2",
-        "laravel-mix": "^6.0.6",
+        "laravel-mix": "^6.0.39",
         "postcss": "^8.1.14",
         "redux-logger": "^3.0.6",
         "resolve-url-loader": "^4.0.0",
@@ -39,5 +39,5 @@
     "engines": {
         "node": ">=0.4",
         "npm": ">=1.2"
-      }
+    }
 }
