@@ -7,7 +7,7 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "NODE_ENV=production webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js && php artisan build:email",
+        "production": "mix --production",
         "heroku-postbuild": "npm run prod"
     },
     "dependencies": {
@@ -37,7 +37,7 @@
         "sass-loader": "^11.0.1"
     },
     "engines": {
-        "node": ">=0.4",
+        "node": ">=12.14.0",
         "npm": ">=1.2"
     }
 }
