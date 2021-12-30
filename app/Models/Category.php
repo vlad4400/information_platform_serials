@@ -9,7 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug'];
+    protected $table = 'categories';
+    protected $fillable = ['title'];
 
     public function serials() {
         return $this->belongsToMany(Serial::class);
