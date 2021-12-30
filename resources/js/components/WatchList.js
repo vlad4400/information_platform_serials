@@ -1,12 +1,12 @@
 import Table from "react-bootstrap/Table";
 
-const ListItem = ({ i, title, rating }) => {
+const ListItem = ({ i, title, rating, episodes = "100/100" }) => {
     return (
         <tr>
             <th scope="row">{i + 1}</th>
             <td style={{ width: "100%" }}>{title}</td>
             <td>{rating}/10</td>
-            <td>100/100</td>
+            <td>{episodes}</td>
         </tr>
     );
 };

@@ -1,45 +1,15 @@
 //страница Избранное
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import WatchList from "../components/WatchList";
-
-const WATCHLIST = {
-    watched: [
-        { title: "adventure time", rating: 12 },
-        { title: "Rick and Morty", rating: 10 },
-        { title: "Проснувшийся", rating: 12 },
-        { title: "Уральские пельмени", rating: 10 },
-        { title: "План любви", rating: 12 },
-        { title: "9-1-1: Одинокая звезда", rating: 10 },
-    ],
-    toWatch: [
-        {
-            title: "Книга Бобы Фетта",
-            rating: 12,
-        },
-        {
-            title: "Кобра Кай",
-            rating: 10,
-        },
-        {
-            title: "Проснувшийся",
-            rating: 12,
-        },
-        {
-            title: "Уральские пельмени",
-            rating: 12,
-        },
-    ],
-};
+import WATCHLIST from "./WATCHLIST.json";
 
 const { watched, toWatch } = WATCHLIST;
-const keys = Object.keys(WATCHLIST);
-const [watchedKey, toWatchKey] = keys;
+const [watchedKey, toWatchKey] = Object.keys(WATCHLIST);
 
 export const Favorites = () => {
     const [input, setInput] = useState("");
@@ -49,7 +19,7 @@ export const Favorites = () => {
 
     const [key, setKey] = useState(watchedKey);
 
-    const [filteredList, SetFilteredList] = useState([]);
+    const [filteredList, setFilteredList] = useState([]);
 
     const filterList = (input, key) => {
         const list =
@@ -61,7 +31,7 @@ export const Favorites = () => {
 
     useEffect(() => {
         const filteredList = filterList(input, key);
-        SetFilteredList(filteredList);
+        setFilteredList(filteredList);
     }, [input, key]);
 
     return (
