@@ -6,7 +6,7 @@ use App\Contracts\Parser;
 use App\Http\Controllers\Controller;
 use App\Jobs\SerialJob;
 use App\Models\Serial;
-use App\Services\ParserService;
+use App\Services\ThemoviedbParserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;

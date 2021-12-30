@@ -6,7 +6,7 @@ use App\Contracts\Parser;
 use App\Models\Categories;
 use App\Models\Serial;
 
-class ParserService implements Parser
+class ThemoviedbParserService implements Parser
 {
     protected string $url;
 
@@ -31,7 +31,7 @@ class ParserService implements Parser
     {
         $parse = file_get_contents($this->getUrl());
         $serial = json_decode($parse, true);
-        //dd($serial);
+        dd($serial);
         foreach ($serial['results'] as $serial) {
             var_dump($serial);
             $e = explode("-", $serial['first_air_date']);
