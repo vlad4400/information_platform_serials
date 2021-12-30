@@ -33,7 +33,7 @@ class ParserService implements Parser
         $serial = json_decode($parse, true);
         //dd($serial);
         foreach ($serial['results'] as $serial) {
-            var_dump($serial);
+            //var_dump($serial);
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e[0];
             if($release_date === '') {
