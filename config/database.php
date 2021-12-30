@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mysql-production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,6 +34,20 @@ return [
     */
 
     'connections' => [
+        'mysql-production' => [
+            'driver' => 'mysql',
+            'host' => 'us-cdbr-east-05.cleardb.net',
+            'port' => '3306',
+            'database' => 'heroku_ed11dbdc7edd2af',
+            'username' => 'bf7e5c7e6294f0',
+            'password' => 'd3c516da',
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
 
         'sqlite' => [
             'driver' => 'sqlite',

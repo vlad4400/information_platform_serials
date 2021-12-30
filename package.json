@@ -8,7 +8,7 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
-        "postinstall": "npm run prod"
+        "heroku-postbuild": "npm run dev"
     },
     "dependencies": {
         "@mui/icons-material": "^5.2.5",
@@ -29,11 +29,15 @@
     "devDependencies": {
         "@babel/preset-react": "^7.13.13",
         "@popperjs/core": "^2.10.2",
-        "laravel-mix": "^6.0.6",
+        "laravel-mix": "^6.0.39",
         "postcss": "^8.1.14",
         "redux-logger": "^3.0.6",
         "resolve-url-loader": "^4.0.0",
         "sass": "^1.32.11",
         "sass-loader": "^11.0.1"
+    },
+    "engines": {
+        "node": ">=12.14.0",
+        "npm": ">=1.2"
     }
 }
