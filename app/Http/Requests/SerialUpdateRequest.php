@@ -26,7 +26,9 @@ class SerialUpdateRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'year' => ['required', 'integer']
+            'year' => ['required', 'integer'],
+            'poster' => ['string', 'max:100'],
+            'rate' => ['numeric']
         ];
     }
 }

@@ -19,10 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['categories' => CategoryController::class]);
 
-//Route::get('parser', ParserController::class);
+
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {
     Route::apiResource('/users', AdminUserController::class);
     Route::apiResources(['/serials' => AdminSerialController::class]);
+    Route::get('/parser', ParserController::class);
 });
