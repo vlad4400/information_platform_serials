@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { Link, Outlet } from 'react-router-dom';
 
 
-export const Adminka = () => {
+export const Admin = () => {
 
     return (
         <div>

@@ -12,7 +12,7 @@ export const Header = () => {
                         <Link className="nav-link" to="/profile">Профиль</Link>
                         <Link className="nav-link" to="/signin">Авторизация</Link>
                         <Link className="nav-link" to="/signup">Регистрация</Link>
-                        <Link className="nav-link" to="/adminka">Админка</Link>
+                        <Link className="nav-link" to="/admin">Страница администратора</Link>
                         <Link className="nav-link" to="/example">Примеры используемых компонентов</Link>
                     </Nav>
                     <Outlet />
