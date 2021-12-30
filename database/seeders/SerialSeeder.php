@@ -27,6 +27,8 @@ class SerialSeeder extends Seeder
                 'title' => $faker->text(mt_rand(5,15)),
                 'description' => $faker->text(mt_rand(5,40)),
                 'year' => $faker->numberBetween(1930,2021),
+                'poster' => '/d9s5Ma2BC7y3A8sMpxqbxWj9VQA.jpg',
+                'rate' => 8
             ];
         }
         return $data;

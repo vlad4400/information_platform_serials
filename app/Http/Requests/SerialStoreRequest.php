@@ -26,27 +26,9 @@ class SerialStoreRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'year' => ['required', 'integer']
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'required' => 'Поле :attribute обязательно необходимо заполнить',
-            'min' => [
-                'string' => 'Поле :attribute должно содержать не меньше :min символов.'
-            ],
-            'integer' => 'Поле :attribute должно быть числом.'
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'title' => 'Название',
-            'description' => 'Описание',
-            'year' => 'Год'
+            'year' => ['required', 'integer'],
+            'poster' => ['string', 'max:100'],
+            'rate' => ['numeric']
         ];
     }
 }

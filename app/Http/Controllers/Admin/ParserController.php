@@ -6,7 +6,7 @@ use App\Contracts\Parser;
 use App\Http\Controllers\Controller;
 use App\Jobs\SerialJob;
 use App\Models\Serial;
-use App\Services\ParserService;
+use App\Services\ThemoviedbParserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -22,12 +22,14 @@ class ParserController extends Controller
      */
     public function __invoke(Request $request, Parser $parser)
     {
+        $link_genres = "https://api.themoviedb.org/3/genre/tv/list?api_key=" . env('API_KEY') . "&language=ru";
+        $parser->setUrl($link_genres)->start_get_genres();
+
         for($i=1; $i<6; $i++) {
             $link = "https://api.themoviedb.org/3/tv/popular?api_key=" . env('API_KEY') . "&language=ru&page=" . $i;
             $parser->setUrl($link)->start();
         }
-        $link_genres = "https://api.themoviedb.org/3/genre/tv/list?api_key=" . env('API_KEY') . "&language=ru";
-        $parser->setUrl($link_genres)->start_get_genres();
+        return response()->json(null,200);
     }
 }
 
