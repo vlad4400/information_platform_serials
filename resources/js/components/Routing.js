@@ -6,10 +6,10 @@ import { Profile } from '../pages/Profile';
 import { Favorites } from '../pages/Favorites';
 import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp';
-import { Adminka } from '../pages/Adminka';
+import { Admin } from '../pages/Admin';
 import { Example } from '../pages/Example';
-import { Users } from '../pages/Adminka/pages/Users';
-import { Serials } from '../pages/Adminka/pages/Serials';
+import { Users } from '../pages/Admin/pages/Users';
+import { Serials } from '../pages/Admin/pages/Serials';
 import { NotFound } from '../pages/NotFound';
 
 
@@ -21,7 +21,7 @@ export const Routing = () => {
             <Route path="profile" element={<Profile />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="signup" element={<SignUp />} />
-            <Route path="adminka" element={<Adminka />} >
+            <Route path="admin" element={<Admin />} >
                 <Route path="users" element={<Users />} />
                 <Route path="serials" element={<Serials />} />
             </Route>
