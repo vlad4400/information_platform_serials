@@ -8,5 +8,4 @@ interface Parser
     public function getUrl(): string;
     public function start();
     public function start_get_genres();
-
 }
