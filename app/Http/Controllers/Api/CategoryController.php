@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Categories;
+
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        return Categories::all();
+        return Category::all();
     }
 
     public function show($id)
     {
-       return Categories::query()->where('id', $id)->first();
+       return Category::query()->where('id', $id)->first();
     }
 }
