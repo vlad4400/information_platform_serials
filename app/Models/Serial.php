@@ -10,7 +10,7 @@ class Serial extends Model
     use HasFactory;
 
     protected $fillable = [
-            'title', 'description', 'year'
+            'title', 'description', 'year', 'poster', 'rate'
     ];
 
     public function categories()

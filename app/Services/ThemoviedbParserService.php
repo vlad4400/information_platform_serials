@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\Parser;
-use App\Models\Categories;
+use App\Models\Category;
 use App\Models\Serial;
 
 class ThemoviedbParserService implements Parser
@@ -31,9 +31,9 @@ class ThemoviedbParserService implements Parser
     {
         $parse = file_get_contents($this->getUrl());
         $serial = json_decode($parse, true);
-        dd($serial);
+        //dd($serial);
         foreach ($serial['results'] as $serial) {
-            var_dump($serial);
+            //var_dump($serial);
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e[0];
             if($release_date === '') {
@@ -42,7 +42,9 @@ class ThemoviedbParserService implements Parser
             $new_serial = Serial::create([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
-                'year' => $release_date
+                'year' => $release_date,
+                'poster' => $serial['poster_path'],
+                'rate' => $serial['vote_average'],
             ]);
         }
     }
@@ -51,16 +53,13 @@ class ThemoviedbParserService implements Parser
     {
         $parse = file_get_contents($this->getUrl());
         $genres = json_decode($parse,true);
-        dd($genres['genres']);
+        //dd($genres['genres']);
+        Category::getQuery()->delete();
         foreach ($genres['genres'] as $genre) {
-            $category = Category::where('tmdb_id', $genre['id']);
-            if(!$category) {
-                $new_category = Category::create([
-                    'title' => $genre['name'],
-                    'tmdb_id' => $genre['id'],
-                    //'slug' =>
-                ]);
-            }
+            $new_category = Category::create([
+                'title' => $genre['name'],
+                'tmdb_id' => $genre['id'],
+            ]);
         }
     }
 }
