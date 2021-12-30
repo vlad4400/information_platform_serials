@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\Parser;
 use App\Models\Category;
+use App\Models\Category_serial;
 use App\Models\Serial;
 
 class ThemoviedbParserService implements Parser
@@ -31,9 +32,7 @@ class ThemoviedbParserService implements Parser
     {
         $parse = file_get_contents($this->getUrl());
         $serial = json_decode($parse, true);
-        //dd($serial);
         foreach ($serial['results'] as $serial) {
-            //var_dump($serial);
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e[0];
             if($release_date === '') {
@@ -46,6 +45,14 @@ class ThemoviedbParserService implements Parser
                 'poster' => $serial['poster_path'],
                 'rate' => $serial['vote_average'],
             ]);
+            foreach ($serial['genre_ids'] as $genre) {
+                $category = Category::where('tmdb_id', $genre)->get();
+                //dd($category);
+                Category_serial::create([
+                    'category_id' => $category[0]['id'],
+                    'serial_id' => $new_serial['id']
+                ]);
+            }
         }
     }
 
@@ -53,7 +60,6 @@ class ThemoviedbParserService implements Parser
     {
         $parse = file_get_contents($this->getUrl());
         $genres = json_decode($parse,true);
-        //dd($genres['genres']);
         Category::getQuery()->delete();
         foreach ($genres['genres'] as $genre) {
             $new_category = Category::create([

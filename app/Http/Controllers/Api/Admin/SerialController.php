@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SerialStoreRequest;
 use App\Http\Resources\SerialResource;
+use App\Models\Category_serial;
 use App\Models\Serial;
 use Illuminate\Http\Response;
 
@@ -60,7 +61,7 @@ class SerialController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Serial $serial
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|Response
      */
     public function destroy(Serial $serial)
