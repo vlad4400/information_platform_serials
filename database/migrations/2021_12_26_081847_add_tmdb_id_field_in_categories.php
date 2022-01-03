@@ -14,8 +14,9 @@ class AddTmdbIdFieldInCategories extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->integer('tmdb_id')
-                ->after('title');
+            $table->unsignedBigInteger('tmdb_id')
+                ->unique('tmdb_id')
+                ->after('id');
         });
     }
 

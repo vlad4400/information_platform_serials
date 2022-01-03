@@ -16,10 +16,12 @@ class CreateCategorySerialTable extends Migration
         Schema::create('category_serial', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')
-                ->constrained('categories')
+                ->references('tmdb_id')
+                ->on('categories')
                 ->onDelete('cascade');
             $table->foreignId('serial_id')
-                ->constrained('serials')
+                ->references('tmdb_id')
+                ->on('serials')
                 ->onDelete('cascade');
         });
     }
