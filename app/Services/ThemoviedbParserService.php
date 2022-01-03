@@ -44,14 +44,14 @@ class ThemoviedbParserService implements Parser
                 'year' => $release_date,
                 'poster' => $serial['poster_path'],
                 'rate' => $serial['vote_average'],
+                'serial_id' => $serial['id']
             ]);
             foreach ($serial['genre_ids'] as $genre) {
-                $category = Category::where('tmdb_id', $genre)->get();
-                //dd($category);
-                Category_serial::create([
-                    'category_id' => $category[0]['id'],
-                    'serial_id' => $new_serial['id']
+                Serial::create([
+                    'category_id' => $genre['id']
                 ]);
+                //$category = Category::where('tmdb_id', $genre)->get();
+                //dd($category);
             }
         }
     }
