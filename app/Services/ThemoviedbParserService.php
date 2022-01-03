@@ -38,17 +38,19 @@ class ThemoviedbParserService implements Parser
             if($release_date === '') {
                 $release_date = 0;
             }
+            dump($serial);
             $new_serial = Serial::create([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
                 'year' => $release_date,
                 'poster' => $serial['poster_path'],
                 'rate' => $serial['vote_average'],
-                'serial_id' => $serial['id']
+                'id' => $serial['id'],
+                'serial_id' => $serial['id'],
             ]);
-            foreach ($serial['genre_ids'] as $genre) {
+            foreach ($serial['genre_ids'] as $genre => $id) {
                 Serial::create([
-                    'category_id' => $genre['id']
+                    'category_id' => $id
                 ]);
                 //$category = Category::where('tmdb_id', $genre)->get();
                 //dd($category);
