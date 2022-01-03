@@ -10,6 +10,7 @@ export const Header = () => {
                         <Link className="nav-link" to="/">Каталог сериалов</Link>
                         <Link className="nav-link" to="/favorites">Избранное</Link>
                         <Link className="nav-link" to="/profile">Профиль</Link>
+                        <Link className="nav-link" to="/info">Страница сериала</Link>
                         <Link className="nav-link" to="/signin">Авторизация</Link>
                         <Link className="nav-link" to="/signup">Регистрация</Link>
                         <Link className="nav-link" to="/admin">Страница администратора</Link>

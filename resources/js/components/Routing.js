@@ -11,6 +11,7 @@ import { Example } from '../pages/Example';
 import { Users } from '../pages/Admin/pages/Users';
 import { Serials } from '../pages/Admin/pages/Serials';
 import { NotFound } from '../pages/NotFound';
+import { FilmInfo } from '../pages/FilmInfo';
 
 
 export const Routing = () => {
@@ -21,6 +22,7 @@ export const Routing = () => {
             <Route path="profile" element={<Profile />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="signup" element={<SignUp />} />
+            <Route path="info" element={<FilmInfo />} />
             <Route path="admin" element={<Admin />} >
                 <Route path="users" element={<Users />} />
                 <Route path="serials" element={<Serials />} />
