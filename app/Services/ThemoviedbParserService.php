@@ -39,7 +39,7 @@ class ThemoviedbParserService implements Parser
             if($release_date === '') {
                 $release_date = 0;
             }
-            $new_serial = Serial::create([
+            $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
                 'year' => $release_date,
@@ -56,11 +56,9 @@ class ThemoviedbParserService implements Parser
 
     public function start_get_genres()
     {
-        $parse = file_get_contents($this->getUrl());
-        $genres = json_decode($parse,true);
-        Category::getQuery()->delete();
+        $genres = Http::get($this->getUrl())->json();
         foreach ($genres['genres'] as $genre) {
-            $new_category = Category::create([
+            $new_category = Category::updateOrCreate([
                 'title' => $genre['name'],
                 'tmdb_id' => $genre['id'],
             ]);
