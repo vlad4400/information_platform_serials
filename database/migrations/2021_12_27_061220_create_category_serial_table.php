@@ -20,7 +20,7 @@ class CreateCategorySerialTable extends Migration
                 ->on('categories')
                 ->onDelete('cascade');
             $table->foreignId('serial_id')
-                ->references('tmdb_id')
+                ->references('id')
                 ->on('serials')
                 ->onDelete('cascade');
         });

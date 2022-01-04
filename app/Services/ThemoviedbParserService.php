@@ -49,7 +49,7 @@ class ThemoviedbParserService implements Parser
             ]);
             
             foreach ($serial['genre_ids'] as $genre => $id) {
-                $new_serial->categories()->attach($id, ['serial_id' => $serial['id']]);
+                $new_serial->categories()->attach($id, ['serial_id' => $new_serial['id']]);
             }
         }
     }
