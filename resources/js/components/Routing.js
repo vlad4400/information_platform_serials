@@ -9,8 +9,9 @@ import { SignUp } from '../pages/SignUp';
 import { Admin } from '../pages/Admin';
 import { Example } from '../pages/Example';
 import { Users } from '../pages/Admin/pages/Users';
-import { Serials } from '../pages/Admin/pages/Serials';
+import { SerialsAdmin } from '../pages/Admin/pages/Serials';
 import { NotFound } from '../pages/NotFound';
+import { LogOut } from '../pages/LogOut';
 
 
 export const Routing = () => {
@@ -23,9 +24,10 @@ export const Routing = () => {
             <Route path="signup" element={<SignUp />} />
             <Route path="admin" element={<Admin />} >
                 <Route path="users" element={<Users />} />
-                <Route path="serials" element={<Serials />} />
+                <Route path="serials" element={<SerialsAdmin />} />
             </Route>
             <Route path="example" element={<Example />} />
+            <Route path="logout" element={<LogOut />} />
             <Route path="*" element={<NotFound />} />
 
 
