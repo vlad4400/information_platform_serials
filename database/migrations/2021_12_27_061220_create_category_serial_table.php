@@ -16,7 +16,7 @@ class CreateCategorySerialTable extends Migration
         Schema::create('category_serial', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')
-                ->references('tmdb_id')
+                ->references('id')
                 ->on('categories')
                 ->onDelete('cascade');
             $table->foreignId('serial_id')

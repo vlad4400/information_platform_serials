@@ -49,7 +49,9 @@ class ThemoviedbParserService implements Parser
             ]);
             
             foreach ($serial['genre_ids'] as $genre => $id) {
-                $new_serial->categories()->attach($id, ['serial_id' => $new_serial['id']]);
+                $category = Category::where('tmdb_id', $id)->get('id');
+                //dd($category);
+                $new_serial->categories()->attach($category, ['serial_id' => $new_serial['id']]);
             }
         }
     }
