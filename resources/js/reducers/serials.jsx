@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { API_SERIALS } from '../components/Constants';
 
 export const getTodosAsync = createAsyncThunk(
 	'serials/getTodosAsync',
 	async () => {
-		const resp = await fetch('http://127.0.0.1:8000/api/serials');
+		const resp = await fetch(API_SERIALS);
 
 		if (resp.ok) {
 			const serials = await resp.json();
@@ -22,7 +23,7 @@ export const serials = createSlice({
 				title: action.payload.title,
 				completed: false,
 			};
-            console.log('showSerials [serials]', serials);
+			console.log('showSerials [serials]', serials);
 		},
 
 	},
@@ -37,7 +38,7 @@ export const serials = createSlice({
 					title = title.slice(0, -1);
 				}
 
-				return {...serial, title, url: 'https://fwcdn.pl/fpo/08/05/840805/7929564.3.jpg', rating: '9.3'};
+				return { ...serial, title, url: 'https://fwcdn.pl/fpo/08/05/840805/7929564.3.jpg', rating: '9.3' };
 			}).filter((serial, ri) => (ri < 8));
 		},
 	}
