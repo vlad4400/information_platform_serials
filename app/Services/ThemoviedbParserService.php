@@ -67,19 +67,3 @@ class ThemoviedbParserService implements Parser
         }
     }
 }
-
-//если парсим по id сериалов за раз по ссылке /tv/id
-/*
-    $serial = json_decode($parse);
-    if($serial->first_air_date) {
-            $e = explode("-", $serial->first_air_date);
-            $release_date = $e[0];
-        } else {
-            $release_date = 0;
-        }
-            $new_serial = Serial::create([
-                'title' => $serial->name,
-                'description' => $serial->overview,
-                'year' => $release_date
-            ]);
- */
