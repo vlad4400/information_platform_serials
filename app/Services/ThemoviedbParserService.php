@@ -31,8 +31,8 @@ class ThemoviedbParserService implements Parser
 
     public function start()
     {
-        $parse = Http::get($this->getUrl());
-        $serial = $parse->json();
+        $serial = Http::get($this->getUrl())->json();
+
 
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
@@ -58,25 +58,25 @@ class ThemoviedbParserService implements Parser
                 'year' => $release_date,
                 'poster' => $poster_name,
                 'rate' => $serial['vote_average'],
+                'tmdb_id' => $serial['id'],
             ]);
-            foreach ($serial['genre_ids'] as $genre) {
-                $category = Category::where('tmdb_id', $genre)->get();
-                Category_serial::updateOrCreate([
-                    'category_id' => $category[0]['id'],
-                    'serial_id' => $new_serial['id']
-                ]);
+            
+            foreach ($serial['genre_ids'] as $genre => $id) {
+                $category = Category::where('tmdb_id', $id)->get('id');
+                //dd($category);
+                $new_serial->categories()->attach($category, ['serial_id' => $new_serial['id']]);
             }
         }
     }
 
     public function start_get_genres()
     {
-        $parse = Http::get($this->getUrl());
-        $genres = $parse->json();
+
+        $genres = Http::get($this->getUrl())->json();
         foreach ($genres['genres'] as $genre) {
                 Category::updateOrCreate([
-                'title' => $genre['name'],
-                'tmdb_id' => $genre['id'],
+                    'title' => $genre['name'],
+                    'tmdb_id' => $genre['id'],
             ]);
         }
     }
