@@ -33,22 +33,34 @@ class ThemoviedbParserService implements Parser
     {
         $parse = Http::get($this->getUrl());
         $serial = $parse->json();
+
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e[0];
             if($release_date === '') {
                 $release_date = 0;
             }
+
+            $poster_name = substr($serial['poster_path'], 1);
+            $poster = 'https://image.tmdb.org/t/p/w500/' . $poster_name;
+            $ch = curl_init($poster);
+            $fp = fopen("storage/app/public/posters/" . $poster_name, 'wb');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch,CURLOPT_TIMEOUT,200);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
+
             $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
                 'year' => $release_date,
-                'poster' => $serial['poster_path'],
+                'poster' => $poster_name,
                 'rate' => $serial['vote_average'],
             ]);
             foreach ($serial['genre_ids'] as $genre) {
                 $category = Category::where('tmdb_id', $genre)->get();
-                //dd($category);
                 Category_serial::updateOrCreate([
                     'category_id' => $category[0]['id'],
                     'serial_id' => $new_serial['id']
@@ -69,19 +81,3 @@ class ThemoviedbParserService implements Parser
         }
     }
 }
-
-//если парсим по id сериалов за раз по ссылке /tv/id
-/*
-    $serial = json_decode($parse);
-    if($serial->first_air_date) {
-            $e = explode("-", $serial->first_air_date);
-            $release_date = $e[0];
-        } else {
-            $release_date = 0;
-        }
-            $new_serial = Serial::create([
-                'title' => $serial->name,
-                'description' => $serial->overview,
-                'year' => $release_date
-            ]);
- */

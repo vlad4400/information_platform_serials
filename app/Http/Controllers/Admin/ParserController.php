@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Contracts\Parser;
 use App\Http\Controllers\Controller;
 use App\Jobs\SerialJob;
-use App\Models\Serial;
-use App\Services\ThemoviedbParserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 
 
 class ParserController extends Controller
@@ -27,7 +23,8 @@ class ParserController extends Controller
 
         for($i=1; $i<6; $i++) {
             $link = "https://api.themoviedb.org/3/tv/popular?api_key=" . env('API_KEY') . "&language=ru&page=" . $i;
-            $parser->setUrl($link)->start();
+            //$parser->setUrl($link)->start();
+            dispatch(new SerialJob($link));
         }
         return response()->json(null,200);
     }
