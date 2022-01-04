@@ -6,6 +6,7 @@ use App\Contracts\Parser;
 use App\Models\Category;
 use App\Models\Category_serial;
 use App\Models\Serial;
+use Illuminate\Support\Facades\Http;
 
 class ThemoviedbParserService implements Parser
 {
@@ -30,15 +31,15 @@ class ThemoviedbParserService implements Parser
 
     public function start()
     {
-        $parse = file_get_contents($this->getUrl());
-        $serial = json_decode($parse, true);
+        $parse = Http::get($this->getUrl());
+        $serial = $parse->json();
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e[0];
             if($release_date === '') {
                 $release_date = 0;
             }
-            $new_serial = Serial::create([
+            $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
                 'year' => $release_date,
@@ -48,7 +49,7 @@ class ThemoviedbParserService implements Parser
             foreach ($serial['genre_ids'] as $genre) {
                 $category = Category::where('tmdb_id', $genre)->get();
                 //dd($category);
-                Category_serial::create([
+                Category_serial::updateOrCreate([
                     'category_id' => $category[0]['id'],
                     'serial_id' => $new_serial['id']
                 ]);
@@ -58,11 +59,10 @@ class ThemoviedbParserService implements Parser
 
     public function start_get_genres()
     {
-        $parse = file_get_contents($this->getUrl());
-        $genres = json_decode($parse,true);
-        Category::getQuery()->delete();
+        $parse = Http::get($this->getUrl());
+        $genres = $parse->json();
         foreach ($genres['genres'] as $genre) {
-            $new_category = Category::create([
+                Category::updateOrCreate([
                 'title' => $genre['name'],
                 'tmdb_id' => $genre['id'],
             ]);
