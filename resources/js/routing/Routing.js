@@ -3,30 +3,36 @@ import {
   Layout,
   Admin,
   Users,
-  Serials,
+  SerialsAdmin,
   Example,
+  Profile,
   Favourites,
   Home,
-  NotFound,
-  Profile,
+  Serials,
+  FilmInfo,
   SignIn,
   SignUp,
+  NotFound,
 } from '../pages';
+import * as ROUTES from '../constants/routes';
 
 export const Routing = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path='home' element={<Home />} />
-        <Route path='profile' element={<Profile />} />
-        <Route path='favourites' element={<Favourites />} />
-        <Route path='signin' element={<SignIn />} />
-        <Route path='signup' element={<SignUp />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.SERIALS} element={<Serials />} />
+        <Route path={`${ROUTES.SERIALS}/filminfo`} element={<FilmInfo />} />
+        <Route path={ROUTES.PROFILE} element={<Profile />}>
+          <Route path={ROUTES.FAVOURITES} element={<Favourites />} />
+        </Route>
+        <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
       </Route>
-      <Route path='admin' element={<Admin />}>
-        <Route path='users' element={<Users />} />
-        <Route path='serials' element={<Serials />} />
+      <Route path={ROUTES.ADMIN} element={<Admin />}>
+        <Route path={ROUTES.USERS} element={<Users />} />
+        <Route path={ROUTES.ADMIN_SERIALS} element={<SerialsAdmin />} />
       </Route>
       <Route path='example' element={<Example />} />
       <Route path='*' element={<NotFound />} />

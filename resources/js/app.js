@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Routing } from './routing/Routing';
 import Navigation from './components/Navigation';
 
 export default function App() {
   return (
     <>
-      <BrowserRouter>
+      <Router>
         <Navigation />
         <Routing />
-      </BrowserRouter>
+      </Router>
     </>
   );
 }
