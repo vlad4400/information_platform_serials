@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SerialResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryController extends Controller
 {
@@ -14,6 +17,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(Serial::all());
+        return Category::all();
+    }
+
+
+    public function show($id)
+    {
+        $category = Category::find($id);
+        $serials = $category->serials->all();
+        return new SerialResource($serials);
     }
 }
