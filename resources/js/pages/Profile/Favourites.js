@@ -1,12 +1,12 @@
 //страница Избранное
 import { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import WatchList from '../components/WatchList';
-import WATCHLIST from './WATCHLIST.json';
+import WatchList from '../../components/WatchList';
+import WATCHLIST from '../WATCHLIST.json';
 
 const { watched, toWatch } = WATCHLIST;
 const [watchedKey, toWatchKey] = Object.keys(WATCHLIST);

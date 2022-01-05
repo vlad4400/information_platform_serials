@@ -1,7 +1,5 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 
 export const NotFound = () => {
-    return (
-        <Navigate to="/" />
-    );
+  return <h2>Страница не существует: 404!</h2>;
 };

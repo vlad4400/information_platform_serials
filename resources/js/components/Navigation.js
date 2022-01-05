@@ -7,6 +7,7 @@ import {
   FormControl,
   Button,
 } from 'react-bootstrap';
+import * as ROUTES from '../constants/routes';
 
 export default function Navigation(props) {
   return (
@@ -17,7 +18,7 @@ export default function Navigation(props) {
       variant='dark'
       className='py-3'
     >
-      <Container>
+      <Container fluid='sm'>
         <Navbar.Brand as={NavLink} to='/'>
           Logo
         </Navbar.Brand>
@@ -25,17 +26,23 @@ export default function Navigation(props) {
         <Navbar.Collapse>
           <Nav className='mr-auto'>
             <NavDropdown className='me-2' title='Меню'>
-              <NavDropdown.Item as={NavLink} to='/catalog'>
+              <NavDropdown.Item as={NavLink} to={ROUTES.SERIALS}>
                 Каталог сериалов
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to='/favourites'>
+              <NavDropdown.Item
+                as={NavLink}
+                to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}
+              >
                 Избранное
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to='/profile'>
+              <NavDropdown.Item as={NavLink} to={ROUTES.PROFILE}>
                 Профиль
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} to='/admin'>
+              <NavDropdown.Item as={NavLink} to='/example'>
+                Пример компонентов
+              </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to={ROUTES.ADMIN}>
                 Админка
               </NavDropdown.Item>
             </NavDropdown>
@@ -47,10 +54,10 @@ export default function Navigation(props) {
             aria-label='Search'
           />
           <Nav>
-            <Nav.Link as={NavLink} to='/signin'>
+            <Nav.Link as={NavLink} to={ROUTES.SIGN_IN}>
               Вход
             </Nav.Link>
-            <Button as={NavLink} to='/signup'>
+            <Button as={NavLink} to={ROUTES.SIGN_UP}>
               Регистрация
             </Button>
           </Nav>
