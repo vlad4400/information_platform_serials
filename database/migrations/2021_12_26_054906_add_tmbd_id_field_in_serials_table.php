@@ -15,7 +15,7 @@ class AddTmbdIdFieldInSerialsTable extends Migration
     {
         Schema::table('serials', function (Blueprint $table) {
             $table->unsignedBigInteger('tmdb_id')
-                ->unique('tmdb_id')
+                //->unique('tmdb_id') Если будем использовать как внешний ключ, пока id-внешний ключ
                 ->after('id');
         });
     }

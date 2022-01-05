@@ -33,51 +33,51 @@ class ThemoviedbParserService implements Parser
     {
         $serial = Http::get($this->getUrl())->json();
 
+
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e[0];
             if($release_date === '') {
                 $release_date = 0;
             }
+
+            $poster_name = substr($serial['poster_path'], 1);
+            $poster = 'https://image.tmdb.org/t/p/w500/' . $poster_name;
+            $ch = curl_init($poster);
+            $fp = fopen("storage/app/public/posters/" . $poster_name, 'wb');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch,CURLOPT_TIMEOUT,200);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
+
             $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
                 'year' => $release_date,
-                'poster' => $serial['poster_path'],
+                'poster' => $poster_name,
                 'rate' => $serial['vote_average'],
                 'tmdb_id' => $serial['id'],
             ]);
             
             foreach ($serial['genre_ids'] as $genre => $id) {
-                $new_serial->categories()->attach($id, ['serial_id' => $serial['id']]);
+                $category = Category::where('tmdb_id', $id)->get('id');
+                //dd($category);
+                $new_serial->categories()->attach($category, ['serial_id' => $new_serial['id']]);
             }
         }
     }
 
     public function start_get_genres()
     {
+
         $genres = Http::get($this->getUrl())->json();
         foreach ($genres['genres'] as $genre) {
-            $new_category = Category::updateOrCreate([
-                'title' => $genre['name'],
-                'tmdb_id' => $genre['id'],
+                Category::updateOrCreate([
+                    'title' => $genre['name'],
+                    'tmdb_id' => $genre['id'],
             ]);
         }
     }
 }
-
-//если парсим по id сериалов за раз по ссылке /tv/id
-/*
-    $serial = json_decode($parse);
-    if($serial->first_air_date) {
-            $e = explode("-", $serial->first_air_date);
-            $release_date = $e[0];
-        } else {
-            $release_date = 0;
-        }
-            $new_serial = Serial::create([
-                'title' => $serial->name,
-                'description' => $serial->overview,
-                'year' => $release_date
-            ]);
- */
