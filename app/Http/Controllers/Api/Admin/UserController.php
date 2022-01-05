@@ -16,20 +16,7 @@ class UserController extends Controller
      */
     public function index(User $users)
     {
-        return response()->json(
-            ['data' => $users->all()], 200
-        );
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return UserResource::collection($users->all());
     }
 
     /**
