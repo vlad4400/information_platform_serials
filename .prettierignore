@@ -1,2 +1,5 @@
 *.html
+*.css
+*.scss
+*.json
 public
