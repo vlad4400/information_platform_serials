@@ -1,5 +1,5 @@
 import { Link, Outlet, Navigate } from 'react-router-dom';
-import { FAVOURITES } from '../../constants/routes';
+import * as ROUTES from '../../constants/routes';
 
 export const Profile = () => {
   const user = true;
@@ -9,7 +9,7 @@ export const Profile = () => {
       <div>
         <h1>Профиль</h1>
         <p>Здесь будет профиль пользователя и избранное</p>
-        <Link to={FAVOURITES}>Избранное</Link>
+        <Link to={ROUTES.FAVOURITES}>Избранное</Link>
         <Outlet />
       </div>
     );
