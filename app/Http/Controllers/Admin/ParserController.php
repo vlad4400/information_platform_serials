@@ -19,14 +19,14 @@ class ParserController extends Controller
      */
     public function __invoke(ThemoviedbParserService $parser)
     {
-        set_time_limit(0);
+        //set_time_limit(0);
         $link_genres = "https://api.themoviedb.org/3/genre/tv/list?api_key=" . env('API_KEY') . "&language=ru";
         $parser->setUrl($link_genres)->start_get_genres();
 
         for($i=1; $i<6; $i++) {
             $link = "https://api.themoviedb.org/3/tv/popular?api_key=" . env('API_KEY') . "&language=ru&page=" . $i;
-            $parser->setUrl($link)->start();
-            //dispatch(new SerialJob($link));
+            //$parser->setUrl($link)->start();
+            dispatch(new SerialJob($link));
         }
         return response()->json(null,200);
     }
