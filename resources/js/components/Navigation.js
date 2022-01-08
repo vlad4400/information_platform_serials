@@ -16,6 +16,10 @@ export default function Navigation() {
     set_isAuth(false);
   };
 
+  const logIn = () => {
+    set_isAuth(true);
+  };
+
   return (
     <Navbar
       collapseOnSelect
@@ -56,7 +60,11 @@ export default function Navigation() {
             placeholder='Поиск'
             aria-label='Search'
           />
-          {isAuth ? <LoggedInView logOut={logOut} /> : <LoggedOutView />}
+          {isAuth ? (
+            <LoggedInView logOut={logOut} />
+          ) : (
+            <LoggedOutView logIn={logIn} />
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
@@ -76,9 +84,9 @@ const LoggedInView = ({ logOut }) => (
   </Nav>
 );
 
-const LoggedOutView = () => (
+const LoggedOutView = ({ logIn }) => (
   <Nav>
-    <Nav.Link as={NavLink} to={ROUTES.SIGN_IN}>
+    <Nav.Link as={NavLink} to={ROUTES.SIGN_IN} onClick={logIn}>
       Вход
     </Nav.Link>
     <Button as={NavLink} to={ROUTES.SIGN_UP}>
