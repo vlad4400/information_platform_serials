@@ -7,5 +7,4 @@ interface Parser
     public function setUrl(string $url): self;
     public function getUrl(): string;
     public function start();
-    public function start_get_genres();
 }

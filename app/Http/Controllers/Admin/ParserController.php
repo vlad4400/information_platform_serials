@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Contracts\Parser;
+
 use App\Http\Controllers\Controller;
 use App\Jobs\SerialJob;
-use Illuminate\Http\Request;
+use App\Services\ThemoviedbParserService;
+
 
 
 class ParserController extends Controller
@@ -13,11 +14,12 @@ class ParserController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ThemoviedbParserService $parser
      * @return string
      */
-    public function __invoke(Request $request, Parser $parser)
+    public function __invoke(ThemoviedbParserService $parser)
     {
+        //set_time_limit(0);
         $link_genres = "https://api.themoviedb.org/3/genre/tv/list?api_key=" . env('API_KEY') . "&language=ru";
         $parser->setUrl($link_genres)->start_get_genres();
 
