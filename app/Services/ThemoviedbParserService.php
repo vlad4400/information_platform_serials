@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Contracts\Parser;
 use App\Models\Category;
-use App\Models\Category_serial;
 use App\Models\Serial;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -36,17 +35,15 @@ class ThemoviedbParserService implements Parser
 
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
-            $release_date = $e[0];
-            if($release_date === '') {
-                $release_date = 0;
-            }
+            $release_date = $e ? $e[0] : 0;
 
-            $poster_name = substr($serial['poster_path'], 1);
-            $poster = file_get_contents('https://image.tmdb.org/t/p/w500/' . $poster_name);
-            //сохранение в папку public
-            $save = file_put_contents('public/posters/' . $poster_name, $poster);
-            //сохранение на S3
-            //Storage::disk('s3')->put($poster_name, $poster);
+            $poster_name = $serial['poster_path'] ? substr($serial['poster_path'], 1) : 0;
+            if ($poster_name) {
+                $poster = file_get_contents('https://image.tmdb.org/t/p/w342/' . $poster_name);
+                $save = file_put_contents('public/posters/' . $poster_name, $poster);
+                //сохранение на S3
+                //Storage::disk('s3')->put($poster_name, $poster);
+            }
 
             $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
