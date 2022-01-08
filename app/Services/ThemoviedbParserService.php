@@ -40,7 +40,7 @@ class ThemoviedbParserService implements Parser
             $poster_name = $serial['poster_path'] ? substr($serial['poster_path'], 1) : 0;
             if ($poster_name) {
                 $poster = file_get_contents('https://image.tmdb.org/t/p/w342/' . $poster_name);
-                $save = file_put_contents('public/posters/' . $poster_name, $poster);
+                $save = file_put_contents('posters/' . $poster_name, $poster);
                 //сохранение на S3
                 //Storage::disk('s3')->put($poster_name, $poster);
             }
