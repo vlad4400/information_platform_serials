@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Contracts\Parser;
 use App\Models\Category;
-use App\Models\Category_serial;
 use App\Models\Serial;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class ThemoviedbParserService implements Parser
 {
@@ -33,24 +33,20 @@ class ThemoviedbParserService implements Parser
     {
         $serial = Http::get($this->getUrl())->json();
 
+        $dir = "public/posters/";
+        !is_dir($dir) ? mkdir($dir, 0777, true) : chmod($dir, 0777);
 
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
-            $release_date = $e[0];
-            if($release_date === '') {
-                $release_date = 0;
-            }
+            $release_date = $e ? $e[0] : 0;
 
-            $poster_name = substr($serial['poster_path'], 1);
-            $poster = 'https://image.tmdb.org/t/p/w500/' . $poster_name;
-            $ch = curl_init($poster);
-            $fp = fopen("storage/app/public/posters/" . $poster_name, 'wb');
-            curl_setopt($ch, CURLOPT_FILE, $fp);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch,CURLOPT_TIMEOUT,200);
-            curl_exec($ch);
-            curl_close($ch);
-            fclose($fp);
+            $poster_name = $serial['poster_path'] ? substr($serial['poster_path'], 1) : 0;
+            if ($poster_name) {
+                $poster = file_get_contents('https://image.tmdb.org/t/p/w342/' . $poster_name);
+                $save = file_put_contents($dir . $poster_name, $poster);
+                //сохранение на S3
+                //Storage::disk('s3')->put($poster_name, $poster);
+            }
 
             $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
@@ -60,18 +56,15 @@ class ThemoviedbParserService implements Parser
                 'rate' => $serial['vote_average'],
                 'tmdb_id' => $serial['id'],
             ]);
-            
+
             foreach ($serial['genre_ids'] as $genre => $id) {
-                $category = Category::where('tmdb_id', $id)->get('id');
-                //dd($category);
-                $new_serial->categories()->attach($category, ['serial_id' => $new_serial['id']]);
+                $new_serial->categories()->syncWithoutDetaching($category, ['serial_id' => $new_serial['id']]);
             }
         }
     }
 
     public function start_get_genres()
     {
-
         $genres = Http::get($this->getUrl())->json();
         foreach ($genres['genres'] as $genre) {
                 Category::updateOrCreate([
