@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import {
   Layout,
   Admin,
@@ -6,6 +6,7 @@ import {
   SerialsAdmin,
   Example,
   Profile,
+  ProfileSettings,
   Favourites,
   Home,
   Serials,
@@ -19,6 +20,12 @@ import * as ROUTES from '../constants/routes';
 // @placeholder
 import SERIALS from './SERIALS.json';
 
+const PrivateOutlet = () => {
+  const isAuth = true;
+
+  return isAuth ? <Outlet /> : <Navigate to='/signin' />;
+};
+
 export const Routing = () => {
   return (
     <Routes>
@@ -31,11 +38,14 @@ export const Routing = () => {
           element={<SingleSerial serials={SERIALS} />}
         />
         <Route path={`${ROUTES.SERIALS}/filminfo`} element={<FilmInfo />} />
-        <Route path={ROUTES.PROFILE} element={<Profile />}>
-          <Route path={ROUTES.FAVOURITES} element={<Favourites />} />
-        </Route>
         <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
         <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+        <Route path={ROUTES.PROFILE} element={<Profile />}>
+          <Route path={ROUTES.FAVOURITES} element={<Favourites />} />
+          <Route element={<PrivateOutlet />}>
+            <Route path={ROUTES.SETTINGS} element={<ProfileSettings />} />
+          </Route>
+        </Route>
       </Route>
       <Route path={ROUTES.ADMIN} element={<Admin />}>
         <Route path={ROUTES.USERS} element={<Users />} />

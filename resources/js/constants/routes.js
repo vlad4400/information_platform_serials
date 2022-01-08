@@ -2,6 +2,7 @@ export const HOME = '/home';
 export const SERIALS = '/serials';
 export const PROFILE = '/profile';
 export const FAVOURITES = 'favourites';
+export const SETTINGS = 'settings';
 export const SIGN_UP = '/signup';
 export const SIGN_IN = '/signin';
 export const ADMIN = '/admin';
