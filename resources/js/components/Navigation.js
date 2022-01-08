@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Navbar,
@@ -9,7 +10,12 @@ import {
 } from 'react-bootstrap';
 import * as ROUTES from '../constants/routes';
 
-export default function Navigation(props) {
+export default function Navigation() {
+  const [isAuth, set_isAuth] = useState(true);
+  const logOut = () => {
+    set_isAuth(false);
+  };
+
   return (
     <Navbar
       collapseOnSelect
@@ -35,9 +41,6 @@ export default function Navigation(props) {
               >
                 Избранное
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to={ROUTES.PROFILE}>
-                Профиль
-              </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item as={NavLink} to='/example'>
                 Пример компонентов
@@ -53,16 +56,33 @@ export default function Navigation(props) {
             placeholder='Поиск'
             aria-label='Search'
           />
-          <Nav>
-            <Nav.Link as={NavLink} to={ROUTES.SIGN_IN}>
-              Вход
-            </Nav.Link>
-            <Button as={NavLink} to={ROUTES.SIGN_UP}>
-              Регистрация
-            </Button>
-          </Nav>
+          {isAuth ? <LoggedInView logOut={logOut} /> : <LoggedOutView />}
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 }
+
+const LoggedInView = ({ logOut }) => (
+  <Nav>
+    <NavDropdown className='me-2' title='Профиль'>
+      <NavDropdown.Item as={NavLink} to={ROUTES.PROFILE}>
+        Профиль
+      </NavDropdown.Item>
+      <NavDropdown.Item as={Button} onClick={logOut}>
+        Выход
+      </NavDropdown.Item>
+    </NavDropdown>
+  </Nav>
+);
+
+const LoggedOutView = () => (
+  <Nav>
+    <Nav.Link as={NavLink} to={ROUTES.SIGN_IN}>
+      Вход
+    </Nav.Link>
+    <Button as={NavLink} to={ROUTES.SIGN_UP}>
+      Регистрация
+    </Button>
+  </Nav>
+);
