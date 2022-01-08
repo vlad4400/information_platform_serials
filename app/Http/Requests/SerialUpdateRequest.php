@@ -24,6 +24,7 @@ class SerialUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'tmdb_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'year' => ['required', 'integer'],

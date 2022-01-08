@@ -15,7 +15,7 @@ class SerialController extends Controller
      */
     public function index()
     {
-        return SerialResource::collection(Serial::all());
+        return SerialResource::collection(Serial::all()->sortByDesc('rate'));
     }
 
     /**

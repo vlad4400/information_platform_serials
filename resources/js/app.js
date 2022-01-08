@@ -1,18 +1,15 @@
 import React from 'react';
-import { BrowserRouter, Routes } from 'react-router-dom';
-
-// Компоненты
-import { Header } from './components/Header';
-import { Routing } from './components/Routing';
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Routing } from './routing/Routing';
+import Navigation from './components/Navigation';
 
 export default function App() {
-    return (
-        <>
-            <BrowserRouter>
-                <Header />
-                <Routing />
-            </BrowserRouter>
-        </>
-    )
+  return (
+    <>
+      <Router>
+        <Navigation />
+        <Routing />
+      </Router>
+    </>
+  );
 }

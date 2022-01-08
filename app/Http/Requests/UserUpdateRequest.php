@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SerialStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -24,12 +24,7 @@ class SerialStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'tmdb_id' => ['required', 'integer'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'year' => ['required', 'integer'],
-            'poster' => ['string', 'max:100'],
-            'rate' => ['numeric']
+            'is_admin' => $this->is_admin,
         ];
     }
 }
