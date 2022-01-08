@@ -7,3 +7,5 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/{any}', HomeController::class)
     ->where('any', '.*');
+
+

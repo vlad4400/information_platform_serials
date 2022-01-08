@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SerialResource;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryController extends Controller
 {
@@ -14,7 +16,6 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-
     public function index()
     {
         return CategoryResource::collection(Category::all());
@@ -27,5 +28,4 @@ class CategoryController extends Controller
         $serials = $category->serials->all();
         return new SerialResource($serials);
     }
-
 }
