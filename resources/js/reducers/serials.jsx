@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API_SERIALS } from '../components/Constants';
+import { API_SERIALS } from '../utilities/Constants';
 
 export const getTodosAsync = createAsyncThunk(
 	'serials/getTodosAsync',
