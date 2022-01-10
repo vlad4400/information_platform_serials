@@ -6,6 +6,7 @@ import { Navigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { API_ADMIN_PARSER } from '../../constants/api';
 import { useDispatch } from 'react-redux';
+import { ParserSerials } from '../../components/Parser';
 
 const setSerialsAsync = async (dispatch) => {
   try {
@@ -33,9 +34,8 @@ export const SerialsAdmin = () => {
   return (
     <div>
       <h2>Редактирование сериалов</h2>
-      <Button variant='dark' onClick={Parser}>
-        Parser
-      </Button>{' '}
+      <br />
+      <ParserSerials />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 // страница авторизации 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Container, Button, Form, Alert } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
 //import { auth } from "../../firebase";
 
 export const LoginFormTestIds = {
@@ -36,43 +36,43 @@ export const SignIn = () => {
     };
 
     return (
-        <Container fluid="sm">
-            <Form onSubmit={handleSubmit}>
-                <h1>Авторизация</h1>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        data-testid={LoginFormTestIds.loginField}
-                        name="email"
-                        onChange={handleEmailChange}
-                        value={email}
-                    />
-                </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        data-testid={LoginFormTestIds.passwordField}
-                        name="password"
-                        onChange={handlePassChange}
-                        value={password}
-                    />
-                </Form.Group>
+        <Form onSubmit={handleSubmit}>
+            <h1>Авторизация</h1>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    data-testid={LoginFormTestIds.loginField}
+                    name="email"
+                    onChange={handleEmailChange}
+                    value={email}
+                />
+            </Form.Group>
 
-                {error && <Alert>{error.toString()}</Alert>}
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    data-testid={LoginFormTestIds.passwordField}
+                    name="password"
+                    onChange={handlePassChange}
+                    value={password}
+                />
+            </Form.Group>
 
-                <Button variant="primary" type="submit">
-                    Отправить
-                </Button>
-                <hr />
-                <p>
-                    Нет аккаунта? Зарегистрируйтесь <Link to="/signup">Регистрация</Link>
-                </p>
-            </Form>
-        </Container >
+            {error && <Alert>{error.toString()}</Alert>}
+
+            <Button variant="primary" type="submit">
+                Отправить
+            </Button>
+            <hr />
+            <p>
+                Нет аккаунта? Зарегистрируйтесь <Link to="/signup">Регистрация</Link>
+            </p>
+        </Form>
+
     );
 };
