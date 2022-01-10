@@ -1,10 +1,14 @@
 import Table from "react-bootstrap/Table";
+import { Link } from 'react-router-dom';
+import * as ROUTES from '../constants/routes';
 
 const ListItem = ({ i, title, rating, episodes = "100/100" }) => {
     return (
         <tr>
             <th scope="row">{i + 1}</th>
-            <td style={{ width: "100%" }}>{title}</td>
+            <td style={{ width: "100%" }}>
+              <Link to={ROUTES.SERIALS + '/' + i}>{title}</Link>
+            </td>
             <td>{rating}/10</td>
             <td>{episodes}</td>
         </tr>

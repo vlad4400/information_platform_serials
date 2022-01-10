@@ -11,7 +11,6 @@ import {
   Home,
   Serials,
   SingleSerial,
-  FilmInfo,
   SignIn,
   SignUp,
   NotFound,
@@ -37,7 +36,6 @@ export const Routing = () => {
           path={`${ROUTES.SERIALS}/:serialId`}
           element={<SingleSerial serials={SERIALS} />}
         />
-        <Route path={`${ROUTES.SERIALS}/filminfo`} element={<FilmInfo />} />
         <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
         <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
         <Route path={ROUTES.PROFILE} element={<Profile />}>

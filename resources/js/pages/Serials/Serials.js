@@ -16,7 +16,7 @@ export const Serials = ({ serials }) => {
     <div>
       <h2>Каталог сериалов</h2>
       <p>Здесь будет список всех сериалов</p>
-      <Link to='filminfo'>Пример страницы</Link>
+      <Link to='serials'>Пример страницы</Link>
 
       {serials.map((serial) => (
         <SerialLink key={serial.id} serial={serial} />
