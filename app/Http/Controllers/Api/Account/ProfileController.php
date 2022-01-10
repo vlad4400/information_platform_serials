@@ -8,24 +8,8 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __invoke(User $user)
     {
-        return view('index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param $id
-     * @return ProfileResource
-     */
-    public function show($id)
-    {
-        return new ProfileResource(User::findOrFail($id));
+        return new ProfileResource($user);
     }
 }

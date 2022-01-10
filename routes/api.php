@@ -19,17 +19,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::apiResources(['serials' => SerialController::class]);
+Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
 Route::apiResources(['categories' => CategoryController::class]);
 
-
-Route::apiResource('profile', ProfileController::class);
-Route::apiResources(['profile/{id}/favorites' => FavoriteController::class]);
+Route::group(['prefix' => 'profile'], function()
+{
+    Route::get('/{user}', ProfileController::class);
+    Route::apiResource('/{user}/favorites', FavoriteController::class);
+});
 
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {
     Route::apiResource('/users', AdminUserController::class);
-    Route::apiResources(['/serials' => AdminSerialController::class]);
+    Route::apiResource('/serials', AdminSerialController::class);
     Route::apiResources(['/categories' => AdminCategoryController::class]);
     Route::get('/parser', ParserController::class);
 });
