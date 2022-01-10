@@ -33,8 +33,9 @@ class ThemoviedbParserService implements Parser
     {
         $serial = Http::get($this->getUrl())->json();
 
-        $dir = "{$_SERVER['DOCUMENT_ROOT']}/posters";
-        !is_dir($dir) ? mkdir($dir, 0777, true) : chmod($dir, 0777);
+        chmod(public_path(), 0755);
+        $dir = public_path() . "/posters";
+        !is_dir($dir) ? mkdir($dir, 0755, true) : chmod($dir, 0755);
 
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
