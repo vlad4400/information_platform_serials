@@ -17,8 +17,6 @@ import {
   NotFound,
 } from '../pages';
 import * as ROUTES from '../constants/routes';
-// @placeholder
-import SERIALS from './SERIALS.json';
 
 const PrivateOutlet = () => {
   const isAuth = true;
@@ -32,10 +30,10 @@ export const Routing = () => {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path={ROUTES.HOME} element={<Home />} />
-        <Route path={ROUTES.SERIALS} element={<Serials serials={SERIALS} />} />
+        <Route path={ROUTES.SERIALS} element={<Serials />} />
         <Route
           path={`${ROUTES.SERIALS}/:serialId`}
-          element={<SingleSerial serials={SERIALS} />}
+          element={<SingleSerial />}
         />
         <Route path={`${ROUTES.SERIALS}/filminfo`} element={<FilmInfo />} />
         <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
