@@ -1,5 +1,6 @@
 import { Figure } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default ({title, serials}) => {
     
@@ -36,7 +37,12 @@ export default ({title, serials}) => {
     return (
         <div className="top-rating" style={{marginTop: '15px'}}>
             <h2>{title}</h2>
-            <List serials={serials}/>
+            { serials.length
+                ? <List serials={serials}/>
+                : <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Spinner animation="border" />
+                </div>
+            }
         </div>
     )
 }

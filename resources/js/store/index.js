@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import serialsReducer from './reducers/serials'
+import serialsReducer from './Serials/reducer';
 
 export default configureStore({
 	reducer: {

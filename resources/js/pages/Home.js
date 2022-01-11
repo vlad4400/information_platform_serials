@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodosAsync } from '../reducers/serials';
+import { getAllSerials } from '../store/Serials/actions';
+import { getSerials } from '../store/Serials/selectors'
 import PanelSerials from '../components/PanelSerials.js';
-import ListSerials from '../components/ListSerials.js';
+import ListSerialsTable from '../components/ListSerialsTable';
 import Container from '../components/Container.js';
 
 export const Home = () => {
   const dispatch = useDispatch();
-  const serials = useSelector((state) => state.serials);
+  const serials = useSelector(getSerials);
 
   useEffect(() => {
-    dispatch(getTodosAsync());
+    dispatch(getAllSerials());
   }, [dispatch]);
 
   return (
     <Container>
       <PanelSerials title={'Новые сериалы'} serials={serials} />
-      <ListSerials title={'Найболее рейтинговые сериалы'} serials={serials} />
+      <ListSerialsTable title={'Найболее рейтинговые сериалы'} serials={serials} />
     </Container>
   );
 };
