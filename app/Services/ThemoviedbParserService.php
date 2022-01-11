@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Serial;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 class ThemoviedbParserService implements Parser
 {
@@ -41,20 +43,21 @@ class ThemoviedbParserService implements Parser
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e ? $e[0] : 0;
 
-            $poster_name = $serial['poster_path'] ? substr($serial['poster_path'], 1) : 0;
-            if ($poster_name) {
-                $poster = file_get_contents('https://image.tmdb.org/t/p/w342/' . $poster_name);
-                Storage::disk('public')->put("posters/{$poster_name}", $poster);
-                //$save = file_put_contents("{$dir}/{$poster_name}", $poster);
-                //сохранение на S3
-                //Storage::disk('s3')->put($poster_name, $poster);
+            if ($serial['poster_path'] ) {
+                $url = 'https://image.tmdb.org/t/p/w342' . $serial['poster_path'];
+                $result = Cloudinary::upload($url, [
+                    'folder' => 'posters/',
+                    'use_filename' => true,
+                    'unique_filename' => false
+                ]);
+                $poster = $result->getSecurePath();
             }
 
             $new_serial = Serial::updateOrCreate([
                 'title' => $serial['name'],
                 'description' => $serial['overview'],
                 'year' => $release_date,
-                'poster' => $poster_name,
+                'poster' => $poster,
                 'rate' => $serial['vote_average'],
                 'tmdb_id' => $serial['id'],
             ]);
