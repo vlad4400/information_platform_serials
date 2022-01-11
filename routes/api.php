@@ -5,10 +5,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\SerialController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\Admin\SerialController as AdminSerialController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ParserController;
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -18,6 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['categories' => CategoryController::class]);
+
+Route::get('search', [SearchController::class, 'search']);
+
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {
