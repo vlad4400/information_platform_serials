@@ -13,9 +13,9 @@ class Serial extends Model
             'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
     ];
 
-    public function categories()
+    public function genres()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Genre::class);
     }
 
     public function users()

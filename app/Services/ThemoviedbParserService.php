@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\Parser;
-use App\Models\Category;
+use App\Models\Genre;
 use App\Models\Serial;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +60,7 @@ class ThemoviedbParserService implements Parser
 
             foreach ($serial['genre_ids'] as $genre => $id) {
                 $category = Category::where('tmdb_id', $id)->get('id');
-                $new_serial->categories()->syncWithoutDetaching($category, ['serial_id' => $new_serial['id']]);
+                $new_serial->genres()->syncWithoutDetaching($genre, ['serial_id' => $new_serial['id']]);
             }
         }
     }
@@ -69,7 +69,7 @@ class ThemoviedbParserService implements Parser
     {
         $genres = Http::get($this->getUrl())->json();
         foreach ($genres['genres'] as $genre) {
-                Category::updateOrCreate([
+                Genre::updateOrCreate([
                     'title' => $genre['name'],
                     'tmdb_id' => $genre['id'],
             ]);

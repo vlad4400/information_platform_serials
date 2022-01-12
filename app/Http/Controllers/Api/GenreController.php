@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryResource;
+use App\Http\Resources\GenreResource;
 use App\Http\Resources\SerialResource;
-use App\Models\Category;
+use App\Models\Genre;
 
-class CategoryController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,14 +17,14 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        return GenreResource::collection(Genre::all());
     }
 
 
     public function show($id)
     {
-        $category = Category::find($id);
-        $serials = $category->serials->all();
+        $genre = Genre::find($id);
+        $serials = $genre->serials->all();
         return new SerialResource($serials);
     }
 

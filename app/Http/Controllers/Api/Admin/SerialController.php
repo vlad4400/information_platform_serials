@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SerialStoreRequest;
 use App\Http\Resources\SerialResource;
-use App\Models\Category_serial;
+use App\Models\Genre_serial;
 use App\Models\Serial;
 use Illuminate\Http\Response;
 
