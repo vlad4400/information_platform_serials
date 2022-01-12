@@ -17,11 +17,13 @@ import {
   NotFound,
 } from '../pages';
 import * as ROUTES from '../constants/routes';
+import { useSelector } from 'react-redux';
+import { selectAuth } from '../store/auth.slice';
 
 const PrivateOutlet = () => {
-  const isAuth = true;
+  const { isLoggedIn } = useSelector(selectAuth);
 
-  return isAuth ? <Outlet /> : <Navigate to='/signin' />;
+  return isLoggedIn ? <Outlet /> : <Navigate to='/signin' />;
 };
 
 export const Routing = () => {

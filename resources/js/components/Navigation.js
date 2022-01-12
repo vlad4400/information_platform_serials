@@ -9,15 +9,27 @@ import {
   Button,
 } from 'react-bootstrap';
 import * as ROUTES from '../constants/routes';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAuth, login, logout } from '../store/auth.slice';
 
 export default function Navigation() {
-  const [isAuth, set_isAuth] = useState(true);
+  const dispatch = useDispatch();
+
+  const { isLoggedIn } = useSelector(selectAuth);
+
+  const [testUser, set_testUser] = useState({
+    email: 'test@mail.com',
+    username: 'testUser',
+  });
+
   const logOut = () => {
-    set_isAuth(false);
+    console.log('logout');
+    dispatch(logout());
   };
 
   const logIn = () => {
-    set_isAuth(true);
+    console.log('login');
+    dispatch(login(testUser));
   };
 
   return (
@@ -60,7 +72,7 @@ export default function Navigation() {
             placeholder='Поиск'
             aria-label='Search'
           />
-          {isAuth ? (
+          {isLoggedIn ? (
             <LoggedInView logOut={logOut} />
           ) : (
             <LoggedOutView logIn={logIn} />
