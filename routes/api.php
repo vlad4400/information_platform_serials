@@ -5,10 +5,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\SerialController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\Admin\SerialController as AdminSerialController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\Api\Admin\ParserController;
+use App\Http\Controllers\Api\Account\ProfileController;
+use App\Http\Controllers\Api\Account\FavoriteController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -17,12 +20,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::apiResources(['serials' => SerialController::class]);
+Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
 Route::apiResources(['categories' => CategoryController::class]);
+Route::get('search', [SearchController::class, 'search']);
+
+Route::group(['prefix' => 'profile'], function()
+{
+    Route::get('/{user}', ProfileController::class);
+    Route::apiResource('/{user}/favorites', FavoriteController::class);
+});
+
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {
     Route::apiResource('/users', AdminUserController::class);
-    Route::apiResources(['/serials' => AdminSerialController::class]);
+    Route::apiResource('/serials', AdminSerialController::class);
     Route::apiResources(['/categories' => AdminCategoryController::class]);
     Route::get('/parser', ParserController::class);
 });
