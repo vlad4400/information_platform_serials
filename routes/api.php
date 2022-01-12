@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\Admin\SerialController as AdminSerialController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\Api\Admin\ParserController;
 
 
 
