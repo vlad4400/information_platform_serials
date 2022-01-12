@@ -45,4 +45,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Serial::class, 'favorites', 'user_id', 'serial_id');
+    }
 }
