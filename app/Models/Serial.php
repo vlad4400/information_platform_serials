@@ -18,4 +18,9 @@ class Serial extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
+    }
+
 }

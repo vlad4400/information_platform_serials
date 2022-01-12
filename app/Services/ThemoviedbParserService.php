@@ -33,8 +33,9 @@ class ThemoviedbParserService implements Parser
     {
         $serial = Http::get($this->getUrl())->json();
 
-        $dir = "public/posters/";
-        !is_dir($dir) ? mkdir($dir, 0777, true) : chmod($dir, 0777);
+        /*chmod(public_path(), 0755);
+        $dir = public_path() . "/posters";
+        !is_dir($dir) ? mkdir($dir, 0755, true) : chmod($dir, 0755);*/
 
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
@@ -43,7 +44,8 @@ class ThemoviedbParserService implements Parser
             $poster_name = $serial['poster_path'] ? substr($serial['poster_path'], 1) : 0;
             if ($poster_name) {
                 $poster = file_get_contents('https://image.tmdb.org/t/p/w342/' . $poster_name);
-                $save = file_put_contents($dir . $poster_name, $poster);
+                Storage::disk('public')->put("posters/{$poster_name}", $poster);
+                //$save = file_put_contents("{$dir}/{$poster_name}", $poster);
                 //сохранение на S3
                 //Storage::disk('s3')->put($poster_name, $poster);
             }
@@ -58,6 +60,7 @@ class ThemoviedbParserService implements Parser
             ]);
 
             foreach ($serial['genre_ids'] as $genre => $id) {
+                $category = Category::where('tmdb_id', $id)->get('id');
                 $new_serial->categories()->syncWithoutDetaching($category, ['serial_id' => $new_serial['id']]);
             }
         }
