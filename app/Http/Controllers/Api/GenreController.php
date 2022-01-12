@@ -23,7 +23,6 @@ class GenreController extends Controller
 
     public function show($id)
     {
-        dd(Genre::all());
         $genre = Genre::find($id);
         $serials = $genre->serials->all();
         return new SerialResource($serials);
