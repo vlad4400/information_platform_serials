@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategorySerialTable extends Migration
+class CreateGenreSerialTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateCategorySerialTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_serial', function (Blueprint $table) {
+        Schema::create('genre_serial', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')
+            $table->foreignId('genre_id')
                 ->references('id')
-                ->on('categories')
+                ->on('genres')
                 ->onDelete('cascade');
             $table->foreignId('serial_id')
                 ->references('id')
@@ -33,6 +33,6 @@ class CreateCategorySerialTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_serial');
+        Schema::dropIfExists('genre_serial');
     }
 }

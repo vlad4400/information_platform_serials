@@ -21,7 +21,7 @@ class SerialResource extends JsonResource
             'year' => $this->year,
             'poster' => $this->poster,
             'rate' => $this->rate,
-            'categories' => $this->categories->pluck('title'),
+            'genres' => $this->genres->pluck('title'),
         ];
     }
 }
