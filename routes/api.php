@@ -36,6 +36,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
     Route::apiResource('/users', AdminUserController::class);
     Route::apiResources(['/serials' => AdminSerialController::class]);
     Route::apiResources(['/genres' => AdminGenreController::class]);
-    Route::get('/parser', ParserController::class);
+
+    Route::group(['prefix' => '/parser'], function()
+    {
+        Route::get('/genres', [ParserController::class, 'genreParser']);
+        Route::get('/serials', [ParserController::class, 'serialParser']);
+        Route::get('/seasons', [ParserController::class, 'seasonsParser']);
+    });
+
 });
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
-class ThemoviedbParserService implements Parser
+class SerialTMDBParserService implements Parser
 {
     protected string $url;
 
@@ -31,14 +31,14 @@ class ThemoviedbParserService implements Parser
         return $this->url;
     }
 
-    public function start()
+    public function start(): void
     {
         $serial = Http::get($this->getUrl())->json();
 
         foreach ($serial['results'] as $serial) {
             $e = explode("-", $serial['first_air_date']);
             $release_date = $e ? $e[0] : 0;
-
+            //$poster = 0;
             if ($serial['poster_path'] ) {
                 $url = 'https://image.tmdb.org/t/p/w342' . $serial['poster_path'];
                 $result = Cloudinary::upload($url, [
@@ -62,17 +62,6 @@ class ThemoviedbParserService implements Parser
                 $genre = Genre::where('tmdb_id', $id)->get('id');
                 $new_serial->genres()->syncWithoutDetaching($genre, ['serial_id' => $new_serial['id']]);
             }
-        }
-    }
-
-    public function start_get_genres()
-    {
-        $genres = Http::get($this->getUrl())->json();
-        foreach ($genres['genres'] as $genre) {
-                Genre::updateOrCreate([
-                    'title' => $genre['name'],
-                    'tmdb_id' => $genre['id'],
-            ]);
         }
     }
 }
