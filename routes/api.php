@@ -41,7 +41,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
     {
         Route::get('/genres', [ParserController::class, 'genreParser']);
         Route::get('/serials', [ParserController::class, 'serialParser']);
-        Route::get('/seasons', [ParserController::class, 'seasonsParser']);
     });
 
 });

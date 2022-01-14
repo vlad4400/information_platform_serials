@@ -23,4 +23,9 @@ class Serial extends Model
         return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
     }
 
+    public function seasons()
+    {
+        return $this->hasMany(Season::class);
+    }
+
 }
