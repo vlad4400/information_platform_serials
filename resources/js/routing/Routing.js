@@ -31,10 +31,9 @@ export const Routing = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.SERIALS} element={<Serials />} />
         <Route
-          path={`${ROUTES.SERIALS}/:serialId`}
+          path={`${ROUTES.SERIALS}/:${ROUTES.SERIAL_ID}`}
           element={<SingleSerial />}
         />
         <Route path={`${ROUTES.SERIALS}/filminfo`} element={<FilmInfo />} />
