@@ -3,18 +3,20 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Container, Button, Form, Alert } from "react-bootstrap";
 import axios from "axios";
+import swal from 'sweetalert';
+
 //import { auth } from "../../firebase";
 
 export const SignUp = () => {
-    //let navigate = useNavigate();
+    const navigate = useNavigate();
+
     const [registerInput, setRegister] = useState({
         name: '',
         email: '',
         password: '',
-        passwordConfirmation: ''
+        error_list: [],
     });
 
-    const [error, setError] = useState('');
 
     const handleInput = (e) => {
         setRegister({...registerInput, [e.target.name]: e.target.value })
@@ -28,26 +30,31 @@ export const SignUp = () => {
             name: registerInput.name,
             email: registerInput.email,
             password: registerInput.password,
-            passwordConfirmation: registerInput.passwordConfirmation,
         }
 
-        if ((data.name.trim()) && (data.email.trim()) &&
-            (data.password.trim()) &&
-            (data.passwordConfirmation.trim()) &&
-            (data.password.trim() === data.passwordConfirmation.trim())) {
+       
+                axios.get('/sanctum/csrf-cookie').then(response => {
+                    axios.post('/api/register', data).then( res => {
+                        if(res.data.status === 200)
+                        {
+                            console.log(res.data);
+                            localStorage.setItem('auth_token', res.data.token);
+                            localStorage.setItem('auth_name', res.data.username);
+                            swal("Success", res.data.message, "success");
+                            navigate('/');
 
-            try {
-                axios.post('api/register', data).then( res => {
 
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            setRegister({...registerInput, error_list: error.response.data.errors});
+                        }
+                      });;
                 });
                 //     await auth.createUserWithEmailAndPassword(email, password);
                 //navigate("/profile");
-            } catch (e) {
-                setError(e);
-            }
-        } else {
-            setError(e);
-        }
+
     };
 
     return (
@@ -63,6 +70,7 @@ export const SignUp = () => {
                         onChange={handleInput}
                         value={registerInput.name}
                     />
+                    <span className="text-danger">{registerInput.error_list.name}</span>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -74,6 +82,7 @@ export const SignUp = () => {
                         onChange={handleInput}
                         value={registerInput.email}
                     />
+                    <span className="text-danger">{registerInput.error_list.email}</span>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -85,20 +94,8 @@ export const SignUp = () => {
                         onChange={handleInput}
                         value={registerInput.password}
                     />
+                    <span className="text-danger">{registerInput.error_list.password}</span>
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicPassword2">
-                    <Form.Label>Password confirmation</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Password confirmation"
-                        name="passwordConfirmation"
-                        onChange={handleInput}
-                        value={registerInput.passwordConfirmation}
-                    />
-                </Form.Group>
-
-                {error && <Alert>{error.toString()}</Alert>}
 
                 <Button variant="primary" type="submit">
                     Отправить

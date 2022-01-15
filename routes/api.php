@@ -12,12 +12,13 @@ use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\ParserController;
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\FavoriteController;
-
+use App\Http\Controllers\Api\AuthController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('register', [AuthController::class, 'register']);
 
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['genres' => GenreController::class]);
