@@ -2,43 +2,46 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Container, Button, Form, Alert } from "react-bootstrap";
+import axios from "axios";
 //import { auth } from "../../firebase";
 
 export const SignUp = () => {
-    let navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [error, setError] = useState("");
+    //let navigate = useNavigate();
+    const [registerInput, setRegister] = useState({
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: ''
+    });
 
-    const handlePassChange = (e) => {
-        setPassword(e.target.value);
-    };
+    const [error, setError] = useState('');
 
-    const handlePassConfirmChange = (e) => {
-        setPasswordConfirmation(e.target.value);
-    };
+    const handleInput = (e) => {
+        setRegister({...registerInput, [e.target.name]: e.target.value })
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
+    }
 
-    const handleNameChange = (e) => {
-        setName(e.target.value);
-    };
-
-    const handleSubmit = async (e) => {
+    const registerSubmit = (e) => {
         e.preventDefault();
-        if ((password.trim()) &&
-            (passwordConfirmation.trim()) &&
-            (email.trim()) &&
-            (name.trim()) &&
-            (password.trim() === passwordConfirmation.trim())) {
+
+        const data = {
+            name: registerInput.name,
+            email: registerInput.email,
+            password: registerInput.password,
+            passwordConfirmation: registerInput.passwordConfirmation,
+        }
+
+        if ((data.name.trim()) && (data.email.trim()) &&
+            (data.password.trim()) &&
+            (data.passwordConfirmation.trim()) &&
+            (data.password.trim() === data.passwordConfirmation.trim())) {
 
             try {
+                axios.post('api/register', data).then( res => {
+
+                });
                 //     await auth.createUserWithEmailAndPassword(email, password);
-                navigate("/profile");
+                //navigate("/profile");
             } catch (e) {
                 setError(e);
             }
@@ -49,27 +52,27 @@ export const SignUp = () => {
 
     return (
         <Container fluid="sm">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={registerSubmit}>
                 <h1>Регистрация</h1>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        name="email"
-                        onChange={handleEmailChange}
-                        value={email}
-                    />
-                </Form.Group>
-
                 <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Enter name"
                         name="name"
-                        onChange={handleNameChange}
-                        value={name}
+                        onChange={handleInput}
+                        value={registerInput.name}
+                    />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                        type="email"
+                        placeholder="Enter email"
+                        name="email"
+                        onChange={handleInput}
+                        value={registerInput.email}
                     />
                 </Form.Group>
 
@@ -79,8 +82,8 @@ export const SignUp = () => {
                         type="password"
                         placeholder="Password"
                         name="password"
-                        onChange={handlePassChange}
-                        value={password}
+                        onChange={handleInput}
+                        value={registerInput.password}
                     />
                 </Form.Group>
 
@@ -90,8 +93,8 @@ export const SignUp = () => {
                         type="password"
                         placeholder="Password confirmation"
                         name="passwordConfirmation"
-                        onChange={handlePassConfirmChange}
-                        value={passwordConfirmation}
+                        onChange={handleInput}
+                        value={registerInput.passwordConfirmation}
                     />
                 </Form.Group>
 
