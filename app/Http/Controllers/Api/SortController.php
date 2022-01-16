@@ -21,7 +21,6 @@ class SortController extends Controller
     public function Rate($order = false)
     {
         if ($order == false)
-         //   return SerialResource::collection(Serial::all()->sortBy('rate', SORT_ASC));
             return Serial::sortByRate();
         else
             return Serial::sortByRateDesc();

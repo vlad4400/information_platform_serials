@@ -44,5 +44,4 @@ class Serial extends Model
         return SerialResource::collection(Serial::all()->sortByDesc('rate', SORT_ASC));
     }
 
-
 }
