@@ -1,16 +1,10 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import { getSerials, selectSerials } from '../../store/serials.slice';
+import { selectSerials } from '../../store/serials.slice';
 
 export const Serials = () => {
-  const dispatch = useDispatch();
   const { serials, loading, hasErrors } = useSelector(selectSerials);
-
-  useEffect(() => {
-    dispatch(getSerials());
-  }, [dispatch]);
 
   const renderSerials = () => {
     if (loading) return <div>Loading...</div>;
