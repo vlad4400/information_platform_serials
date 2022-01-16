@@ -22,6 +22,8 @@ class SerialResource extends JsonResource
             'poster' => $this->poster,
             'rate' => $this->rate,
             'genres' => $this->genres->pluck('title'),
+            'seasons' => SeasonResource::collection($this->seasons),
+            'count_season' => $this->seasons()->count(),
             'users' => $this->users->pluck('id'),
         ];
     }

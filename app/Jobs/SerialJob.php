@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Contracts\Parser;
+use App\Services\SerialTMDBParserService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\Job as JobContract;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -27,7 +28,7 @@ class SerialJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Parser $parser)
+    public function handle(SerialTMDBParserService $parser)
     {
         $parser->setUrl($this->link)->start();
     }
