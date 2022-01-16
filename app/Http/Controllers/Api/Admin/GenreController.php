@@ -21,12 +21,12 @@ class GenreController extends Controller
         return GenreResource::collection(Genre::all());
     }
 
-
-    public function show($id)
+    public function show($id = 1)
     {
-        dd(Genre::find(1));
         $genre = Genre::find($id);
         $serials = $genre->serials->all();
         return new SerialResource($serials);
     }
+
+
 }
