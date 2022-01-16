@@ -13,16 +13,17 @@ class SortController extends Controller
     public function Year($order = false)
     {
         if ($order == true)
-        return SerialResource::collection(Serial::all()->sortBy('year', SORT_ASC));
+            return Serial::sortByYear();
         else
-        return SerialResource::collection(Serial::all()->sortByDesc('year', SORT_ASC));
+            return Serial::sortByYearDesc();
     }
 
     public function Rate($order = false)
     {
         if ($order == false)
-            return SerialResource::collection(Serial::all()->sortBy('rate', SORT_ASC));
+         //   return SerialResource::collection(Serial::all()->sortBy('rate', SORT_ASC));
+            return Serial::sortByRate();
         else
-            return SerialResource::collection(Serial::all()->sortByDesc('rate', SORT_ASC));
+            return Serial::sortByRateDesc();
     }
 }
