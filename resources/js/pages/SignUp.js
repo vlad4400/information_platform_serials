@@ -1,110 +1,151 @@
 // страница регистрации
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Container, Button, Form, Alert } from "react-bootstrap";
-//import { auth } from "../../firebase";
+import { CheckInputSignUp } from '../components/forSignUp/CheckInputSignUp';
+import { Formik, Field, ErrorMessage } from 'formik';
+import { Link } from "react-router-dom";
+import { Alert } from "react-bootstrap";
+import { Form, Button } from 'react-bootstrap';
 
-export const SignUp = () => {
+import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+import { FieldFormikSignUp } from '../components/forSignUp/FieldFormSignUp';
+
+
+export function SignUp() {
     let navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [error, setError] = useState("");
-
-    const handlePassChange = (e) => {
-        setPassword(e.target.value);
+    const Data = {
+        email: "",
+        name: "",
+        password: "",
+        passwordConfirmation: ""
     };
+    const [dataSignUp, setDataSignUp] = useState(Data);
 
-    const handlePassConfirmChange = (e) => {
-        setPasswordConfirmation(e.target.value);
-    };
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
+    const handleSubmitForm = (data) => {
+        //let Err = CheckInputSignUp({ data });
+        //if (!Err) {
 
-    const handleNameChange = (e) => {
-        setName(e.target.value);
-    };
+        //
+        try {
+            //     await auth.createUserWithEmailAndPassword(email, password);
+            //console.log({ data })
+            navigate("/profile");
+        } catch (e) {
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if ((password.trim()) &&
-            (passwordConfirmation.trim()) &&
-            (email.trim()) &&
-            (name.trim()) &&
-            (password.trim() === passwordConfirmation.trim())) {
-
-            try {
-                //     await auth.createUserWithEmailAndPassword(email, password);
-                navigate("/profile");
-            } catch (e) {
-                setError(e);
-            }
-        } else {
-            setError(e);
+            setError(e.toString());
         }
+        //} else {
+        // setError(Err);
+        // }
     };
 
+
+    const schema = Yup.object({
+        email: Yup.string()
+            .email("Неверный адрес")
+            .required("Почтовый адрес не может быть пустым"),
+        name: Yup.string()
+            .max(100, "не больше 100 символов")
+            .required("Имя должно быть заполнено").trim(),
+        password: Yup.string().required("Пароль не может быть пустым")
+            .max(30, "не больше 30 символов"),
+        passwordConfirmation: Yup.string().required("Заполните подтверждение пароля")
+            .oneOf([Yup.ref("password")], "Пароль и подтверждение пароля не совпадают"),
+    });
+    //             .required("Имя должно быть заполнено").trim(),
+    const handleDataChange = fieldName => fieldValue => {
+        setDataSignUp({
+            ...dataSignUp,
+            [fieldName]: fieldValue,
+
+        });
+    };
     return (
-        <Container fluid="sm">
-            <Form onSubmit={handleSubmit}>
-                <h1>Регистрация</h1>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        name="email"
-                        onChange={handleEmailChange}
-                        value={email}
-                    />
-                </Form.Group>
+        <>
+            <h1>Регистрация</h1>
+            <Formik
+                validationSchema={schema}
+                onSubmit={handleSubmitForm(dataSignUp)}
+                handleChange={handleDataChange(Field)}
+                initialValues={dataSignUp}
+            >
+                {({
+                    handleSubmit,
+                    handleChange,
+                    handleBlur,
+                    values,
+                    touched,
+                    isValid,
+                    errors,
+                }) => (
+                    <Form noValidate onSubmit={handleSubmit}>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter name"
-                        name="name"
-                        onChange={handleNameChange}
-                        value={name}
-                    />
-                </Form.Group>
+                        <FieldFormikSignUp
+                            controlId="formEmail"
+                            label="Адрес электронной почты"
+                            type="email"
+                            placeholder="Enter email"
+                            name="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            isInvalid={touched.email && !!errors.email}
+                            error={errors.email}
+                        />
+                        <FieldFormikSignUp
+                            controlId="formName"
+                            label="Имя"
+                            type="text"
+                            placeholder="Enter your name (nick name)"
+                            name="name"
+                            value={values.name}
+                            onChange={handleChange}
+                            isInvalid={touched.name && !!errors.name}
+                            error={errors.name}
+                        />
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        onChange={handlePassChange}
-                        value={password}
-                    />
-                </Form.Group>
+                        <FieldFormikSignUp
+                            controlId="formPassword"
+                            label="Пароль"
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            isInvalid={touched.password && !!errors.password}
+                            error={errors.password}
+                        />
 
-                <Form.Group className="mb-3" controlId="formBasicPassword2">
-                    <Form.Label>Password confirmation</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Password confirmation"
-                        name="passwordConfirmation"
-                        onChange={handlePassConfirmChange}
-                        value={passwordConfirmation}
-                    />
-                </Form.Group>
+                        <FieldFormikSignUp
+                            controlId="formPassword2"
+                            label="Подтверждение пароля"
+                            type="password"
+                            placeholder="Password confirmation"
+                            name="passwordConfirmation"
+                            value={values.passwordConfirmation}
+                            onChange={handleChange}
+                            isInvalid={touched.passwordConfirmation && !!errors.passwordConfirmation}
+                            error={errors.passwordConfirmation}
+                        />
 
-                {error && <Alert>{error.toString()}</Alert>}
 
-                <Button variant="primary" type="submit">
-                    Отправить
-                </Button>
-                <hr />
-                <p>
-                    Уже есть аккаунт? <Link to="/signin">Вход</Link>
-                </p>
-            </Form>
-        </Container>
+                        <Button variant="primary" type="submit">Отправить</Button>
+
+
+                    </Form>
+                )}
+
+            </Formik>
+            {error && <Alert>{error}</Alert>}
+            <br />
+            <p>Уже есть аккаунт? <Link to="/signin">Вход</Link></p>
+        </>
     );
-};
+}
+
+
+
+
+
