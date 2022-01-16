@@ -27,6 +27,7 @@ class Serial extends Model
     public function seasons()
     {
         return $this->hasMany(Season::class);
+    }
 
     public static function sortByYear()
     {
