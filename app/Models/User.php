@@ -50,4 +50,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Serial::class, 'favorites', 'user_id', 'serial_id');
     }
+
+    public function setPasswordAttribute($value){
+        $this->attributes['password'] = bcrypt($value);
+    }       
 }
