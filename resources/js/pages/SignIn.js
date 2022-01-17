@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Container, Button, Form, Alert } from "react-bootstrap";
+import axios from "axios";
+import swal from 'sweetalert';
 //import { auth } from "../../firebase";
 
 export const LoginFormTestIds = {
@@ -11,44 +13,66 @@ export const LoginFormTestIds = {
 
 export const SignIn = () => {
     let navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
 
-    const handlePassChange = (e) => {
-        setPassword(e.target.value);
-    };
+    const [loginInput, setLogin] = useState({
+        name: '',
+        password: '',
+        error_list: [],
+    });
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
+    const handleInput = (e) => {
+        setLogin({...loginInput, [e.target.name]: e.target.value })
 
-    const handleSubmit = async (e) => {
+    }
+
+    const loginSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            // await auth.signInWithEmailAndPassword(email, password);
-
-            navigate("/profile");
-        } catch (e) {
-            setError(e);
+        const data = {
+            name: loginInput.name,
+            password: loginInput.password,
         }
+
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/api/login', data).then( res => {
+                if(res.data.status === 200)
+                {
+                    console.log(res.data);
+                    localStorage.setItem('auth_token', res.data.token);
+                    localStorage.setItem('auth_name', res.data.username);
+                    swal("Success", res.data.message, "success");
+                    navigate('/');
+                }
+                else if(res.data.status === 401)
+                {
+                    console.log(res.data);
+                    swal("Warning", res.data.message, "warning");
+                }
+            })
+            .catch(error => {
+                if (error.response) {
+                    setLogin({...loginInput, error_list: error.response.data.errors});
+                }
+              });;
+        });
+
     };
 
     return (
         <Container fluid="sm">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={loginSubmit}>
                 <h1>Авторизация</h1>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>Name (Your Login)</Form.Label>
                     <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        data-testid={LoginFormTestIds.loginField}
-                        name="email"
-                        onChange={handleEmailChange}
-                        value={email}
+                        type="text"
+                        placeholder="Enter name"
+                        //data-testid={LoginFormTestIds.loginField}
+                        name="name"
+                        onChange={handleInput}
+                        value={loginInput.name}
                     />
+                    <span className="text-danger">{loginInput.error_list.name}</span>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -56,14 +80,15 @@ export const SignIn = () => {
                     <Form.Control
                         type="password"
                         placeholder="Password"
-                        data-testid={LoginFormTestIds.passwordField}
+                        //data-testid={LoginFormTestIds.passwordField}
                         name="password"
-                        onChange={handlePassChange}
-                        value={password}
+                        onChange={handleInput}
+                        value={loginInput.password}
                     />
+                    <span className="text-danger">{loginInput.error_list.password}</span>
                 </Form.Group>
 
-                {error && <Alert>{error.toString()}</Alert>}
+                {/*{error && <Alert>{error.toString()}</Alert>}*/}
 
                 <Button variant="primary" type="submit">
                     Отправить
