@@ -26,22 +26,22 @@ class Serial extends Model
 
     public static function sortByYear()
     {
-        return SerialResource::collection(Serial::all()->sortBy('year', SORT_ASC));
+        return SerialResource::collection(Serial::all()->sortBy('year'));
     }
 
     public static function sortByYearDesc()
     {
-        return SerialResource::collection(Serial::all()->sortByDesc('year', SORT_ASC));
+        return SerialResource::collection(Serial::all()->sortByDesc('year'));
     }
 
     public static function sortByRate()
     {
-        return SerialResource::collection(Serial::all()->sortBy('rate', SORT_ASC));
+        return SerialResource::collection(Serial::all()->sortBy('rate'));
     }
 
     public static function sortByRateDesc()
     {
-        return SerialResource::collection(Serial::all()->sortByDesc('rate', SORT_ASC));
+        return SerialResource::collection(Serial::all()->sortByDesc('rate'));
     }
 
 }

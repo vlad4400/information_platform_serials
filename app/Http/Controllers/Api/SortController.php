@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class SortController extends Controller
 {
-    public function Year($order = false)
+    public function year($order = false)
     {
         if ($order == true)
             return Serial::sortByYear();
@@ -18,9 +18,9 @@ class SortController extends Controller
             return Serial::sortByYearDesc();
     }
 
-    public function Rate($order = false)
+    public function rate($order = false)
     {
-        if ($order == false)
+        if ($order == true)
             return Serial::sortByRate();
         else
             return Serial::sortByRateDesc();
