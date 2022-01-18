@@ -21,7 +21,7 @@ class GenreController extends Controller
     }
 
 
-    public function show($id)
+    public function show($id = 4)
     {
         $genre = Genre::find($id);
         $serials = $genre->serials->all();
