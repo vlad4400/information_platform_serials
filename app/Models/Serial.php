@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Resources\SerialResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Serial extends Model
 {
@@ -26,7 +27,8 @@ class Serial extends Model
 
     public static function sortByYear()
     {
-        return SerialResource::collection(Serial::all()->sortBy('year'));
+        $serials = DB::select('select * from serials order by year');
+       // return SerialResource::collection(Serial::all()->sortBy('year'));
     }
 
     public static function sortByYearDesc()
