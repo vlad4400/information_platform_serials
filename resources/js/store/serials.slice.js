@@ -40,7 +40,6 @@ export const getSerials = () => async (dispatch) => {
   dispatch(setLoading());
   try {
     const { data } = await serialsAPI.get('serials');
-    //  console.log('API Response', data);
     dispatch(setSerials(data));
   } catch (e) {
     dispatch(setSerialsFailure());

@@ -40,7 +40,6 @@ export const getSerial = (id) => async (dispatch) => {
   dispatch(setLoading());
   try {
     const { data } = await serialsAPI.get(`serials/${id}`);
-    // console.log('API Response/Single serial', data);
     dispatch(setSerial(data));
   } catch (e) {
     dispatch(setSerialFailure());
