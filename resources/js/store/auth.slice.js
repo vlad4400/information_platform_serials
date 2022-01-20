@@ -1,12 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-import swal from 'sweetalert';
 import AuthService from '../services/AuthService';
+import authAxios from '../services/authAxios';
 
-const initialState = {
-  currentUser: null,
-  isLoggedIn: false,
-  error: null,
-};
+const user = AuthService.getCurrentUser();
+
+const initialState = user
+  ? {
+      currentUser: user,
+      isLoggedIn: true,
+      errors: {},
+    }
+  : {
+      currentUser: null,
+      isLoggedIn: false,
+      errors: {},
+    };
 
 const userSlice = createSlice({
   name: 'user',
@@ -20,46 +28,60 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.isLoggedIn = false;
     },
+    setErrors: (state, { payload }) => {
+      state.errors = payload;
+    },
+    resetErrors: (state) => {
+      state.errors = null;
+    },
   },
 });
 
 export const selectAuth = (state) => state.auth;
 
-export const { setUser, resetUser } = userSlice.actions;
+export const { setUser, resetUser, setErrors } = userSlice.actions;
 export default userSlice.reducer;
 
 // Thunks
-export const register = (email, password) => async (dispatch) => {
-  try {
-    // const csrf = await authAxios.get('/sanctum/csrf-cookie');
-    const { data } = await AuthService.register(email, password);
-    console.log('Register data', data);
-    localStorage.setItem('auth_token', data.token);
-    localStorage.setItem('auth_name', data.username);
-    dispatch(setUser(data.username));
-    swal('Success', data.message, 'success');
-  } catch (e) {
-    console.log(e.message);
-    swal('Warning', e.message, 'warning');
-  }
-};
+export const register =
+  ({ name, email, password, password_confirmation }) =>
+  async (dispatch) => {
+    try {
+      // const csrf = await authAxios.get('/sanctum/csrf-cookie');
+      const { data } = await AuthService.register(
+        name,
+        email,
+        password,
+        password_confirmation
+      );
+      console.log('Register data', data);
+      dispatch(setUser(data.user || data.username || data.id));
+      return data;
+    } catch (err) {
+      dispatch(setErrors(err.response.data.errors));
+    }
+  };
 
-export const login = (email, password) => async (dispatch) => {
-  try {
-    const { data } = await AuthService.login(email, password);
-    dispatch(setUser(data.username));
-    console.log('Login data', data);
-  } catch (e) {
-    console.log(e.message);
-  }
-};
+export const login =
+  ({ name, password }) =>
+  async (dispatch) => {
+    try {
+      const csrf = await authAxios.get('/sanctum/csrf-cookie');
+      const { data } = await AuthService.login(name, password);
+      console.log('Login data', data);
+      dispatch(setUser(data.user || data.username || data.id));
+      return data;
+    } catch (err) {
+      dispatch(setErrors(err.response.data.errors));
+    }
+  };
 
 export const logout = () => async (dispatch) => {
   try {
-    // await AuthService.logout()
-    // localStorage.removeItem('auth_token', data.token);
+    // const csrf = await authAxios.get('/sanctum/csrf-cookie');
+    await AuthService.logout();
     dispatch(resetUser());
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
   }
 };

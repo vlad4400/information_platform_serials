@@ -1,11 +1,33 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { login, register } from '../store/auth.slice';
+import { showAlert } from '../utilities/showAlert';
 
 export default function TestLoginForm() {
   const dispatch = useDispatch();
-  const [email, set_email] = useState('');
+  const navigate = useNavigate();
+  const [email, set_email] = useState('eve.holt@reqres.in');
   const [password, set_password] = useState('');
+
+  const onRegister = () => {
+    dispatch(register({ name: 'test_user', email, password })).then((data) => {
+      if (data) {
+        showAlert('Регистрация успешна.', 'success');
+        navigate('/signin');
+      }
+    });
+  };
+
+  const onLogin = () => {
+    dispatch(login({ email, password })).then((data) => {
+      if (data) {
+        showAlert('Вход выполнен', 'success');
+        navigate('/');
+      }
+    });
+  };
+
   return (
     <div>
       <input
@@ -20,10 +42,8 @@ export default function TestLoginForm() {
         onChange={(e) => set_password(e.target.value)}
         value={password}
       />
-      <button onClick={() => dispatch(login(email, password))}>Логин</button>
-      <button onClick={() => dispatch(register(email, password))}>
-        Регистрация
-      </button>
+      <button onClick={onLogin}>Логин</button>
+      <button onClick={onRegister}>Регистрация</button>
     </div>
   );
 }
