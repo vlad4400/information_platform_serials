@@ -15,11 +15,12 @@ use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\FavoriteController;
 use App\Http\Controllers\Api\AuthController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['genres' => GenreController::class]);
