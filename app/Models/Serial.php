@@ -11,7 +11,7 @@ class Serial extends Model
     use HasFactory;
 
     protected $fillable = [
-            'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
+        'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
     ];
 
     public function genres()
@@ -22,6 +22,11 @@ class Serial extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
+    }
+
+    public function seasons()
+    {
+        return $this->hasMany(Season::class);
     }
 
     public static function sortByYear()
@@ -55,12 +60,5 @@ class Serial extends Model
             ->take(50)
             ->get();
     }
-
-    public function seasons()
-    {
-        return $this->hasMany(Season::class);
-    }
-
-
 
 }
