@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PanelSerials from '../components/PanelSerials';
-import ListSerialsTable from '../components/ListSerialsTable';
 import Container from '../components/Container';
+import ListSerials from '../components/ListSerials';
+import PanelSerials from '../components/PanelSerials';
 import { selectSerials } from '../store/serials.slice';
 
 export const Home = () => {
@@ -10,16 +10,21 @@ export const Home = () => {
 
   return (
     <Container>
-      <PanelSerials
-        title={'Новые сериалы'}
-        serials={serials}
-        loading={loading}
-      />
-      <ListSerialsTable
-        title={'Найболее рейтинговые сериалы'}
-        serials={serials}
-        loading={loading}
-      /> 
+      { hasErrors
+        ? <p>Произошла ошибка...</p>
+        : <>
+            <PanelSerials
+              title={'Новые сериалы'}
+              serials={serials}
+              loading={loading}
+            />
+            <ListSerials
+              title={'Найболее рейтинговые сериалы'}
+              serials={serials}
+              loading={loading}
+            />
+          </>
+      }
     </Container>
   );
 };
