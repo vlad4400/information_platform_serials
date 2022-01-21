@@ -15,18 +15,19 @@ use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\FavoriteController;
 use App\Http\Controllers\Api\AuthController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['genres' => GenreController::class]);
 Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
 Route::get('search', [SearchController::class, 'search']);
-Route::get('sortBy/year{order?}', [SortController::class, 'Year']);
-Route::get('sortBy/rate{order?}', [SortController::class, 'Rate']);
+Route::get('serialsby/year{order?}', [SortController::class, 'year']);
+Route::get('serialsby/rate{order?}', [SortController::class, 'rate']);
 
 Route::group(['prefix' => 'profile'], function()
 {
