@@ -1,11 +1,11 @@
 // страница регистрации
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Container, Button, Form, Alert } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import swal from 'sweetalert';
-
-//import { auth } from "../../firebase";
+import { API_REG_COOKIE, API_REGISTER } from '../constants/api';
 
 export const SignUp = () => {
     const navigate = useNavigate();
@@ -14,13 +14,13 @@ export const SignUp = () => {
         name: '',
         email: '',
         password: '',
+        password_confirmation: '',
         error_list: [],
     });
 
 
     const handleInput = (e) => {
-        setRegister({...registerInput, [e.target.name]: e.target.value })
-
+        setRegister({ ...registerInput, [e.target.name]: e.target.value })
     }
 
     const registerSubmit = (e) => {
@@ -30,81 +30,92 @@ export const SignUp = () => {
             name: registerInput.name,
             email: registerInput.email,
             password: registerInput.password,
+            password_confirmation: registerInput.password_confirmation,
         }
 
-       
-                axios.get('/sanctum/csrf-cookie').then(response => {
-                    axios.post('/api/register', data).then( res => {
-                        if(res.data.status === 200)
-                        {
-                            console.log(res.data);
-                            localStorage.setItem('auth_token', res.data.token);
-                            localStorage.setItem('auth_name', res.data.username);
-                            swal("Success", res.data.message, "success");
-                            navigate('/');
+        axios.get(API_REG_COOKIE).then(response => {
+            axios.post(API_REGISTER, data).then(res => {
+                if (res.data.status === 200) {
 
+                    // console.log(res.data);
 
-                        }
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            setRegister({...registerInput, error_list: error.response.data.errors});
-                        }
-                      });;
-                });
-                //     await auth.createUserWithEmailAndPassword(email, password);
-                //navigate("/profile");
+                    localStorage.setItem('auth_token', res.data.token);
+                    localStorage.setItem('auth_name', res.data.username);
+                    swal("Success", res.data.message, "success");
+                    navigate('/');
+                }
+            })
+                .catch(error => {
+                    if (error.response) {
+                        setRegister({ ...registerInput, error_list: error.response.data.errors });
+
+                    }
+                });;
+        });
+
 
     };
 
     return (
-        <Container fluid="sm">
-            <Form onSubmit={registerSubmit}>
-                <h1>Регистрация</h1>
-                <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter name"
-                        name="name"
-                        onChange={handleInput}
-                        value={registerInput.name}
-                    />
-                    <span className="text-danger">{registerInput.error_list.name}</span>
-                </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        name="email"
-                        onChange={handleInput}
-                        value={registerInput.email}
-                    />
-                    <span className="text-danger">{registerInput.error_list.email}</span>
-                </Form.Group>
+        <Form onSubmit={registerSubmit}>
+            <h1>Регистрация</h1>
+            <Form.Group className="mb-3">
+                <Form.Label>Имя</Form.Label>
+                <Form.Control
+                    type="text"
+                    placeholder="Enter your name"
+                    name="name"
+                    onChange={handleInput}
+                    value={registerInput.name}
+                />
+                <span className="text-danger">{registerInput.error_list.name}</span>
+            </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        onChange={handleInput}
-                        value={registerInput.password}
-                    />
-                    <span className="text-danger">{registerInput.error_list.password}</span>
-                </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Email адрес</Form.Label>
+                <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    name="email"
+                    onChange={handleInput}
+                    value={registerInput.email}
+                />
+                <span className="text-danger">{registerInput.error_list.email}</span>
+            </Form.Group>
 
-                <Button variant="primary" type="submit">
-                    Отправить
-                </Button>
-                <hr />
-                <p>
-                    Уже есть аккаунт? <Link to="/signin">Вход</Link>
-                </p>
-            </Form>
-        </Container>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Пароль</Form.Label>
+                <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    onChange={handleInput}
+                    value={registerInput.password}
+                />
+                <span className="text-danger">{registerInput.error_list.password}</span>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword2">
+                <Form.Label>Подтверждение пароля</Form.Label>
+                <Form.Control
+                    type="password"
+                    placeholder="Password confirmation"
+                    name="password_confirmation"
+                    onChange={handleInput}
+                    value={registerInput.password_confirmation}
+                />
+                <span className="text-danger">{registerInput.error_list.password_confirmation}</span>
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+                Отправить
+            </Button>
+            <hr />
+            <p>
+                Уже есть аккаунт? <Link to="/signin">Вход</Link>
+            </p>
+        </Form>
+
     );
 };
