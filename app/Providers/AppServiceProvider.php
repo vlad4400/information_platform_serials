@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Contracts\Parser;
 use App\Http\Resources\SerialResource;
-use App\Services\ThemoviedbParserService;
+use App\Services\GenreTMDBParserService;
+use App\Services\SeasonsTMDBParserService;
+use App\Services\SerialTMDBParserService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -17,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Parser::class, ThemoviedbParserService::class);
+        $this->app->bind(Parser::class, SerialTMDBParserService::class);
+        $this->app->bind(Parser::class, GenreTMDBParserService::class);
+        $this->app->bind(Parser::class, SeasonsTMDBParserService::class);
     }
 
     /**

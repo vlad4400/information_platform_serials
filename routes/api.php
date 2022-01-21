@@ -13,12 +13,13 @@ use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\ParserController;
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\FavoriteController;
-
+use App\Http\Controllers\Api\AuthController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('register', [AuthController::class, 'register']);
 
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['genres' => GenreController::class]);
@@ -39,6 +40,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
     Route::apiResource('/users', AdminUserController::class);
     Route::apiResources(['/serials' => AdminSerialController::class]);
     Route::apiResources(['/genres' => AdminGenreController::class]);
-    Route::get('/parser', ParserController::class);
+
+    Route::group(['prefix' => '/parser'], function()
+    {
+        Route::get('/genres', [ParserController::class, 'genreParser']);
+        Route::get('/serials', [ParserController::class, 'serialParser']);
+    });
+
 });
 

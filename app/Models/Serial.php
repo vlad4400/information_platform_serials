@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\Http\Resources\SerialResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 
 class Serial extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
+            'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
     ];
 
     public function genres()
@@ -55,5 +55,12 @@ class Serial extends Model
             ->take(50)
             ->get();
     }
+
+    public function seasons()
+    {
+        return $this->hasMany(Season::class);
+    }
+
+
 
 }
