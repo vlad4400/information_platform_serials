@@ -24,8 +24,8 @@ Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['genres' => GenreController::class]);
 Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
 Route::get('search', [SearchController::class, 'search']);
-Route::get('sort/year{order?}', [SortController::class, 'year']);
-Route::get('sort/rate{order?}', [SortController::class, 'rate']);
+Route::get('serialsby/year{order?}', [SortController::class, 'year']);
+Route::get('serialsby/rate{order?}', [SortController::class, 'rate']);
 
 Route::group(['prefix' => 'profile'], function()
 {
