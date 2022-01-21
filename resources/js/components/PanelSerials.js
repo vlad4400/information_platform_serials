@@ -1,15 +1,39 @@
-import Card from './Card.js';
+import Card from './Card';
+import Spinner from 'react-bootstrap/Spinner';
 
-export default ({title, serials}) => {
+export default ({title, serials, loading}) => {
 
     const Cards = ({serials}) => (
-        serials.map((serial, ri) => <Card key={ri} title={serial.title} year={serial.year} url={serial.url} />)
+        serials.map((serial, ri) => 
+            <Card
+                key={ri}
+                id={serial.id}
+                title={serial.title}
+                year={serial.year}
+                url={serial.poster}
+            />
+        )
     );
 
     return (
-        <div style={{maxHeight: '250px', overflow: 'hidden'}}>
+        <div>
             <h2>{title}</h2>
-            <Cards serials={serials} />
+            { !loading
+                ? <div
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '5px',
+                        justifyContent: 'space-evenly',
+                        maxHeight: '225px',
+                        overflow: 'hidden',
+                    }}>
+                    <Cards serials={serials}/>
+                </div>
+                : <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Spinner animation="border" />
+                </div>
+            }
         </div>
     )
 }

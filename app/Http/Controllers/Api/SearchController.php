@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SerialResource;
 use App\Models\Serial;
-use Illuminate\Http\Request;
+
 
 class SearchController extends Controller
 {
-    public function search(SearchRequest $request, Serial $serial)
+    public function search(SearchRequest $request)
     {
         $input = $request->validated()['query'];
         $data = Serial::where('title', 'LIKE', "%{$input}%")->get()->sortByDesc('rate');
