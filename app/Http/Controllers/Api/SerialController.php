@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialResource;
 use App\Models\Serial;
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class SerialController extends Controller
 {
@@ -32,12 +31,13 @@ class SerialController extends Controller
         return new SerialResource($serial);
     }
 
-    public function favorite(Serial $serial)
+    public function favorite(Request $request, Serial $serial)
     {
         //TODO внести корректировки, когда будет готова авторизация
-        if(Auth::user())
+        $user = $request->user();
+        if($user)
         {
-            $serial->users()->toggle(Auth::user()->id);
+            $serial->user()->toggle($user->id);
         }
         return response(null, Response::HTTP_NO_CONTENT);
     }

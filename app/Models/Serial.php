@@ -19,7 +19,7 @@ class Serial extends Model
         return $this->belongsToMany(Genre::class);
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
     }

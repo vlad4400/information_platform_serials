@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FavoriteResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,9 @@ class FavoriteController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(User $user)
+    public function index(Request $request)
     {
+        $user = $request->user();
         return FavoriteResource::collection($user->favorites);
     }
 
@@ -28,9 +30,9 @@ class FavoriteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user, $id)
+    public function update(Request $request, $id)
     {
-        //TODO внести корректировки, когда будет готова авторизация
+        $user = $request->user();
         $user->favorites()->toggle($id);
         return response(null, Response::HTTP_NO_CONTENT);
     }
