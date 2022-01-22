@@ -14,7 +14,7 @@ class Serial extends Model
         'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
     ];
 
-    public function genres()
+    public function genre()
     {
         return $this->belongsToMany(Genre::class);
     }
@@ -24,7 +24,7 @@ class Serial extends Model
         return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
     }
 
-    public function seasons()
+    public function season()
     {
         return $this->hasMany(Season::class);
     }
