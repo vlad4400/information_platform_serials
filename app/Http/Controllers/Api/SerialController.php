@@ -39,6 +39,8 @@ class SerialController extends Controller
         {
             $serial->user()->toggle($user->id);
         }
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response()->json([
+            'message' => 'Изменения внесены'
+        ]);
     }
 }

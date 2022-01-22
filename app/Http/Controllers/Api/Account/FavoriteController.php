@@ -32,7 +32,18 @@ class FavoriteController extends Controller
     {
         $user = $request->user();
         $user->favorite()->toggle($id);
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response()->json([
+            'message' => 'Изменения внесены'
+        ]);
+        // response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function addRate(User $user, $id)
+    {
+    }
+
+    public function addStatus(User $user, $id)
+    {
     }
 
 }
