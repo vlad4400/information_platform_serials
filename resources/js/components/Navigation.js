@@ -37,11 +37,14 @@ export default function Navigation() {
         <Navbar.Collapse>
           <Nav className='mr-auto'>
             <NavDropdown className='me-2' title='Меню'>
-              <NavDropdown.Item as={NavLink} to={ROUTES.HOME}>
-                Главная
-              </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to={ROUTES.SERIALS}>
                 Каталог сериалов
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={NavLink}
+                to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
+              >
+                Список просмотра
               </NavDropdown.Item>
               <NavDropdown.Item
                 as={NavLink}
