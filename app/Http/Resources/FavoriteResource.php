@@ -18,7 +18,9 @@ class FavoriteResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'poster' => $this->poster,
-            'year' => $this->year
+            'year' => $this->year,
+            'status' => $this->pivot->status,
+            'my_eval' => $this->pivot->eval
         ];
     }
 }

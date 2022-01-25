@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function favorite()
     {
-        return $this->belongsToMany(Serial::class, 'favorites', 'user_id', 'serial_id');
+        return $this->belongsToMany(Serial::class, 'favorites', 'user_id', 'serial_id')->withPivot('status', 'eval');
     }
 
     public function setPasswordAttribute($value){
