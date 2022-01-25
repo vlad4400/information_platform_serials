@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\SortController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\GenreController;
@@ -20,11 +19,18 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::apiResource('/favorites', FavoriteController::class);
+    Route::put('/favorites/{serial}/status/{status}', [FavoriteController::class, 'addStatus']);
+    Route::put('/favorites/{serial}/eval/{eval}', [FavoriteController::class, 'addEval']);
+    Route::get('/profile', ProfileController::class);
+    Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
 });
 
-Route::apiResources(['serials' => SerialController::class]);
-Route::apiResources(['genres' => GenreController::class]);
-Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
+Route::apiResources([
+    'serials' => SerialController::class,
+    'genres' => GenreController::class
+]);
+
 Route::group(['prefix' => 'search'], function()
 {
     Route::get('/', [SearchController::class, 'search']);
@@ -32,18 +38,13 @@ Route::group(['prefix' => 'search'], function()
     Route::get('/rate/{start?}/{number?}/{order?}', [SortController::class, 'rate']);
 });
 
-Route::group(['prefix' => 'profile'], function()
-{
-    Route::get('/{user}', ProfileController::class);
-    Route::apiResource('/{user}/favorites', FavoriteController::class);
-});
-
-
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {
     Route::apiResource('/users', AdminUserController::class);
-    Route::apiResources(['/serials' => AdminSerialController::class]);
-    Route::apiResources(['/genres' => AdminGenreController::class]);
+    Route::apiResources([
+        '/serials' => AdminSerialController::class,
+        '/genres' => AdminGenreController::class
+    ]);
 
     Route::group(['prefix' => '/parser'], function()
     {

@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Api\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FavoriteResource;
-use App\Models\User;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
@@ -15,9 +13,10 @@ class FavoriteController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(User $user)
+    public function index(Request $request)
     {
-        return FavoriteResource::collection($user->favorites);
+        $user = $request->user();
+        return FavoriteResource::collection($user->favorite);
     }
 
 
@@ -28,11 +27,33 @@ class FavoriteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user, $id)
+    public function update(Request $request, $id)
     {
-        //TODO внести корректировки, когда будет готова авторизация
-        $user->favorites()->toggle($id);
-        return response(null, Response::HTTP_NO_CONTENT);
+        $user = $request->user();
+        $user->favorite()->toggle($id);
+        return response()->json([
+            'message' => 'Изменения внесены'
+        ]);
+    }
+
+    public function addEval(Request $request, $id, $eval)
+    {
+        $user = $request->user();
+            $user->favorite()->updateExistingPivot($id, ['eval' => $eval]);
+            
+            return response()->json([
+                'message' => 'Ваша оценка добавлена',
+            ]);
+    }
+    
+    public function addStatus(Request $request, $id, $status)
+    {
+        $user = $request->user();
+        $user->favorite()->updateExistingPivot($id, ['status' => $status]);
+
+        return response()->json([
+            'message' => 'Статус добавлен',
+        ]);
     }
 
 }
