@@ -25,8 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResources(['serials' => SerialController::class]);
 Route::apiResources(['genres' => GenreController::class]);
 Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
-Route::get('serialsby/year{start?}/{number?}/{order?}', [SortController::class, 'year']);
-Route::get('serialsby/rate{start?}/{number?}/{order?}', [SortController::class, 'rate']);
+Route::get('serialsby/year/{start?}/{number?}/{order?}', [SortController::class, 'year']);
+Route::get('serialsby/rate/{start?}/{number?}/{order?}', [SortController::class, 'rate']);
 Route::get('search', [SearchController::class, 'search']);
 
 Route::group(['prefix' => 'profile'], function()
