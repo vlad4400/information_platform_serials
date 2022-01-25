@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FavoriteResource;
 use Illuminate\Http\Request;
 
+
 class FavoriteController extends Controller
 {
     /**

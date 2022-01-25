@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { API_ADMIN_PARSER } from '../utilities/Constants';
+import { API_ADMIN_PARSER } from '../constants/api';
 
 export const ParserSerials = () => {
 
