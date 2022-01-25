@@ -20,11 +20,10 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('/favorites', FavoriteController::class);
-    Route::put('/favorites/{serial}/status/{status?}', [FavoriteController::class, 'addStatus']);
-    Route::put('/favorites/{serial}/eval/{eval?}', [FavoriteController::class, 'addEval']);
+    Route::put('/favorites/{serial}/status/{status}', [FavoriteController::class, 'addStatus']);
+    Route::put('/favorites/{serial}/eval/{eval}', [FavoriteController::class, 'addEval']);
     Route::get('/profile', ProfileController::class);
     Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
-    //Route::post('favorites/addStatus/{status}' , [FavoriteController::class, 'addStatus']);
 });
 
 Route::apiResources([
