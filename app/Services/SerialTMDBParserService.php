@@ -90,7 +90,7 @@ class SerialTMDBParserService implements Parser
     {
             foreach ($serial['genre_ids'] as $genre => $id) {
                 $genre = Genre::where('tmdb_id', $id)->get('id');
-                $new_serial->genres()->syncWithoutDetaching($genre, ['serial_id' => $new_serial['id']]);
+                $new_serial->genre()->syncWithoutDetaching($genre, ['serial_id' => $new_serial['id']]);
             }
     }
 }

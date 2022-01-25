@@ -14,50 +14,54 @@ class Serial extends Model
         'tmdb_id', 'title', 'description', 'year', 'poster', 'rate'
     ];
 
-    public function genres()
+    public function genre()
     {
         return $this->belongsToMany(Genre::class);
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
     }
 
-    public function seasons()
+    public function season()
     {
         return $this->hasMany(Season::class);
     }
 
-    public static function sortByYear()
+    public static function sortByYear($start, $number)
     {
         return Serial::query()
             ->orderBy('year')
-            ->take(50)
+            ->where('year', '>=', $start)
+            ->take($number)
             ->get();
     }
 
-    public static function sortByYearDesc()
+    public static function sortByYearDesc($start, $number)
     {
         return Serial::query()
             ->orderByDesc('year')
-            ->take(50)
+            ->where('year', '<=', $start)
+            ->take($number)
             ->get();
     }
 
-    public static function sortByRate()
+    public static function sortByRate($start, $number)
     {
         return Serial::query()
             ->orderBy('rate')
-            ->take(50)
+            ->where('rate', '>=', $start)
+            ->take($number)
             ->get();
     }
 
-    public static function sortByRateDesc()
+    public static function sortByRateDesc($start, $number)
     {
         return Serial::query()
             ->orderByDesc('rate')
-            ->take(50)
+            ->where('rate', '<=', $start)
+            ->take($number)
             ->get();
     }
 

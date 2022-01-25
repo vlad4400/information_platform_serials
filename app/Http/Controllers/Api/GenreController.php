@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\GenreResource;
 use App\Http\Resources\SerialResource;
 use App\Models\Genre;
+use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
@@ -15,7 +16,7 @@ class GenreController extends Controller
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
 
-    public function index()
+    public function index(Request $request)
     {
         return GenreResource::collection(Genre::all());
     }

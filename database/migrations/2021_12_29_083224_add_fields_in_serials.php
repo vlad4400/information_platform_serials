@@ -14,7 +14,7 @@ class AddFieldsInSerials extends Migration
     public function up()
     {
         Schema::table('serials', function (Blueprint $table) {
-            $table->string('poster', 100)
+            $table->string('poster', 255)
                 ->after('year')
                 ->nullable();
             $table->float('rate', 10,1)

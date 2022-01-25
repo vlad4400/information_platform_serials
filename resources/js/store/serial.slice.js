@@ -21,7 +21,6 @@ const serialSlice = createSlice({
       state.loading = false;
     },
     setSerialFailure: (state) => {
-      state.loading = false;
       state.hasErrors = true;
     },
   },
@@ -40,9 +39,8 @@ export const getSerial = (id) => async (dispatch) => {
   dispatch(setLoading());
   try {
     const { data } = await serialsAPI.get(`serials/${id}`);
-    // console.log('API Response/Single serial', data);
     dispatch(setSerial(data));
-  } catch (e) {
+  } catch (err) {
     dispatch(setSerialFailure());
   } finally {
     dispatch(setLoadingComplete());

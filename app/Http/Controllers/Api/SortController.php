@@ -10,19 +10,19 @@ use Illuminate\Http\Request;
 
 class SortController extends Controller
 {
-    public function year($order = false)
+    public function year($start = 2021, $number = 50, $order = false)
     {
         if ($order == true)
-            return Serial::sortByYear();
+            return Serial::sortByYear($start, $number);
         else
-            return Serial::sortByYearDesc();
+            return Serial::sortByYearDesc($start, $number);
     }
 
-    public function rate($order = false)
+    public function rate($start = 10, $number = 50, $order = false)
     {
         if ($order == true)
-            return Serial::sortByRate();
+            return Serial::sortByRate($start, $number);
         else
-            return Serial::sortByRateDesc();
+            return Serial::sortByRateDesc($start, $number);
     }
 }
