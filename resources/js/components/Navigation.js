@@ -18,7 +18,6 @@ export default function Navigation() {
   const { isLoggedIn } = useSelector(selectAuth);
 
   const logOut = () => {
-    console.log('logOut');
     dispatch(logout());
   };
 

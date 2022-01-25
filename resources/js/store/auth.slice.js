@@ -24,14 +24,14 @@ const userSlice = createSlice({
       state.currentUser = payload;
       state.isLoggedIn = true;
     },
-    resetUser: (state) => {
+    clearUser: (state) => {
       state.currentUser = null;
       state.isLoggedIn = false;
     },
     setErrors: (state, { payload }) => {
       state.errors = payload;
     },
-    resetErrors: (state) => {
+    clearErrors: (state) => {
       state.errors = null;
     },
   },
@@ -39,7 +39,7 @@ const userSlice = createSlice({
 
 export const selectAuth = (state) => state.auth;
 
-export const { setUser, resetUser, setErrors } = userSlice.actions;
+export const { setUser, clearUser, setErrors, clearErrors } = userSlice.actions;
 export default userSlice.reducer;
 
 // Thunks
@@ -66,7 +66,7 @@ export const login =
   ({ name, password }) =>
   async (dispatch) => {
     try {
-      const csrf = await authAxios.get('/sanctum/csrf-cookie');
+      // const csrf = await authAxios.get('/sanctum/csrf-cookie');
       const { data } = await AuthService.login(name, password);
       console.log('Login data', data);
       dispatch(setUser(data.user || data.username || data.id));
@@ -80,7 +80,7 @@ export const logout = () => async (dispatch) => {
   try {
     // const csrf = await authAxios.get('/sanctum/csrf-cookie');
     await AuthService.logout();
-    dispatch(resetUser());
+    dispatch(clearUser());
   } catch (err) {
     console.log(err);
   }

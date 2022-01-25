@@ -19,7 +19,6 @@ import {
 import * as ROUTES from '../constants/routes';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../store/auth.slice';
-import TestLoginForm from '../components/TestLoginForm';
 
 const PrivateOutlet = () => {
   const { isLoggedIn } = useSelector(selectAuth);
@@ -46,7 +45,6 @@ export const Routing = () => {
             <Route path={ROUTES.SETTINGS} element={<ProfileSettings />} />
           </Route>
         </Route>
-        <Route path='test' element={<TestLoginForm />} />
       </Route>
       <Route path={ROUTES.ADMIN} element={<Admin />}>
         <Route path={ROUTES.USERS} element={<Users />} />
