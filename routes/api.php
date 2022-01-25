@@ -20,6 +20,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('/favorites', FavoriteController::class);
+    Route::put('/favorites/{serial}/status/{status}', [FavoriteController::class, 'addStatus']);
+    Route::put('/favorites/{serial}/eval/{eval}', [FavoriteController::class, 'addEval']);
     Route::get('/profile', ProfileController::class);
     Route::post('serials/{serial}/favorite' , [SerialController::class, 'favorite']);
 });
@@ -28,9 +30,13 @@ Route::apiResources([
     'serials' => SerialController::class,
     'genres' => GenreController::class
 ]);
-Route::get('search', [SearchController::class, 'search']);
-Route::get('serialsby/year{order?}', [SortController::class, 'year']);
-Route::get('serialsby/rate{order?}', [SortController::class, 'rate']);
+
+Route::group(['prefix' => 'search'], function()
+{
+    Route::get('/', [SearchController::class, 'search']);
+    Route::get('/year/{start?}/{number?}/{order?}', [SortController::class, 'year']);
+    Route::get('/rate/{start?}/{number?}/{order?}', [SortController::class, 'rate']);
+});
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function()
 {

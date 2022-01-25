@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FavoriteResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+
 
 class FavoriteController extends Controller
 {
@@ -35,15 +35,26 @@ class FavoriteController extends Controller
         return response()->json([
             'message' => 'Изменения внесены'
         ]);
-        // response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function addRate(User $user, $id)
+    public function addEval(Request $request, $id, $eval)
     {
+        $user = $request->user();
+            $user->favorite()->updateExistingPivot($id, ['eval' => $eval]);
+            
+            return response()->json([
+                'message' => 'Ваша оценка добавлена',
+            ]);
     }
-
-    public function addStatus(User $user, $id)
+    
+    public function addStatus(Request $request, $id, $status)
     {
+        $user = $request->user();
+        $user->favorite()->updateExistingPivot($id, ['status' => $status]);
+
+        return response()->json([
+            'message' => 'Статус добавлен',
+        ]);
     }
 
 }

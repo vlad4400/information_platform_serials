@@ -10,26 +10,15 @@ import {
 } from 'react-bootstrap';
 import * as ROUTES from '../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAuth, login, logout } from '../store/auth.slice';
+import { selectAuth, logout } from '../store/auth.slice';
 
 export default function Navigation() {
   const dispatch = useDispatch();
 
   const { isLoggedIn } = useSelector(selectAuth);
 
-  const [testUser, set_testUser] = useState({
-    email: 'test@mail.com',
-    username: 'testUser',
-  });
-
   const logOut = () => {
-    console.log('logout');
     dispatch(logout());
-  };
-
-  const logIn = () => {
-    console.log('login');
-    dispatch(login(testUser));
   };
 
   return (
@@ -67,6 +56,9 @@ export default function Navigation() {
               <NavDropdown.Item as={NavLink} to={ROUTES.ADMIN}>
                 Админка
               </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to='test'>
+                Тест
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <FormControl
@@ -75,11 +67,7 @@ export default function Navigation() {
             placeholder='Поиск'
             aria-label='Search'
           />
-          {isLoggedIn ? (
-            <LoggedInView logOut={logOut} />
-          ) : (
-            <LoggedOutView logIn={logIn} />
-          )}
+          {isLoggedIn ? <LoggedInView logOut={logOut} /> : <LoggedOutView />}
         </Navbar.Collapse>
       </Container>
     </Navbar>
@@ -99,9 +87,9 @@ const LoggedInView = ({ logOut }) => (
   </Nav>
 );
 
-const LoggedOutView = ({ logIn }) => (
+const LoggedOutView = () => (
   <Nav>
-    <Nav.Link as={NavLink} to={ROUTES.SIGN_IN} onClick={logIn}>
+    <Nav.Link as={NavLink} to={ROUTES.SIGN_IN}>
       Вход
     </Nav.Link>
     <Button as={NavLink} to={ROUTES.SIGN_UP}>

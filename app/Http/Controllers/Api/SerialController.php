@@ -33,7 +33,6 @@ class SerialController extends Controller
 
     public function favorite(Request $request, Serial $serial)
     {
-        //TODO внести корректировки, когда будет готова авторизация
         $user = $request->user();
         if($user)
         {
