@@ -1,9 +1,5 @@
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import { removeFromWatchlist } from '../../store/watchlist.slice';
-import * as ROUTES from '../../constants/routes';
+import ListItem from './ListItem';
 
 export default function Watchlist({ list }) {
   return (
@@ -19,13 +15,7 @@ export default function Watchlist({ list }) {
           </thead>
           <tbody>
             {list.map((item, i) => (
-              <ListItem
-                key={i}
-                i={i}
-                id={item.id}
-                title={item.title}
-                rating={item.rating}
-              />
+              <ListItem key={i} i={i} id={item.id} />
             ))}
           </tbody>
         </Table>
@@ -35,20 +25,3 @@ export default function Watchlist({ list }) {
     </>
   );
 }
-
-const ListItem = ({ i, id, title, rating = '-' }) => {
-  const dispatch = useDispatch();
-
-  return (
-    <tr>
-      <th scope='row'>{i + 1}</th>
-      <td style={{ width: '100%' }}>
-        <div className='d-flex justify-content-between'>
-          <Link to={`${ROUTES.SERIALS}/${id}`}>{title}</Link>{' '}
-          <Button onClick={() => dispatch(removeFromWatchlist(id))}>---</Button>
-        </div>
-      </td>
-      <td>{rating}/10</td>
-    </tr>
-  );
-};

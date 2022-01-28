@@ -2,23 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getSerial, selectSerial } from '../../store/serial.slice';
-import { Row, Col, Button, Badge } from 'react-bootstrap';
 import {
-  selectWatchlist,
+  Row,
+  Col,
+  Button,
+  Badge,
+  Dropdown,
+  ButtonGroup,
+} from 'react-bootstrap';
+import {
   selectWatchlistById,
   addToWatchlist,
+  removeFromWatchlist,
   setRating,
+  setStatus,
 } from '../../store/watchlist.slice';
+import { StatusFilters } from '../../store/filters.slice';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import { labels } from '../../constants/labels';
-import axios from 'axios';
 
 export const SingleSerial = () => {
   const dispatch = useDispatch();
   const { serialId } = useParams();
   const { serial, loading, hasErrors } = useSelector(selectSerial);
-  const watchlist = useSelector(selectWatchlist);
   const watchlistItem = useSelector((state) =>
     selectWatchlistById(state, serialId)
   );
@@ -31,33 +38,6 @@ export const SingleSerial = () => {
 
   const addInFavorites = () => {
     console.log(serialId);
-
-    // authAxios
-    axios.interceptors.request.use(function (config) {
-      const token = localStorage.getItem('auth_token');
-      console.log('app.js');
-      console.log(token);
-      config.headers.Authorisation = token ? `Bearer ${token}` : '';
-      return config;
-    });
-
-    try {
-      const response = axios.post(
-        '/api/serials/' + serialId.toString() + '/favorite',
-        { serial_id: serialId }
-      );
-      /* const token = localStorage.getItem('auth_token');
-            const response = axios.post('/api/serials/' + serialId.toString() + '/favorite',
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                        serial_id: serialId
-                    }
-                }); */
-      console.log('Returned data:', response);
-    } catch (e) {
-      console.log(`Axios request failed: ${e}`);
-    }
   };
 
   const onRatingChange = (e, newValue) => {
@@ -66,13 +46,19 @@ export const SingleSerial = () => {
   const onChangeActive = (e, newHover) => {
     setHover(newHover);
   };
-  const onAddToWatchlist = () => {
-    const storeSerial = {
-      id: serial.id,
-      title: serial.title,
-      rating: null,
-    };
-    dispatch(addToWatchlist(storeSerial));
+
+  const onAddToWatchlist = (status) => {
+    if (!watchlistItem) {
+      const storeSerial = {
+        id: serial.id,
+        title: serial.title,
+        status: status,
+        rating: null,
+      };
+      dispatch(addToWatchlist(storeSerial));
+    } else {
+      dispatch(setStatus({ id: serial.id, status: status }));
+    }
   };
 
   const renderRating = () => {
@@ -91,11 +77,7 @@ export const SingleSerial = () => {
               onChange={onRatingChange}
               onChangeActive={onChangeActive}
             />
-            {userRating !== null && (
-              <Box sx={{ ml: 2 }}>
-                {labels[hover !== -1 ? hover : userRating]}
-              </Box>
-            )}
+            <Box>{labels[hover !== -1 ? hover : userRating]}</Box>
           </div>
         </>
       )
@@ -141,13 +123,33 @@ export const SingleSerial = () => {
             className='card-img-top'
             alt={serial.title}
           />
-          <Button
-            className='w-100 mt-4'
-            disabled={!!watchlistItem}
-            onClick={onAddToWatchlist}
-          >
-            Добавить в список
-          </Button>
+
+          <Dropdown as={ButtonGroup} className='w-100 mt-4'>
+            <Button
+              disabled={!!watchlistItem}
+              onClick={() => onAddToWatchlist(StatusFilters.Active)}
+            >
+              Добавить в список
+            </Button>
+            <Dropdown.Toggle split />
+            <Dropdown.Menu align='end'>
+              <Dropdown.Item
+                onClick={() => onAddToWatchlist(StatusFilters.Active)}
+              >
+                Смотрю
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => onAddToWatchlist(StatusFilters.Completed)}
+              >
+                Просмотрено
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => dispatch(removeFromWatchlist(serial.id))}
+              >
+                Удалить из списка
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
           {renderRating()}
         </Col>
         <Col lg={7} pl={4}>
@@ -167,8 +169,8 @@ export const SingleSerial = () => {
           <div className='h4 mb-3'>Сюжет</div>
           <p className='text-left mb-4'>{serial.description}</p>
           <Button
-            variant='danger'
-            className='w-100 mt-4'
+            variant='outline-danger'
+            className='my-2'
             onClick={addInFavorites}
           >
             Добавить в Избранное

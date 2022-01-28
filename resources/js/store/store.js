@@ -15,12 +15,14 @@ import serialsReducer from './serials.slice';
 import serialReducer from './serial.slice';
 import authReducer from './auth.slice';
 import watchlistReducer from './watchlist.slice';
+import filtersReducer from './filters.slice';
 
 const rootReducer = combineReducers({
   serials: serialsReducer,
   serial: serialReducer,
   auth: authReducer,
   watchlist: watchlistReducer,
+  filters: filtersReducer,
 });
 
 // persist config obj

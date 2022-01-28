@@ -1,32 +1,41 @@
 // Список
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
+import debounce from 'lodash/debounce';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Watchlist from '../../components/Watchlist/Watchlist';
-import WATCHLIST from './WATCHLIST.json';
-import { selectWatchlist } from '../../store/watchlist.slice';
-
-const { watched } = WATCHLIST;
-const [watchlistKey, watchedKey] = Object.keys(WATCHLIST);
+import { selectFilteredWatchlist } from '../../store/watchlist.slice';
+import {
+  StatusFilters,
+  selectFilters,
+  statusFilterChanged,
+  setInput,
+  clearInput,
+} from '../../store/filters.slice';
 
 export const WatchList = () => {
   const dispatch = useDispatch();
-  const watchlist = useSelector(selectWatchlist);
+  const { status } = useSelector(selectFilters);
+  const watchlist = useSelector(selectFilteredWatchlist);
 
-  const [input, setInput] = useState('');
+  useEffect(() => {
+    dispatch(clearInput());
+  }, []);
+
+  const debounceFilteredValue = (value) => {
+    dispatch(setInput(value));
+  };
+  const debounced = useCallback(debounce(debounceFilteredValue, 500), []);
   const onInputChange = (e) => {
-    setInput(e.target.value);
+    debounced(e.target.value);
   };
 
-  // const [key, setKey] = useState(watchlistKey);
-
-  // const filtered = useSelector((state) =>
-  //   selectWatchlistFiltered(state, input)
-  // );
+  const onStatusChange = (status) => dispatch(statusFilterChanged(status));
 
   return (
     <>
@@ -35,9 +44,9 @@ export const WatchList = () => {
           <Card body>
             <h3 className='mb-3'>Список сериалов</h3>
             <Form.Control
+              type='search'
               placeholder='Поиск по названию..'
               aria-label='Search'
-              value={input}
               onChange={onInputChange}
             />
           </Card>
@@ -46,20 +55,21 @@ export const WatchList = () => {
       <Row className='mb-3'>
         <Col>
           <Card body>
-            <Watchlist list={watchlist} />
-            {/* <Tabs
+            <Tabs
               variant='pills'
-              activeKey={key}
-              onSelect={(k) => setKey(k)}
+              activeKey={status}
+              onSelect={onStatusChange}
               className='mb-3'
             >
-              <Tab eventKey={watchlistKey} title='Смотрю'>
-                <Watchlist list={filteredList} />
-              </Tab>
-              <Tab eventKey={watchedKey} title='Просмотрено'>
-                <Watchlist list={filteredList} />
-              </Tab>
-            </Tabs> */}
+              {Object.keys(StatusFilters).map((key) => {
+                const value = StatusFilters[key];
+                return (
+                  <Tab key={key} eventKey={value} title={value}>
+                    <Watchlist list={watchlist} />
+                  </Tab>
+                );
+              })}
+            </Tabs>
           </Card>
         </Col>
       </Row>

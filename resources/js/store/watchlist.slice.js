@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { StatusFilters } from './filters.slice';
 
 const initialState = {
   entities: {},
@@ -18,11 +19,15 @@ const watchlistSlice = createSlice({
       const { id, rating } = payload;
       state.entities[id].rating = rating;
     },
+    setStatus: (state, { payload }) => {
+      const { id, status } = payload;
+      state.entities[id].status = status;
+    },
   },
 });
 
 // Actions
-export const { addToWatchlist, removeFromWatchlist, setRating } =
+export const { addToWatchlist, removeFromWatchlist, setRating, setStatus } =
   watchlistSlice.actions;
 export default watchlistSlice.reducer;
 
@@ -38,13 +43,26 @@ export const selectWatchlistById = (state, id) => {
   return selectWatchlistEntities(state)[id];
 };
 
-// export const selectWatchlistFiltered = (state, input) => {
-//   const { watchlist } = state.watchlist;
-//   if (!input) {
-//     return watchlist;
-//   } else {
-//     return watchlist.filter((item) =>
-//       item.title.toLowerCase().includes(input.toLowerCase())
-//     );
-//   }
-// };
+export const selectWatchlistSorted = createSelector(selectWatchlist, (values) =>
+  values.sort((a, b) => b.rating - a.rating)
+);
+
+export const selectFilteredWatchlist = createSelector(
+  selectWatchlistSorted,
+  (state) => state.filters,
+  (values, filters) => {
+    const { status, input } = filters;
+    const showAll = status === StatusFilters.All;
+    if (showAll && input.length === 0) {
+      return values;
+    }
+
+    return values.filter((item) => {
+      const statusMatches = showAll || item.status === status;
+      const inputMatches =
+        input.length === 0 ||
+        item.title.toLowerCase().includes(input.toLowerCase());
+      return statusMatches && inputMatches;
+    });
+  }
+);
