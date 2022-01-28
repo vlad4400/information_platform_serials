@@ -51,18 +51,18 @@ export const selectFilteredWatchlist = createSelector(
   selectWatchlistSorted,
   (state) => state.filters,
   (values, filters) => {
-    const { status, input } = filters;
+    const { status, searchQuery } = filters;
     const showAll = status === StatusFilters.All;
-    if (showAll && input.length === 0) {
+    if (showAll && searchQuery.length === 0) {
       return values;
     }
 
     return values.filter((item) => {
       const statusMatches = showAll || item.status === status;
-      const inputMatches =
-        input.length === 0 ||
-        item.title.toLowerCase().includes(input.toLowerCase());
-      return statusMatches && inputMatches;
+      const searchQueryMatches =
+        searchQuery.length === 0 ||
+        item.title.toLowerCase().includes(searchQuery.toLowerCase());
+      return statusMatches && searchQueryMatches;
     });
   }
 );

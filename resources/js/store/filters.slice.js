@@ -8,7 +8,7 @@ export const StatusFilters = {
 
 const initialState = {
   status: StatusFilters.All,
-  input: '',
+  searchQuery: '',
 };
 
 const filtersSlice = createSlice({
@@ -18,16 +18,16 @@ const filtersSlice = createSlice({
     statusFilterChanged(state, { payload }) {
       state.status = payload;
     },
-    setInput(state, { payload }) {
-      state.input = payload;
+    setQuery(state, { payload }) {
+      state.searchQuery = payload;
     },
-    clearInput(state) {
-      state.input = '';
+    clearQuery(state) {
+      state.searchQuery = '';
     },
   },
 });
 
-export const { statusFilterChanged, setInput, clearInput } =
+export const { statusFilterChanged, setQuery, clearQuery } =
   filtersSlice.actions;
 
 export default filtersSlice.reducer;

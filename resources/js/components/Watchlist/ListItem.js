@@ -1,19 +1,13 @@
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import * as ROUTES from '../../constants/routes';
-import {
-  removeFromWatchlist,
-  setStatus,
-  selectWatchlistById,
-} from '../../store/watchlist.slice';
+import { useWatchlist } from '../../hooks/useWatchlist';
 import { StatusFilters } from '../../store/filters.slice';
 
 export default function ListItem({ i, id }) {
-  const dispatch = useDispatch();
-  const watchlistItem = useSelector((state) => selectWatchlistById(state, id));
-
+  const { watchlistItem, removeFromWatchlist, setStatus } = useWatchlist(id);
   const { title, rating, status } = watchlistItem;
+
   const disabled = status === StatusFilters.Completed;
 
   return (
@@ -25,13 +19,13 @@ export default function ListItem({ i, id }) {
           <div>
             <Button
               onClick={() =>
-                dispatch(setStatus({ id: id, status: StatusFilters.Completed }))
+                setStatus({ id: id, status: StatusFilters.Completed })
               }
               disabled={disabled}
             >
               Просмотрено
             </Button>{' '}
-            <Button onClick={() => dispatch(removeFromWatchlist(id))}>-</Button>
+            <Button onClick={() => removeFromWatchlist(id)}>-</Button>
           </div>
         </div>
       </td>

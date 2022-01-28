@@ -9,26 +9,26 @@ import Tabs from 'react-bootstrap/Tabs';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Watchlist from '../../components/Watchlist/Watchlist';
-import { selectFilteredWatchlist } from '../../store/watchlist.slice';
+import { useWatchlist } from '../../hooks/useWatchlist';
 import {
   StatusFilters,
   selectFilters,
   statusFilterChanged,
-  setInput,
-  clearInput,
+  setQuery,
+  clearQuery,
 } from '../../store/filters.slice';
 
 export const WatchList = () => {
   const dispatch = useDispatch();
   const { status } = useSelector(selectFilters);
-  const watchlist = useSelector(selectFilteredWatchlist);
+  const { watchlist } = useWatchlist();
 
   useEffect(() => {
-    dispatch(clearInput());
+    dispatch(clearQuery());
   }, []);
 
   const debounceFilteredValue = (value) => {
-    dispatch(setInput(value));
+    dispatch(setQuery(value));
   };
   const debounced = useCallback(debounce(debounceFilteredValue, 500), []);
   const onInputChange = (e) => {

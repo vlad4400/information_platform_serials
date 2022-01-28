@@ -10,25 +10,23 @@ import {
   Dropdown,
   ButtonGroup,
 } from 'react-bootstrap';
-import {
-  selectWatchlistById,
-  addToWatchlist,
-  removeFromWatchlist,
-  setRating,
-  setStatus,
-} from '../../store/watchlist.slice';
 import { StatusFilters } from '../../store/filters.slice';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import { labels } from '../../constants/labels';
+import { useWatchlist } from '../../hooks/useWatchlist';
 
 export const SingleSerial = () => {
   const dispatch = useDispatch();
   const { serialId } = useParams();
   const { serial, loading, hasErrors } = useSelector(selectSerial);
-  const watchlistItem = useSelector((state) =>
-    selectWatchlistById(state, serialId)
-  );
+  const {
+    watchlistItem,
+    addToWatchlist,
+    removeFromWatchlist,
+    setRating,
+    setStatus,
+  } = useWatchlist(serialId);
 
   useEffect(() => {
     dispatch(getSerial(serialId));
@@ -41,7 +39,7 @@ export const SingleSerial = () => {
   };
 
   const onRatingChange = (e, newValue) => {
-    dispatch(setRating({ id: serial.id, rating: newValue }));
+    setRating({ id: serial.id, rating: newValue });
   };
   const onChangeActive = (e, newHover) => {
     setHover(newHover);
@@ -55,9 +53,9 @@ export const SingleSerial = () => {
         status: status,
         rating: null,
       };
-      dispatch(addToWatchlist(storeSerial));
+      addToWatchlist(storeSerial);
     } else {
-      dispatch(setStatus({ id: serial.id, status: status }));
+      setStatus({ id: serial.id, status: status });
     }
   };
 
@@ -143,9 +141,7 @@ export const SingleSerial = () => {
               >
                 Просмотрено
               </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => dispatch(removeFromWatchlist(serial.id))}
-              >
+              <Dropdown.Item onClick={() => removeFromWatchlist(serial.id)}>
                 Удалить из списка
               </Dropdown.Item>
             </Dropdown.Menu>
