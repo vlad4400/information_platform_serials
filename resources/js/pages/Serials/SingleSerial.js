@@ -113,6 +113,7 @@ export const SingleSerial = () => {
             className='card-img-top shadow'
             alt={serial.title}
           />
+              
           <Dropdown as={ButtonGroup} className='w-100 mt-4'>
             <Button
               disabled={!!watchlistItem}
@@ -139,6 +140,7 @@ export const SingleSerial = () => {
           </Dropdown>
           {renderRating()}
         </Col>
+
         <Col>
           <Row p={1}>
             <Col>
@@ -195,10 +197,6 @@ export const SingleSerial = () => {
             </Col>
           </Row>
         </Col>
-      </Row>
-      <Row className='px-0 details'>
-        <Col lg={3} className='px-0 me-4'></Col>
-        <Col className=''></Col>
       </Row>
     </>
   );
