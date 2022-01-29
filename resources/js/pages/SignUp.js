@@ -58,7 +58,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.name}
                   />
-                  <span className='text-danger'>{errors?.name}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.name}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -70,7 +70,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.email}
                   />
-                  <span className='text-danger'>{errors?.email}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.email}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword'>
@@ -82,7 +82,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.password}
                   />
-                  <span className='text-danger'>{errors?.password}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.password}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword2'>
@@ -94,7 +94,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.password_confirmation}
                   />
-                  <span className='text-danger'>
+                  <span style={{ fontSize: 10 }} className='text-danger'>
                     {errors?.password_confirmation}
                   </span>
                 </Form.Group>
