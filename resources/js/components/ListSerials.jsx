@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
-export default ({title, serials, loading, showNavigation = false}) => {
+export default ({title, serials, loading, showNavigation = false, isAuth = false}) => {
     
     const Item = ({ri, serial }) => (
         <div style={{display: 'flex', margin: '0 5px' }}>
@@ -30,12 +30,15 @@ export default ({title, serials, loading, showNavigation = false}) => {
                     <span>{ri+1}. {serial.title} ({serial.year})</span>
                 </Link>
                 <span style={{ display: 'flex', gap: '5px' }}>
-                <Button 
-                    variant="outline-success"
-                    size={'sm'}
-                    style={{marginRight: '10px'}}
-                    className={'btn-add-plus'}
-                >+</Button>
+                { isAuth
+                    ? <Button 
+                        variant="outline-success"
+                        size={'sm'}
+                        style={{marginRight: '10px'}}
+                        className={'btn-add-plus'}
+                    >+</Button>
+                    : <></>
+                }
                 <span style={{
                     width: '50px',
                     textAlign: 'right'
