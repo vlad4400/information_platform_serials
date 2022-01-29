@@ -15,6 +15,7 @@ import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import { labels } from '../../constants/labels';
 import { useWatchlist } from '../../hooks/useWatchlist';
+import Loader from '../../utilities/Loader';
 
 export const SingleSerial = () => {
   const dispatch = useDispatch();
@@ -99,29 +100,20 @@ export const SingleSerial = () => {
     </div>
   ));
 
-  if (loading) return <div>Loading...</div>;
+  // if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader />;
   if (hasErrors) return <div>Ошибка при загрузке.</div>;
 
   return (
     <>
-      <Row p={1}>
-        <Col sm={1} mw={100}></Col>
-        <Col lg={10} px={0}>
-          <h1 className='mt-4'>
-            {serial.title} ({serial.year})
-          </h1>
-        </Col>
-        <Col sm={1}></Col>
-      </Row>
-      <Row className='py-3 px-0'>
-        <Col sm={1}></Col>
-        <Col lg={3} px={0}>
+      <Row className='py-3 details'>
+        <Col lg={3} className='px-0 me-4'>
           <img
             src={serial.poster}
-            className='card-img-top'
+            className='card-img-top shadow'
             alt={serial.title}
           />
-
+              
           <Dropdown as={ButtonGroup} className='w-100 mt-4'>
             <Button
               disabled={!!watchlistItem}
@@ -148,47 +140,60 @@ export const SingleSerial = () => {
           </Dropdown>
           {renderRating()}
         </Col>
-        <Col lg={7} pl={4}>
-          <Row>
-            <h4 className='col-lg-10 mb-3'>Информация</h4>
-            <h6 className='col-lg-2 px-2 py-0 m-0 text-center'>
-              {' '}
-              IMDb RATING: {serial.rate}/10
-            </h6>
+
+        <Col>
+          <Row p={1}>
+            <Col>
+              <h1 className='serial-title'>{serial.title}</h1>
+            </Col>
           </Row>
-          {/* <div className='h5'>Эпизоды:</div>
-          <div className='h5'>Статус:</div> */}
-          <div className='h5 mb-4'>
-            Жанры:&nbsp;
-            {genres}
-          </div>
-          <div className='h4 mb-3'>Сюжет</div>
-          <p className='text-left mb-4'>{serial.description}</p>
-          <Button
-            variant='outline-danger'
-            className='my-2'
-            onClick={addInFavorites}
-          >
-            Добавить в Избранное
-          </Button>
-          <div className='h5 mb-4'>Сезоны</div>
           <Row>
-            <Col sm={12}>
+            <Col lg={10} className='mt-3'>
+              <p className='text-left mb-5 lh-sm'>{serial.description}</p>
+              <table>
+                <tbody>
+                  <tr>
+                    <th scope='row'>Релиз</th>
+                    <td>{serial.year}</td>
+                  </tr>
+                  <tr>
+                    <th scope='row'>Рейтинг IMDb</th>
+                    <td>{serial.rate}/10</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className='h5 mb-4'>
+                Жанры:&nbsp;
+                {genres}
+              </div>
+
+              <Button
+                variant='outline-danger'
+                className='mb-5'
+                onClick={addInFavorites}
+              >
+                Добавить в Избранное
+              </Button>
+              <div className='h5 mb-4 fw-bold'>Сезоны</div>
               <Row>
-                <Col sm={1}>
-                  <b>#</b>
-                </Col>
-                <Col sm={7}>
-                  <b>Название</b>
-                </Col>
-                <Col sm={3}>
-                  <b>Дата выхода</b>
-                </Col>
-                <Col sm={1}>
-                  <b>Эпизодов</b>
+                <Col sm={12}>
+                  <Row>
+                    <Col sm={1}>
+                      <b>#</b>
+                    </Col>
+                    <Col sm={7}>
+                      <b>Название</b>
+                    </Col>
+                    <Col sm={3}>
+                      <b>Дата выхода</b>
+                    </Col>
+                    <Col sm={1}>
+                      <b>Эпизодов</b>
+                    </Col>
+                  </Row>
+                  {seasonList}
                 </Col>
               </Row>
-              {seasonList}
             </Col>
           </Row>
         </Col>

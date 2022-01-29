@@ -44,7 +44,7 @@ export const SignIn = () => {
       <h2 className='my-3 text-center'>Вход</h2>
       <Row className='mb-3 justify-content-md-center'>
         <Col xs md='4'>
-          <Card>
+          <Card className='shadow'>
             <Card.Body>
               <Form onSubmit={loginSubmit}>
                 <Form.Group className='mb-3' controlId='formBasicEmail'>

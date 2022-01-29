@@ -15,7 +15,12 @@ export default function ListItem({ i, id }) {
       <th scope='row'>{i + 1}</th>
       <td style={{ width: '100%' }}>
         <div className='d-flex justify-content-between'>
-          <Link to={`${ROUTES.SERIALS}/${id}`}>{title}</Link>{' '}
+          <Link
+            to={`${ROUTES.SERIALS}/${id}`}
+            className='text-decoration-none text-body'
+          >
+            {title}
+          </Link>{' '}
           <div>
             <Button
               onClick={() =>
