@@ -4,9 +4,11 @@ import Container from '../components/Container';
 import ListSerials from '../components/ListSerials';
 import PanelSerials from '../components/PanelSerials';
 import { selectSerials } from '../store/serials.slice';
+import { selectAuth } from '../store/auth.slice';
 
 export const Home = () => {
   const { serials, loading, hasErrors } = useSelector(selectSerials);
+  const { isLoggedIn } = useSelector(selectAuth);
 
   return (
     <Container>
@@ -22,6 +24,7 @@ export const Home = () => {
               title={'Найболее рейтинговые сериалы'}
               serials={serials}
               loading={loading}
+              isAuth={isLoggedIn}
             />
           </>
       }
