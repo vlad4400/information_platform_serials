@@ -45,7 +45,7 @@ export const SignUp = () => {
     <>
       <h2 className='my-3 text-center'>Регистрация</h2>
       <Row className='mb-3 justify-content-md-center'>
-        <Col xs md='4'>
+        <Col xs md='6'>
           <Card>
             <Card.Body>
               <Form onSubmit={registerSubmit}>
