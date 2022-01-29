@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
@@ -39,11 +40,14 @@ export default function Navigation() {
         <Navbar.Collapse>
           <Nav className='mr-auto'>
             <NavDropdown className='me-2' title='Меню'>
-              <NavDropdown.Item as={NavLink} to={ROUTES.HOME}>
-                Главная
-              </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to={ROUTES.SERIALS}>
                 Каталог сериалов
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={NavLink}
+                to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
+              >
+                Список просмотра
               </NavDropdown.Item>
               <NavDropdown.Item
                 as={NavLink}
@@ -51,8 +55,8 @@ export default function Navigation() {
               >
                 Избранное
               </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} to='/example'>
+              {/* <NavDropdown.Divider />
+               <NavDropdown.Item as={NavLink} to='/example'>
                 Пример компонентов
               </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to={ROUTES.ADMIN}>
@@ -60,7 +64,7 @@ export default function Navigation() {
               </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to='test'>
                 Тест
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
             </NavDropdown>
           </Nav>
           <FormControl
