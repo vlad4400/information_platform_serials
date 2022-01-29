@@ -1,7 +1,7 @@
-export const HOME = '/';
 export const SERIALS = '/serials';
 export const SERIAL_ID = 'serialId';
 export const PROFILE = '/profile';
+export const WATCHLIST = 'watchlist';
 export const FAVOURITES = 'favourites';
 export const SETTINGS = 'settings';
 export const SIGN_UP = '/signup';

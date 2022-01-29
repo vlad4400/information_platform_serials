@@ -28,7 +28,7 @@ export default function Navigation() {
       expand='lg'
       bg='dark'
       variant='dark'
-      className='py-3'
+      className='py-3 mb-4 shadow-lg'
     >
       <Container fluid='sm'>
         <Navbar.Brand as={NavLink} to='/'>
