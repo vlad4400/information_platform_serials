@@ -7,6 +7,7 @@ import {
   Example,
   Profile,
   ProfileSettings,
+  WatchList,
   Favourites,
   Home,
   Serials,
@@ -40,6 +41,7 @@ export const Routing = () => {
         <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
         <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
         <Route path={ROUTES.PROFILE} element={<Profile />}>
+          <Route path={ROUTES.WATCHLIST} element={<WatchList />} />
           <Route path={ROUTES.FAVOURITES} element={<Favourites />} />
           <Route element={<PrivateOutlet />}>
             <Route path={ROUTES.SETTINGS} element={<ProfileSettings />} />

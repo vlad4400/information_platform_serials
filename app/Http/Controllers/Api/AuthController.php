@@ -21,6 +21,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 200,
             'username' => $user->name,
+            'user_id' => $user->id,
             'token' => $token,
             'message' => 'Registered successfully'
         ]);
@@ -52,6 +53,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 200,
                 'username' => $user->name,
+                'user_id' => $user->id,
                 'token' => $token,
                 'message' => 'Logged in successfully'
             ]);
