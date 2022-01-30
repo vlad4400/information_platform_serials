@@ -3,25 +3,30 @@ import axios from 'axios';
 import { showAlert } from '../utilities/showAlert';
 
 export const API_URL = 'http://127.0.0.1:8000/api';
-// export const API_URL = 'https://reqres.in/api';
+// export const API_URL = 'https://boiling-anchorage-83800.herokuapp.com/api';
 
 const authAxios = axios.create({
   baseURL: API_URL,
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
     'Content-type': 'application/json',
+    Accept: 'application/json',
   },
 });
+// Нужно ли это??
+// authAxios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 authAxios.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
 // Интерцептор показывает ошибки во всплывающем окне
 authAxios.interceptors.response.use(
   (response) => {
-    //   console.log(response);
     if (response.status >= 200 && response.status < 300) {
       return response;
     }
@@ -29,7 +34,6 @@ authAxios.interceptors.response.use(
   (error) => {
     const { response, request } = error;
     if (response) {
-      //     console.log(response);
       if (response.status >= 400 && response.status < 500) {
         const message =
           response.data?.error || response.data?.message || error.toString();

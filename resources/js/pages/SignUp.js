@@ -51,12 +51,12 @@ export const SignUp = () => {
     <>
       <h2 className='my-3 text-center'>Регистрация</h2>
       <Row className='mb-3 justify-content-md-center'>
-        <Col xs md='4'>
+        <Col xs md='6' lg='4'>
           <Card className='shadow'>
             <Card.Body>
               <Form onSubmit={registerSubmit}>
                 <Form.Group className='mb-3'>
-                  <Form.Label>Имя</Form.Label>
+                  <Form.Label>Логин</Form.Label>
                   <Form.Control
                     type='text'
                     placeholder='Enter your name'
@@ -64,7 +64,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.name}
                   />
-                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.name}</span>
+                  <span className='text-danger'>{errors?.name}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -76,7 +76,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.email}
                   />
-                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.email}</span>
+                  <span className='text-danger'>{errors?.email}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword'>
@@ -88,7 +88,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.password}
                   />
-                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.password}</span>
+                  <span className='text-danger'>{errors?.password}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword2'>
@@ -100,7 +100,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.password_confirmation}
                   />
-                  <span style={{ fontSize: 10 }} className='text-danger'>
+                  <span className='text-danger'>
                     {errors?.password_confirmation}
                   </span>
                 </Form.Group>
