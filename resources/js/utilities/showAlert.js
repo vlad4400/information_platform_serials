@@ -11,7 +11,7 @@ export const showAlert = (titleText = 'Something happened.', alertType) => {
     toast: true,
     showConfirmButton: false,
     showCancelButton: true,
-    cancelButtonText: 'Dismiss',
+    cancelButtonText: 'Закрыть',
     icon: alertType,
     showClass: {
       popup: 'swal2-noanimation',
