@@ -13,7 +13,7 @@ import {
 import * as ROUTES from '../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuth, logout } from '../store/auth.slice';
-
+import { Search } from '../pages/Search';
 import authAxios from '../services/authAxios';
 
 export default function Navigation() {
@@ -31,21 +31,23 @@ export default function Navigation() {
 
 
   const searchSerial = () => {
+    localStorage.setItem('keySearch', searchInput);
+    // console.log(searchInput)
+    /*
+        const params = { key: searchInput }
+        const search = '?' + createSearchParams(params)
+    
+             navigate({
+              pathname: '/search',
+              search: search,
+            }) */
 
-    const params = { key: searchInput }
-    const search = '?' + createSearchParams(params)
-    //  const paramsSearch = '?' + createSearchParams({ key: { searchInput } })
-
-    // {`/products/${item.id}`}
-
-    /*     navigate({
-          pathname: '/search',
-          search: search,
-        }) */
     //    navigate('/search?key=' + { searchInput });
+
     //такой должен быть путь navigate('/search?key=все');
 
-    navigate(`/search?key=${searchInput}`);
+    //  navigate(`/search?key=${searchInput}`);
+    navigate('/search');
   };
 
   return (
@@ -110,7 +112,7 @@ export default function Navigation() {
     </Navbar>
   );
 }
-
+//         <Form onSubmit={searchSerial}></Form>
 const LoggedInView = ({ logOut }) => (
   <Nav>
     <NavDropdown className='me-2' title='Профиль'>

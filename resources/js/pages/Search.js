@@ -24,19 +24,24 @@ import { getSearchSerials, selectSearchSerials } from '../store/search.slice';
 import { selectAuth } from '../store/auth.slice';
 
 export const Search = () => {
-
-  const [searchParams] = useSearchParams();
-  const key = searchParams.get("key");
-
-  console.log(key)
-
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getSearchSerials(key));
-  }, [dispatch]);
-
   const { searchSerials, loading, hasErrors } = useSelector(selectSearchSerials);
   const { isLoggedIn } = useSelector(selectAuth);
+
+  const [searchParams] = useSearchParams();
+  // const key = searchParams.get("key");
+
+  const key = localStorage.getItem('keySearch');
+  // console.log(key)
+
+
+  useEffect(() => {
+    dispatch(getSearchSerials(key));
+  }, []);
+  /*  useEffect(() => {
+      dispatch(getSearchSerials(key));
+    }, [dispatch]); */
+
 
   return (
     <Container>

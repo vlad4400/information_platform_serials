@@ -40,7 +40,7 @@ export const getSearchSerials = (key) => async (dispatch) => {
   dispatch(setLoading());
   try {
     const { data } = await authAxios.get(`search/${key}`)
-    console.log(data)
+    //console.log(data)
     dispatch(setSearchSerials(data));
   } catch (err) {
     dispatch(setSearchSerialsFailure());
