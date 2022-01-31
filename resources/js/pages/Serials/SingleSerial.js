@@ -39,9 +39,9 @@ export const SingleSerial = () => {
 
   const [hover, setHover] = useState(-1);
 
-  const [inFavorites, setinFavorites] = useState(false);
+  const [inFavourites, setinFavourites] = useState(false);
 
-  const addInFavorites = () => {
+  const addInFavourites = () => {
     try {
       const token = localStorage.getItem('token');
       const response = axios.put(API_FAVORITES + '/' + serialId,
@@ -49,12 +49,13 @@ export const SingleSerial = () => {
         {
           headers: { Authorization: `Bearer ${token}` }
         });
-      // console.log('Returned data:', response);
-      setinFavorites(!inFavorites);
+      //     console.log('Returned data:', response);
+      setinFavourites(!inFavourites);
     } catch (e) {
       console.log(`Axios request failed: ${e}`);
     }
   };
+  console.log(serial)
 
   const onRatingChange = (e, newValue) => {
     setRating({ id: serial.id, rating: newValue });
@@ -108,7 +109,7 @@ export const SingleSerial = () => {
 
   const seasonList = (serial.seasons || ['']).map((season) => (
     <div key={(season.season_number + 1).toString()}>
-      <Row style={{ fontSize: 11 }}>
+      <Row style={{ fontSize: 12 }}>
         <Col xs={1}>{season.season_number}</Col>
         <Col xs={7}>{season.season_name}</Col>
         <Col xs={3}>{season.air_date}</Col>
@@ -140,8 +141,8 @@ export const SingleSerial = () => {
             className='card-img-top'
             alt={serial.title}
           />
-          <Button className='w-100 mt-4' onClick={addInFavorites}>
-            {!inFavorites
+          <Button className='w-100 mt-4' onClick={addInFavourites}>
+            {!inFavourites
               ? `Добавить в Избранное`
               : `Удалить из Избранного`
             }
