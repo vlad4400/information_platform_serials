@@ -15,10 +15,16 @@ const serialsSlice = createSlice({
   reducers: {
     setSerials: (state, {payload}) => {
       state.serials = payload.serials.map(
-        serial => ({
-          ...serial,
-          isFavorite: !!serial.favorite.find(id => id == payload.userId)
-        })
+        serial => {
+          if (serial.favorite) {
+            return {
+              ...serial,
+              isFavorite: !!serial.favorite.find(id => id == payload.userId)
+            }
+          } else {
+            return serial;
+          }
+        }
       );
     },
     switchSerialIsFavoriteById: (state, {payload}) => {
