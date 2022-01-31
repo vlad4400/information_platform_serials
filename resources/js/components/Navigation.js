@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, createSearchParams } from 'react-router-dom';
 import {
   Navbar,
   Nav,
@@ -8,10 +8,13 @@ import {
   Container,
   FormControl,
   Button,
+  Form,
 } from 'react-bootstrap';
 import * as ROUTES from '../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuth, logout } from '../store/auth.slice';
+
+import authAxios from '../services/authAxios';
 
 export default function Navigation() {
   const dispatch = useDispatch();
@@ -20,6 +23,29 @@ export default function Navigation() {
 
   const logOut = () => {
     dispatch(logout());
+  };
+
+  const [searchInput, setSearchInput] = useState('');
+
+  const navigate = useNavigate();
+
+
+  const searchSerial = () => {
+
+    const params = { key: searchInput }
+    const search = '?' + createSearchParams(params)
+    //  const paramsSearch = '?' + createSearchParams({ key: { searchInput } })
+
+    // {`/products/${item.id}`}
+
+    /*     navigate({
+          pathname: '/search',
+          search: search,
+        }) */
+    //    navigate('/search?key=' + { searchInput });
+    //такой должен быть путь navigate('/search?key=все');
+
+    navigate(`/search?key=${searchInput}`);
   };
 
   return (
@@ -67,12 +93,17 @@ export default function Navigation() {
               </NavDropdown.Item> */}
             </NavDropdown>
           </Nav>
-          <FormControl
-            className='me-2'
-            type='search'
-            placeholder='Поиск'
-            aria-label='Search'
-          />
+          <Form onSubmit={searchSerial}>
+            <FormControl
+              className='me-2'
+              type='search'
+              placeholder='Поиск'
+              aria-label='Search'
+              value={searchInput}
+              onChange={(e) => { if (e.target.value) setSearchInput(e.target.value) }}
+            />
+            <Button type='submit'>Искать</Button>
+          </Form>
           {isLoggedIn ? <LoggedInView logOut={logOut} /> : <LoggedOutView />}
         </Navbar.Collapse>
       </Container>
