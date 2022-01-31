@@ -7,7 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialResource;
 use App\Jobs\SerialJob;
 use App\Models\Serial;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class SortController extends Controller
 {
@@ -29,11 +33,7 @@ class SortController extends Controller
 
     public function recent()
     {
-        for($i=1; $i<6; $i++) {
-            dump(1);
-            $link = "https://api.themoviedb.org/3/tv/popular?sort_by=year.desc&api_key=" . env('API_KEY') . "&language=ru&page=" . $i;
-            dispatch(new SerialJob($link));
-        }
-        return response()->json(null,200);
+        return  $getPopular = Http::acceptJson()->get('https://api.themoviedb.org/3/discover/movie?api_key=' . env('API_KEY') . '&language=ru-RU&region=RU&sort_by=release_date.desc');
     }
+
 }
