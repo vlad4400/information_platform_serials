@@ -6,11 +6,13 @@ const user = AuthService.getCurrentUser();
 
 const initialState = user
   ? {
+      userId: user.user_id,
       currentUser: user,
       isLoggedIn: true,
       errors: {},
     }
   : {
+      userId: null,
       currentUser: null,
       isLoggedIn: false,
       errors: {},
@@ -21,10 +23,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, { payload }) => {
-      state.currentUser = payload;
+      state.userId = payload.id;
+      state.currentUser = payload.user;
       state.isLoggedIn = true;
     },
     clearUser: (state) => {
+      state.userId = null;
       state.currentUser = null;
       state.isLoggedIn = false;
     },
@@ -55,7 +59,7 @@ export const register =
         password_confirmation
       );
       console.log('Register data', data);
-      dispatch(setUser(data.user || data.username || data.id));
+      dispatch(setUser(data));
       return data;
     } catch (err) {
       dispatch(setErrors(err.response.data.errors));
@@ -69,7 +73,7 @@ export const login =
       // const csrf = await authAxios.get('/sanctum/csrf-cookie');
       const { data } = await AuthService.login(name, password);
       console.log('Login data', data);
-      dispatch(setUser(data.user || data.username || data.id));
+      dispatch(setUser(data));
       return data;
     } catch (err) {
       dispatch(setErrors(err.response.data.errors));

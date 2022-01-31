@@ -7,6 +7,23 @@
     color: grey;
     border: 1px solid grey;
     margin: 2px;
+    font-size: 20px;
+}
+
+.btn-remove-minus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    color: grey;
+    border: 1px solid grey;
+    margin: 2px;
+    font-size: 20px;
+    &:hover {
+        background-color: crimson;
+        color: white;
+    }
 }
 
 h3, .h3, h2, .h2, h1, .h1 {
