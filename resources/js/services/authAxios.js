@@ -2,8 +2,7 @@
 import axios from 'axios';
 import { showAlert } from '../utilities/showAlert';
 
-export const API_URL = 'http://127.0.0.1:8000/api';
-// export const API_URL = 'https://reqres.in/api';
+export const API_URL = '/api';
 
 const authAxios = axios.create({
   baseURL: API_URL,
@@ -12,6 +11,7 @@ const authAxios = axios.create({
     'Content-type': 'application/json',
   },
 });
+
 
 authAxios.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
