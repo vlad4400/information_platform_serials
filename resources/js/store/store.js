@@ -12,6 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
 import serialsReducer from './serials.slice';
+import favoritesReducer from './favorites.slice';
 import serialReducer from './serial.slice';
 import authReducer from './auth.slice';
 import watchlistReducer from './watchlist.slice';
@@ -19,6 +20,7 @@ import filtersReducer from './filters.slice';
 
 const rootReducer = combineReducers({
   serials: serialsReducer,
+  favorites: favoritesReducer,
   serial: serialReducer,
   auth: authReducer,
   watchlist: watchlistReducer,
@@ -30,7 +32,8 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth', 'watchlist'],
+  // whitelist: ['auth', 'watchlist'],
+  whitelist: [],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,9 +42,10 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      // serializableCheck: {
+      //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      // },
+      serializableCheck: false,
     }),
 });
 
