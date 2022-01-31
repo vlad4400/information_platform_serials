@@ -47,7 +47,7 @@ export default function Navigation() {
     //такой должен быть путь navigate('/search?key=все');
 
     //  navigate(`/search?key=${searchInput}`);
-    navigate('/search');
+    if (searchInput) { navigate('/search'); } else { alert('Пустое поле поиска...') }
   };
 
   return (
