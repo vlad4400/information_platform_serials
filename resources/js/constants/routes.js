@@ -10,3 +10,4 @@ export const ADMIN = '/admin';
 export const USERS = 'users';
 export const ADMIN_SERIALS = 'serials';
 export const PASSWORD_FORGET = '/pw-forget';
+//export const SEARCH = 'search';
