@@ -44,7 +44,7 @@ export const SignIn = () => {
       <h2 className='my-3 text-center'>Вход</h2>
       <Row className='mb-3 justify-content-md-center'>
         <Col xs md='4'>
-          <Card>
+          <Card className='shadow'>
             <Card.Body>
               <Form onSubmit={loginSubmit}>
                 <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -56,7 +56,7 @@ export const SignIn = () => {
                     onChange={handleInput}
                     value={loginInput.name}
                   />
-                  <span className='text-danger'>{errors?.name}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.name}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword'>
@@ -68,7 +68,7 @@ export const SignIn = () => {
                     onChange={handleInput}
                     value={loginInput.password}
                   />
-                  <span className='text-danger'>{errors?.password}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.password}</span>
                 </Form.Group>
 
                 <Button type='submit' style={{ width: '100%' }}>

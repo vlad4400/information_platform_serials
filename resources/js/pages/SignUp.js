@@ -6,13 +6,18 @@ import { Row, Col } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { showAlert } from '../utilities/showAlert';
-import { selectAuth, register, clearErrors } from '../store/auth.slice';
+import { selectAuth, register, clearErrors, logout } from '../store/auth.slice';
 
 export const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { errors } = useSelector(selectAuth);
+  const { isLoggedIn } = useSelector(selectAuth);
+
+  const logOut = () => {
+    dispatch(logout());
+  };
 
   useEffect(() => {
     dispatch(clearErrors());
@@ -36,6 +41,7 @@ export const SignUp = () => {
     dispatch(register(registerInput)).then((data) => {
       if (data) {
         showAlert('Регистрация успешна.', 'success');
+        logOut();
         navigate('/signin');
       }
     });
@@ -46,7 +52,7 @@ export const SignUp = () => {
       <h2 className='my-3 text-center'>Регистрация</h2>
       <Row className='mb-3 justify-content-md-center'>
         <Col xs md='4'>
-          <Card>
+          <Card className='shadow'>
             <Card.Body>
               <Form onSubmit={registerSubmit}>
                 <Form.Group className='mb-3'>
@@ -58,7 +64,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.name}
                   />
-                  <span className='text-danger'>{errors?.name}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.name}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -70,7 +76,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.email}
                   />
-                  <span className='text-danger'>{errors?.email}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.email}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword'>
@@ -82,7 +88,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.password}
                   />
-                  <span className='text-danger'>{errors?.password}</span>
+                  <span style={{ fontSize: 10 }} className='text-danger'>{errors?.password}</span>
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='formBasicPassword2'>
@@ -94,7 +100,7 @@ export const SignUp = () => {
                     onChange={handleInput}
                     value={registerInput.password_confirmation}
                   />
-                  <span className='text-danger'>
+                  <span style={{ fontSize: 10 }} className='text-danger'>
                     {errors?.password_confirmation}
                   </span>
                 </Form.Group>
