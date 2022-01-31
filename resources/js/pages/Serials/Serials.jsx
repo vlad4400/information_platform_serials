@@ -12,25 +12,25 @@ export const Serials = () => {
   const { isLoggedIn } = useSelector(selectAuth);
   const dispatch = useDispatch();
   
-  let titleOrder = 'От найболее нового';
+  let titleOrder = 'от наиболее нового';
   
   const handleSort = (e) => {
     switch(e) {
       case '1':
-        titleOrder = 'От найболее нового';
+        titleOrder = 'от наиболее нового';
         var sorterSerials = getSerialsByYearTop50Desc;
         break;
       case '2':
-        titleOrder = 'От наболее старого';
+        titleOrder = 'от наиболее старого';
         var sorterSerials = getSerialsByYearTop50Asc;
         break;
       case '3':
-        titleOrder = 'От найбольшего рейтинга';
-        var sorterSerials = getSerialsByRateTop50Desc;
+        titleOrder = 'от наибольшего рейтинга';
+        var sorterSerials = getSerialsByRateTop50Asc;
         break;
       case '4':
-        titleOrder = 'От найменьшего рейтинга';
-        var sorterSerials = getSerialsByRateTop50Asc;
+        titleOrder = 'От наименьшего рейтинга';
+        var sorterSerials = getSerialsByRateTop50Desc;
         break;
     }
 
@@ -58,10 +58,10 @@ export const Serials = () => {
               marginBottom: '15px',
               }}>
               <DropdownButton onSelect={handleSort} title="Отобразить" id="bg-nested-dropdown">
-                  <Dropdown.Item eventKey="1">От найболее нового</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">От наболее старого</Dropdown.Item>
-                  <Dropdown.Item eventKey="3">От найбольшего рейтинга</Dropdown.Item>
-                  <Dropdown.Item eventKey="4">От найменьшего рейтинга</Dropdown.Item>
+                  <Dropdown.Item eventKey="1">от наиболее нового</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">от наиболее старого</Dropdown.Item>
+                  <Dropdown.Item eventKey="3">от наибольшего рейтинга</Dropdown.Item>
+                  <Dropdown.Item eventKey="4">от наименьшего рейтинга</Dropdown.Item>
               </DropdownButton>
               {/* todo */}
               {/* <ButtonGroup className="me-2" aria-label="First group">

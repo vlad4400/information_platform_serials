@@ -31,38 +31,34 @@ class Serial extends Model
 
     public static function sortByYear($start, $number)
     {
-        return Serial::query()
-            ->orderBy('year')
+        return Serial::all()
+            ->sortBy('year')
             ->where('year', '>=', $start)
-            ->take($number)
-            ->get();
+            ->take($number);
     }
 
     public static function sortByYearDesc($start, $number)
     {
-        return Serial::query()
-            ->orderByDesc('year')
+        return Serial::all()
+            ->sortByDesc('year')
             ->where('year', '<=', $start)
-            ->take($number)
-            ->get();
+            ->take($number);
     }
 
     public static function sortByRate($start, $number)
     {
-        return Serial::query()
-            ->orderBy('rate')
+        return Serial::all()
+            ->sortBy('rate')
             ->where('rate', '>=', $start)
-            ->take($number)
-            ->get();
+            ->take($number);
     }
 
     public static function sortByRateDesc($start, $number)
     {
-        return Serial::query()
-            ->orderByDesc('rate')
+        return Serial::all()
+            ->sortByDesc('rate')
             ->where('rate', '<=', $start)
-            ->take($number)
-            ->get();
+            ->take($number);
     }
 
 }
