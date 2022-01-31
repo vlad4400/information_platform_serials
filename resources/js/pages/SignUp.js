@@ -36,7 +36,7 @@ export const SignUp = () => {
     dispatch(register(registerInput)).then((data) => {
       if (data) {
         showAlert('Регистрация успешна.', 'success');
-        navigate('/signin');
+        navigate('/profile/favourites')
       }
     });
   };
