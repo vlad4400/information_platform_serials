@@ -33,7 +33,8 @@ class SortController extends Controller
 
     public function recent()
     {
-        return  Http::acceptJson()->get('https://api.themoviedb.org/3/discover/movie?api_key=' . env('API_KEY') . '&language=ru-RU&region=RU&sort_by=release_date.desc');
+        $recent = Http::acceptJson()->get('https://api.themoviedb.org/3/discover/movie?api_key=' . env('API_KEY') . '&language=ru-RU&region=RU&sort_by=release_date.desc');
+        return mb_substr($recent,21, -42);
     }
 
 }
