@@ -28,4 +28,5 @@ class UserLoginRequest extends FormRequest
             'password' => ['required']
         ];
     }
+
 }

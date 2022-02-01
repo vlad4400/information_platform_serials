@@ -27,4 +27,5 @@ class SearchRequest extends FormRequest
             'query' => ['required', 'string', 'max:40'],
         ];
     }
+
 }
