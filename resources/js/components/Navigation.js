@@ -73,22 +73,22 @@ export default function Navigation() {
               <NavDropdown.Item as={NavLink} to={ROUTES.SERIALS}>
                 Каталог сериалов
               </NavDropdown.Item>
-              { isLoggedIn
+              {isLoggedIn
                 ? <NavDropdown.Item
-                    as={NavLink}
-                    to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
-                  >
-                    Список просмотра
-                  </NavDropdown.Item>
+                  as={NavLink}
+                  to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
+                >
+                  Список просмотра
+                </NavDropdown.Item>
                 : <></>
               }
-              { isLoggedIn
+              {isLoggedIn
                 ? <NavDropdown.Item
-                    as={NavLink}
-                    to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}
-                  >
-                    Избранное
-                  </NavDropdown.Item>
+                  as={NavLink}
+                  to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}
+                >
+                  Избранное
+                </NavDropdown.Item>
                 : <></>
               }
             </NavDropdown>
@@ -147,19 +147,4 @@ const LoggedOutView = () => (
                 Тест
               </NavDropdown.Item> */
 
-/*
-          <Form onSubmit={searchSerial}>
-<InputGroup className="mb-3">
-<FormControl
-  className='me-2'
-  type='search'
-  placeholder='Поиск сериала'
-  aria-label='Search'
-  value={searchInput}
-  onChange={(e) => { if (e.target.value) setSearchInput(e.target.value) }}
-/>
-<Button type='submit'>Искать</Button>
-</InputGroup>
-</Form>
-*/
 
