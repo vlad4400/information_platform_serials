@@ -101,7 +101,7 @@ export default function Navigation() {
                 placeholder='Поиск сериала'
                 aria-label='Search'
                 value={searchInput}
-                onChange={(e) => { if (e.target.value) setSearchInput(e.target.value) }}
+                onChange={(e) => { (e.target.value) ? setSearchInput(e.target.value) : setSearchInput("") }}
               />
               <Button type='submit'>Искать</Button>
             </InputGroup>
