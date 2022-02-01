@@ -14,4 +14,5 @@ class Genre_serial extends Model
     protected $fillable = ['genre_id', 'serial_id'];
 
     public $timestamps = false;
+
 }

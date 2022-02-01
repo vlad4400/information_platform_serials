@@ -20,6 +20,7 @@ import { labels } from '../../constants/labels';
 import { useWatchlist } from '../../hooks/useWatchlist';
 import axios from 'axios';
 import { API_FAVORITES } from '../../constants/api';
+import { selectAuth } from '../../store/auth.slice';
 
 export const SingleSerial = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export const SingleSerial = () => {
     setRating,
     setStatus,
   } = useWatchlist(serialId);
+  const { isLoggedIn } = useSelector(selectAuth);
 
   useEffect(() => {
     dispatch(getSerial(serialId));
@@ -141,12 +143,15 @@ export const SingleSerial = () => {
             className='card-img-top'
             alt={serial.title}
           />
-          <Button className='w-100 mt-4' onClick={addInFavourites}>
-            {!inFavourites
-              ? `Добавить в Избранное`
-              : `Удалить из Избранного`
-            }
-          </Button>
+          { isLoggedIn
+            ? <Button className='w-100 mt-4' onClick={addInFavourites}>
+              {!inFavourites
+                ? `Добавить в Избранное`
+                : `Удалить из Избранного`
+              }
+            </Button>
+            : <></>
+          }
 
           <Dropdown as={ButtonGroup} className='w-100 mt-4'>
             <Button

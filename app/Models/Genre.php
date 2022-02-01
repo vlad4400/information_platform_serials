@@ -16,4 +16,5 @@ class Genre extends Model
     public function serials() {
         return $this->belongsToMany(Serial::class);
     }
+
 }

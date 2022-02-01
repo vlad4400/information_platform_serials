@@ -24,4 +24,5 @@ class SortController extends Controller
         else
             return SerialResource::collection(Serial::sortByRateDesc($start, $number));
     }
+
 }

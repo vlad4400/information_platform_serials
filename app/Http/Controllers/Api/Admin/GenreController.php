@@ -28,5 +28,4 @@ class GenreController extends Controller
         return new SerialResource($serials);
     }
 
-
 }

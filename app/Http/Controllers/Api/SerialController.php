@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialResource;
 use App\Models\Serial;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class SerialController extends Controller
 {
@@ -42,4 +41,5 @@ class SerialController extends Controller
             'message' => 'Изменения внесены'
         ]);
     }
+
 }

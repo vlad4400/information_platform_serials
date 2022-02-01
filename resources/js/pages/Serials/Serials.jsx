@@ -12,25 +12,25 @@ export const Serials = () => {
   const { isLoggedIn } = useSelector(selectAuth);
   const dispatch = useDispatch();
   
-  let titleOrder = 'от наиболее нового';
+  // let titleOrder = 'от наиболее нового';
   
   const handleSort = (e) => {
     switch(e) {
       case '1':
-        titleOrder = 'от наиболее нового';
+        // titleOrder = 'от наиболее нового';
         var sorterSerials = getSerialsByYearTop50Desc;
         break;
       case '2':
-        titleOrder = 'от наиболее старого';
+        // titleOrder = 'от наиболее старого';
         var sorterSerials = getSerialsByYearTop50Asc;
         break;
       case '3':
-        titleOrder = 'от наибольшего рейтинга';
-        var sorterSerials = getSerialsByRateTop50Asc;
-        break;
-      case '4':
-        titleOrder = 'От наименьшего рейтинга';
+        // titleOrder = 'от наибольшего рейтинга';
         var sorterSerials = getSerialsByRateTop50Desc;
+        break;
+        case '4':
+        // titleOrder = 'От наименьшего рейтинга';
+        var sorterSerials = getSerialsByRateTop50Asc;
         break;
     }
 
@@ -73,7 +73,7 @@ export const Serials = () => {
               </ButtonGroup> */}
             </div>
             <ListSerials
-              title={`Каталог сериалов (${titleOrder})`}
+              title={`Каталог сериалов`}
               serials={serials}
               loading={loading}
               showNavigation={true}
