@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\SortController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\SortController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\SerialController;
-use App\Http\Controllers\Api\Admin\GenreController as AdminGenreController;
 use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\Admin\GenreController as AdminGenreController;
 use App\Http\Controllers\Api\Admin\SerialController as AdminSerialController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\ParserController;
