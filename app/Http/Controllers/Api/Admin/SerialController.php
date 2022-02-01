@@ -69,4 +69,5 @@ class SerialController extends Controller
         $serial->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
 }

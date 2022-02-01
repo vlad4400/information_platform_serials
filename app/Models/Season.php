@@ -17,4 +17,5 @@ class Season extends Model
     {
         return $this->belongsTo(Serial::class);
     }
+
 }

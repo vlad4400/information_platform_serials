@@ -16,4 +16,5 @@ class SearchController extends Controller
         $data = Serial::where('title', 'LIKE', "%{$input}%")->get()->sortByDesc('rate');
         return SerialResource::collection($data);
     }
+
 }

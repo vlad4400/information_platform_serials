@@ -32,4 +32,5 @@ class SerialUpdateRequest extends FormRequest
             'rate' => ['numeric']
         ];
     }
+
 }

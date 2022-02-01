@@ -27,4 +27,5 @@ class UserUpdateRequest extends FormRequest
             'is_admin' => ['required', 'string'],
         ];
     }
+
 }

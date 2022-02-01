@@ -25,4 +25,5 @@ class SortController extends Controller
         else
             return Serial::sortByRateDesc($start, $number);
     }
+
 }
