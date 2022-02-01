@@ -1,3 +1,4 @@
+﻿
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from '../../components/Container';
@@ -28,6 +29,7 @@ export const Favourites = () => {
             isAuth={isLoggedIn}
             hideBtnAdd={true}
           />
+
       }
     </Container>
   );

@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 //import serialsAPI from '../api/serialsAPI';
 import authAxios from '../services/authAxios';
+
 
 const initialState = {
   searchSerials: [],
@@ -28,6 +30,7 @@ const searchSerialsSlice = createSlice({
 });
 
 // Selectors
+
 export const selectSearchSerials = (state) => state.searchSerials;
 
 // Actions
@@ -36,11 +39,13 @@ export const { setSearchSerials, setLoading, setLoadingComplete, setSearchSerial
 export default searchSerialsSlice.reducer;
 
 // Thunks
+
 export const getSearchSerials = (key) => async (dispatch) => {
   dispatch(setLoading());
   try {
     const { data } = await authAxios.get(`search/${key}`)
     //console.log(data)
+
     dispatch(setSearchSerials(data));
   } catch (err) {
     dispatch(setSearchSerialsFailure());
