@@ -73,7 +73,7 @@ export const getSerials = (userId) => async (dispatch) => {
 
 export const getTop50Serials = (userId) => async (dispatch) => {
   dispatch(setLoading());
-  getSerialsByRate(1, 50, 'DESC')
+  getSerialsByRate(10, 50, 'DESC')
   .then(({data}) => {
     dispatch(setSerials({serials: data, userId}));
   })

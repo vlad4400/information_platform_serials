@@ -21,7 +21,7 @@ export const Home = () => {
               loading={loading}
             />
             <ListSerials
-              title={'Найболее рейтинговые сериалы'}
+              title={'Наиболее рейтинговые сериалы'}
               serials={serials}
               loading={loading}
               isAuth={isLoggedIn}
