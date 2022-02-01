@@ -80,7 +80,10 @@ export default ({title, serials, loading, isAuth = false}) => {
 
             { !loading
                 ? <>
-                    <List serials={serials}/>
+                    { serials?.length
+                        ? <List serials={serials}/>
+                        : <>Нет сериалов.</>
+                    }
                 </>
                 : <div style={{display: 'flex', justifyContent: 'center'}}>
                     <Spinner animation="border" />

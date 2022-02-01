@@ -74,18 +74,24 @@ export default function Navigation() {
               <NavDropdown.Item as={NavLink} to={ROUTES.SERIALS}>
                 Каталог сериалов
               </NavDropdown.Item>
-              <NavDropdown.Item
-                as={NavLink}
-                to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
-              >
-                Список просмотра
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                as={NavLink}
-                to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}
-              >
-                Избранное
-              </NavDropdown.Item>
+              { isLoggedIn
+                ? <NavDropdown.Item
+                    as={NavLink}
+                    to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
+                  >
+                    Список просмотра
+                  </NavDropdown.Item>
+                : <></>
+              }
+              { isLoggedIn
+                ? <NavDropdown.Item
+                    as={NavLink}
+                    to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}
+                  >
+                    Избранное
+                  </NavDropdown.Item>
+                : <></>
+              }
               {/* <NavDropdown.Divider />
                <NavDropdown.Item as={NavLink} to='/example'>
                 Пример компонентов
