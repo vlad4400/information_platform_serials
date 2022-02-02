@@ -18,8 +18,7 @@ import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import { labels } from '../../constants/labels';
 import { useWatchlist } from '../../hooks/useWatchlist';
-import axios from 'axios';
-import { API_FAVORITES } from '../../constants/api';
+import authAxios from '../../services/authAxios';
 import { selectAuth } from '../../store/auth.slice';
 
 export const SingleSerial = () => {
@@ -46,18 +45,17 @@ export const SingleSerial = () => {
   const addInFavourites = () => {
     try {
       const token = localStorage.getItem('token');
-      const response = axios.put(API_FAVORITES + '/' + serialId,
+      const response = authAxios.put('/favorites/' + serialId,
         { serial_id: serialId },
         {
           headers: { Authorization: `Bearer ${token}` }
         });
-      //     console.log('Returned data:', response);
+      // console.log('Returned data:', response);
       setinFavourites(!inFavourites);
     } catch (e) {
       console.log(`Axios request failed: ${e}`);
     }
   };
-  console.log(serial)
 
   const onRatingChange = (e, newValue) => {
     setRating({ id: serial.id, rating: newValue });
@@ -120,7 +118,6 @@ export const SingleSerial = () => {
     </div>
   ));
 
-  // if (loading) return <div>Loading...</div>;
   if (loading) return <Loader />;
   if (hasErrors) return <div>Ошибка при загрузке.</div>;
 
@@ -143,7 +140,7 @@ export const SingleSerial = () => {
             className='card-img-top'
             alt={serial.title}
           />
-          { isLoggedIn
+          {isLoggedIn
             ? <Button className='w-100 mt-4' onClick={addInFavourites}>
               {!inFavourites
                 ? `Добавить в Избранное`
