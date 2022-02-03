@@ -13,18 +13,18 @@ const favoritesSlice = createSlice({
     name: 'favorites',
     initialState,
     reducers: {
-    setFavorites: (state, {payload}) => {
-        state.favorites = payload;
-    },
-    setLoading: (state) => {
-        state.loading = true;
-    },
-    setLoadingComplete: (state) => {
-        state.loading = false;
-    },
-    setFavoritesFailure: (state) => {
-        state.hasErrors = true;
-    },
+        setFavorites: (state, { payload }) => {
+            state.favorites = payload;
+        },
+        setLoading: (state) => {
+            state.loading = true;
+        },
+        setLoadingComplete: (state) => {
+            state.loading = false;
+        },
+        setFavoritesFailure: (state) => {
+            state.hasErrors = true;
+        },
     },
 });
 
@@ -37,17 +37,17 @@ export const { setFavorites, setLoading, setLoadingComplete, setFavoritesFailure
 export default favoritesSlice.reducer;
 
 // Thunks
-export const getFavorites = () => (dispatch) => {
+export const getFavorites = () => async (dispatch) => {
     dispatch(setLoading());
-    return authAxios.get('/favorites')
-    .then((res) => {
-        console.log('re', res);
+    try {
+        const token = localStorage.getItem('token');
+        const { res } = await authAxios.get('/favorites');
+        //     console.log('re', res);
         dispatch(setFavorites(res));
-    })
-    .catch(() => {
+    } catch {
         dispatch(setFavoritesFailure());
-    })
-    .finally(() => {
+
+    } finally {
         dispatch(setLoadingComplete());
-    });
+    }
 }

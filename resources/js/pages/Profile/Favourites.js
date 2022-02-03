@@ -8,27 +8,28 @@ import { getFavorites, selectFavorites } from '../../store/favorites.slice';
 
 export const Favourites = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getFavorites());
   }, [dispatch]);
-  
+
   const { favorites, loading, hasErrors } = useSelector(selectFavorites);
   const { isLoggedIn } = useSelector(selectAuth);
-  console.log('favorites', favorites);
+  //console.log('favorites', favorites);
 
   return (
     <Container>
-      { hasErrors
+      {hasErrors
         ? <p>Произошла ошибка...</p>
         : <ListSerials
-            title={'Каталог сериалов'}
-            serials={favorites}
-            loading={loading}
-            showNavigation={true}
-            // isAuth={isLoggedIn}
-            isAuth={isLoggedIn}
-            hideBtnAdd={true}
-          />
+          title={'Каталог сериалов'}
+          serials={favorites}
+          loading={loading}
+          showNavigation={true}
+          // isAuth={isLoggedIn}
+          isAuth={isLoggedIn}
+          hideBtnAdd={true}
+        />
 
       }
     </Container>
