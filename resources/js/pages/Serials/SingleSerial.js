@@ -1,5 +1,4 @@
-﻿
-//страница сериала
+﻿//страница сериала
 import Loader from '../../utilities/Loader';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +11,7 @@ import {
   Badge,
   Dropdown,
   ButtonGroup,
+  Form,
 } from 'react-bootstrap';
 import { StatusFilters } from '../../store/filters.slice';
 import Rating from '@mui/material/Rating';
@@ -48,13 +48,25 @@ export const SingleSerial = () => {
   const [hover, setHover] = useState(-1);
 
   const [inFavourites, setinFavourites] = useState(false);
-  const [evaluation, setEvaluation] = useState(7);
+  const [evaluation, setEvaluation] = useState(0);
 
   useEffect(() => {
-    if ((serial.favorite) && (serial.favorite.find(item => item.user_id === userId))) {
-      setinFavourites(true);
+    if (serial.favorite) {
+      const findId = serial.favorite.find(item => item.user_id === userId)
+      if (findId) {
+        setinFavourites(true);
+        if (findId.eval) {
+          setEvaluation(findId.eval);
+        } else {
+          setEvaluation(0);
+        }
+      } else {
+        setinFavourites(false);
+        setEvaluation(0);
+      }
     } else {
       setinFavourites(false);
+      setEvaluation(0);
     };
   }, [serial.favorite]);
 
@@ -66,37 +78,28 @@ export const SingleSerial = () => {
         {
           headers: { Authorization: `Bearer ${token}` }
         });
-      //     console.log('Returned data:', response);
       setinFavourites(!inFavourites);
     } catch (e) {
       console.log(`Axios request failed: ${e}`);
     }
   };
 
-
-  console.log(serial.favorite)
-
-  const usersEvaluation = () => {
-    /*     const { rating: userRating } = watchlistItem
-          ? watchlistItem
-          : { rating: 0 };
-    
-        return (
-          watchlistItem && (
-            <>
-              <div className='text-center'>
-                <h6 className='mt-3 mb-2'>Оценка: </h6>
-                <Rating
-                  value={userRating}
-                  max={10}
-                  onChange={onRatingChange}
-                  onChangeActive={onChangeActive}
-                />
-                <Box>{labels[hover !== -1 ? hover : userRating]}</Box>
-              </div>
-            </>
-          )
-        ); */
+  const usersEvaluation = (event) => {
+    event.preventDefault();
+    const newValue = event.target.value;
+    if (newValue) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = authAxios.put('/favorites/' + serialId + '/eval/' + newValue,
+          { serial_id: serialId },
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        setEvaluation(10);
+      } catch (e) {
+        console.log(`Axios request failed: ${e}`);
+      }
+    }
   };
 
   const onRatingChange = (e, newValue) => {
@@ -160,7 +163,6 @@ export const SingleSerial = () => {
     </div>
   ));
 
-  // if (loading) return <div>Loading...</div>;
   if (loading) return <Loader />;
   if (hasErrors) return <div>Ошибка при загрузке.</div>;
 
@@ -184,13 +186,31 @@ export const SingleSerial = () => {
             alt={serial.title}
           />
           {isLoggedIn
-            ? <><Button className='w-100 mt-4' onClick={addInFavourites}>
-              {!inFavourites
-                ? `Добавить в Избранное`
-                : `Удалить из Избранного`
+            ? <>
+              <Button className='w-100 mt-4' onClick={addInFavourites}>
+                {!inFavourites
+                  ? `Добавить в Избранное`
+                  : `Удалить из Избранного`
+                }
+              </Button>
+              {inFavourites
+                ?
+                <Form.Select aria-label="select" size="sm" onChange={usersEvaluation}>
+                  <option>Оценка {evaluation}</option>
+                  <option value='1'>1 - Фуууу</option>
+                  <option value='2'>2 - Потеря времени</option>
+                  <option value='3'>3 - Ни о чем</option>
+                  <option value='4'>4 - Так себе</option>
+                  <option value='5'>5 - Середнячок</option>
+                  <option value='6'>6 - Уже лучше</option>
+                  <option value='7'>7 - Хорошо</option>
+                  <option value='8'>8 - Очень хорошо</option>
+                  <option value='9'>9 - Отлично</option>
+                  <option value='10'>10 - Супер!</option>
+                </Form.Select>
+                : <></>
               }
-            </Button>
-              {usersEvaluation()}</>
+            </>
             : <></>
           }
 
@@ -249,8 +269,3 @@ export const SingleSerial = () => {
 
   );
 };
-
-
-/*
-/api/favorites/{serial}/eval/{eval} - (метод PUT) для добавления оценки пользователя к избранному сериалу. Это не рейтинг. Доступные опции [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], т.е. примерный адрес api/favorites/5/eval/8 Обязательно сериал с id 5 должен быть в избранных, т.е. возможность добавления оценки возможна только на странице избранного.
-*/
