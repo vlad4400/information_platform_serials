@@ -25,7 +25,7 @@ export default ({title, serials, loading}) => {
                         flexWrap: 'wrap',
                         gap: '5px',
                         justifyContent: 'space-evenly',
-                        maxHeight: '225px',
+                        maxHeight: '236px',
                         overflow: 'hidden',
                     }}>
                     <Cards serials={serials}/>

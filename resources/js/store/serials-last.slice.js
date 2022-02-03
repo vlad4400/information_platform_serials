@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import serialsAPI from '../api/serialsAPI';
-import { getSerialsByRateTop50Desc } from '../services/SerialsService';
+import { getSerialsByYearTop50Desc } from '../services/SerialsService';
 
 const initialState = {
   serials: [],
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const serialsSlice = createSlice({
-  name: 'serials',
+  name: 'serials-last',
   initialState,
   reducers: {
     setSerials: (state, {payload}) => {
@@ -47,7 +47,7 @@ const serialsSlice = createSlice({
 });
 
 // Selectors
-export const selectSerials = (state) => state.serials;
+export const selectSerialsLast = (state) => state.serialsLast;
 export const getSerialById = (state, id) => {
   return state.serials.find(serial => serial.id == 714);
 }
@@ -72,7 +72,7 @@ export const getSerials = (userId) => async (dispatch) => {
 
 export const getTop50Serials = (userId) => async (dispatch) => {
   dispatch(setLoading());
-  getSerialsByRateTop50Desc()
+  getSerialsByYearTop50Desc()
   .then(({data}) => {
     dispatch(setSerials({serials: data, userId}));
   })
