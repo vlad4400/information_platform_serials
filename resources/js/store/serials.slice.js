@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import serialsAPI from '../api/serialsAPI';
-import authAxios from '../services/authAxios';
-import { getSerialsByRate } from '../services/SerialsService';
+import { getSerialsByRateTop50Desc } from '../services/SerialsService';
 
 const initialState = {
   serials: [],
@@ -73,7 +72,7 @@ export const getSerials = (userId) => async (dispatch) => {
 
 export const getTop50Serials = (userId) => async (dispatch) => {
   dispatch(setLoading());
-  getSerialsByRate(10, 50, 'DESC')
+  getSerialsByRateTop50Desc()
   .then(({data}) => {
     dispatch(setSerials({serials: data, userId}));
   })
