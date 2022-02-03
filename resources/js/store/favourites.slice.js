@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-//import serialsAPI from '../api/serialsAPI';
 import axios from 'axios';
-//import { API_FAVORITES } from '../constants/api';
 import authAxios from '../services/authAxios';
 
 const initialState = {
@@ -43,7 +41,6 @@ export const getFavourites = () => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
     const { data } = await authAxios.get('/favorites',
-      //  const { data } = await axios.get(API_FAVORITES,
       {
         headers: { Authorization: `Bearer ${token}` }
       });

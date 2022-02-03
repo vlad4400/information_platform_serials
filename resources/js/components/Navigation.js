@@ -31,21 +31,7 @@ export default function Navigation() {
 
   const searchSerial = () => {
     localStorage.setItem('keySearch', searchInput);
-    // console.log(searchInput)
-    /*
-        const params = { key: searchInput }
-        const search = '?' + createSearchParams(params)
-    
-             navigate({
-              pathname: '/search',
-              search: search,
-            }) */
 
-    //    navigate('/search?key=' + { searchInput });
-
-    //такой должен быть путь navigate('/search?key=все');
-
-    //  navigate(`/search?key=${searchInput}`);
     if (searchInput) { navigate('/search'); } else { alert('Пустое поле поиска...') }
   };
 
@@ -111,7 +97,7 @@ export default function Navigation() {
     </Navbar >
   );
 }
-//         <Form onSubmit={searchSerial}></Form>
+
 const LoggedInView = ({ logOut }) => (
   <Nav>
     <NavDropdown className='me-2' title='Профиль'>

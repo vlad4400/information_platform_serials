@@ -51,7 +51,7 @@ export const register =
   ({ name, email, password, password_confirmation }) =>
     async (dispatch) => {
       try {
-        // const csrf = await authAxios.get('/sanctum/csrf-cookie');
+
         const { data } = await AuthService.register(
           name,
           email,
@@ -70,9 +70,9 @@ export const login =
   ({ name, password }) =>
     async (dispatch) => {
       try {
-        // const csrf = await authAxios.get('/sanctum/csrf-cookie');
+
         const { data } = await AuthService.login(name, password);
-        console.log('Login data', data);
+        //  console.log('Login data', data);
         dispatch(setUser(data));
         return data;
       } catch (err) {
@@ -82,7 +82,7 @@ export const login =
 
 export const logout = () => async (dispatch) => {
   try {
-    // const csrf = await authAxios.get('/sanctum/csrf-cookie');
+
     await AuthService.logout();
     dispatch(clearUser());
   } catch (err) {
