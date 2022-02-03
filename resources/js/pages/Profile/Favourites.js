@@ -5,7 +5,6 @@ import Container from '../../components/Container';
 import ListSerials from '../../components/ListSerials';
 import { selectAuth } from '../../store/auth.slice';
 import { getFavourites, selectFavourites } from '../../store/favourites.slice';
-//import { getFavorites, selectFavorites } from '../../store/favorites.slice';
 export const Favourites = () => {
   const dispatch = useDispatch();
 
@@ -27,7 +26,6 @@ export const Favourites = () => {
           loading={loading}
           showNavigation={true}
           isAuth={isLoggedIn}
-          hideBtnAdd={true}
         />
 
       }

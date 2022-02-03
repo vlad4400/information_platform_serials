@@ -4,25 +4,23 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { switchFavorite } from '../services/SerialsService';
-import { setFavoritesFailure, setLoading as setLoadingFavorites, setLoadingComplete as setLoadingCompleteFavorites } from '../store/favorites.slice';
+import { deleteFavouriteById } from '../store/favourites.slice';
 import { switchSerialIsFavoriteById } from '../store/serials.slice';
 
 export default ({title, serials, loading, isAuth = false}) => {
 
     const dispatch = useDispatch();
     
-    const onClickAddToFavorite = (id) => {
-        dispatch(setLoadingFavorites());
+    const onClickAddToFavorite = (id, isFavorite) => {
         dispatch(switchSerialIsFavoriteById(id));
-
-        switchFavorite(id).then()
+        switchFavorite(id).then(success => {
+            if (isFavorite) {
+                dispatch(deleteFavouriteById(id));
+            }
+        })
         .catch(() => {
             dispatch(switchSerialIsFavoriteById(id));
-            dispatch(setFavoritesFailure());
-        })
-        .finally(() => {
-            dispatch(setLoadingCompleteFavorites());
-        });
+        }).finally();
     }
     
     const Item = ({ri, serial }) => (
@@ -55,7 +53,7 @@ export default ({title, serials, loading, isAuth = false}) => {
                         size={'sm'}
                         style={{marginRight: '10px'}}
                         className={serial.isFavorite ? 'btn-remove-minus' : 'btn-add-plus'}
-                        onClick={() => onClickAddToFavorite(serial.id)}
+                        onClick={() => onClickAddToFavorite(serial.id, serial.isFavorite)}
                     >{serial.isFavorite ? '-' : '+'}</Button>
                     : <></>
                 }

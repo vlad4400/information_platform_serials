@@ -13,7 +13,10 @@ const favouritesSlice = createSlice({
   initialState,
   reducers: {
     setFavourites: (state, { payload }) => {
-      state.favourites = payload;
+      state.favourites = payload.map(serial => ({...serial, isFavorite: true}));
+    },
+    deleteFavouriteById: (state, { payload }) => {
+      state.favourites = state.favourites.filter(favourite => favourite.id !== payload);
     },
     setLoading: (state) => {
       state.loading = true;
@@ -31,7 +34,7 @@ const favouritesSlice = createSlice({
 export const selectFavourites = (state) => state.favourites;
 
 // Actions
-export const { setFavourites, setLoading, setLoadingComplete, setFavouritesFailure } =
+export const { setFavourites, deleteFavouriteById, setLoading, setLoadingComplete, setFavouritesFailure } =
   favouritesSlice.actions;
 export default favouritesSlice.reducer;
 
