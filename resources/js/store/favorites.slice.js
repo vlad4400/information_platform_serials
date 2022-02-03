@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+// import favoritesAPI from '../api/favoritesAPI';
 import authAxios from '../services/authAxios';
+// import { API_FAVORITES } from '../constants/api';
 
 const initialState = {
     favorites: [],
@@ -41,9 +42,7 @@ export const getFavorites = () => async (dispatch) => {
     try {
         const token = localStorage.getItem('token');
         const { res } = await authAxios.get('/favorites');
-
         //     console.log('re', res);
-
         dispatch(setFavorites(res));
     } catch {
         dispatch(setFavoritesFailure());
