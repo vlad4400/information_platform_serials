@@ -72,7 +72,7 @@ export const login =
       try {
 
         const { data } = await AuthService.login(name, password);
-        console.log('Login data', data);
+        //  console.log('Login data', data);
         dispatch(setUser(data));
         return data;
       } catch (err) {
