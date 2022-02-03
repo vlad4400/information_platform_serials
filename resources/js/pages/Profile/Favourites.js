@@ -42,7 +42,7 @@ export const Favourites = () => {
 
   const { favorites, loading, hasErrors } = useSelector(selectFavorites);
   const { isLoggedIn } = useSelector(selectAuth);
-  console.log('favorites', favorites);
+  //console.log('favorites', favorites);
 
   return (
     <Container>
@@ -62,3 +62,4 @@ export const Favourites = () => {
   );
 };
 */
+

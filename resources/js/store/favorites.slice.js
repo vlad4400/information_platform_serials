@@ -41,7 +41,9 @@ export const getFavorites = () => async (dispatch) => {
     try {
         const token = localStorage.getItem('token');
         const { res } = await authAxios.get('/favorites');
-        console.log('re', res);
+
+        //     console.log('re', res);
+
         dispatch(setFavorites(res));
     } catch {
         dispatch(setFavoritesFailure());

@@ -9,7 +9,7 @@ import { selectSerials, setLoading, setLoadingComplete, setSerials, setSerialsFa
 
 export const Serials = () => {
   const { serials, loading, hasErrors } = useSelector(selectSerials);
-  const { isLoggedIn } = useSelector(selectAuth);
+  const { isLoggedIn, userId } = useSelector(selectAuth);
   const dispatch = useDispatch();
   
   // let titleOrder = 'от наиболее нового';
@@ -35,8 +35,8 @@ export const Serials = () => {
     }
 
     dispatch(setLoading());
-    sorterSerials().then(serials => {
-      dispatch(setSerials(serials));
+    sorterSerials().then(({data}) => {
+      dispatch(setSerials({serials: data, userId}));
     })
     .catch(() => {
         dispatch(setSerialsFailure);
@@ -57,7 +57,7 @@ export const Serials = () => {
               justifyContent: 'space-between',
               marginBottom: '15px',
               }}>
-              <DropdownButton onSelect={handleSort} title="Отобразить" id="bg-nested-dropdown">
+              <DropdownButton disabled={loading} onSelect={handleSort} title="Отобразить" id="bg-nested-dropdown">
                   <Dropdown.Item eventKey="1">от наиболее нового</Dropdown.Item>
                   <Dropdown.Item eventKey="2">от наиболее старого</Dropdown.Item>
                   <Dropdown.Item eventKey="3">от наибольшего рейтинга</Dropdown.Item>
