@@ -6,7 +6,7 @@ export const API_URL = '/api';
 
 const authAxios = axios.create({
   baseURL: API_URL,
-
+  // withCredentials: true,
   headers: {
     'Content-type': 'application/json',
   },
@@ -21,7 +21,7 @@ authAxios.interceptors.request.use((config) => {
 // Интерцептор показывает ошибки во всплывающем окне
 authAxios.interceptors.response.use(
   (response) => {
-
+    //   console.log(response);
     if (response.status >= 200 && response.status < 300) {
       return response;
     }
@@ -29,7 +29,7 @@ authAxios.interceptors.response.use(
   (error) => {
     const { response, request } = error;
     if (response) {
-
+      //     console.log(response);
       if (response.status >= 400 && response.status < 500) {
         const message =
           response.data?.error || response.data?.message || error.toString();

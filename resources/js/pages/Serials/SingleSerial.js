@@ -18,9 +18,9 @@ import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import { labels } from '../../constants/labels';
 import { useWatchlist } from '../../hooks/useWatchlist';
-import authAxios from '../../services/authAxios';
+import axios from 'axios';
+import { API_FAVORITES } from '../../constants/api';
 import { selectAuth } from '../../store/auth.slice';
-import AuthService from '../../services/AuthService';
 
 export const SingleSerial = () => {
   const dispatch = useDispatch();
@@ -35,12 +35,6 @@ export const SingleSerial = () => {
   } = useWatchlist(serialId);
   const { isLoggedIn } = useSelector(selectAuth);
 
-  const user = AuthService.getCurrentUser();
-  let userId = 0;
-  if (user) {
-    userId = user.user_id;
-  }
-
   useEffect(() => {
     dispatch(getSerial(serialId));
   }, [dispatch, serialId]);
@@ -48,66 +42,23 @@ export const SingleSerial = () => {
   const [hover, setHover] = useState(-1);
 
   const [inFavourites, setinFavourites] = useState(false);
-  const [evaluation, setEvaluation] = useState(7);
-
-  useEffect(() => {
-    if ((serial.favorite) && (serial.favorite.find(item => item === userId))) {
-      setinFavourites(true);
-    } else {
-      setinFavourites(false);
-    };
-  }, [serial.favorite]);
-
-  /*  useEffect(() => {
-     if ((serial.favorite) && (serial.favorite.find(item => item === userId))) {
-       setinFavourites(true);
-     } else {
-       setinFavourites(false);
-     };
-   }, [serial.favorite]); */
 
   const addInFavourites = () => {
     try {
       const token = localStorage.getItem('token');
-      const response = authAxios.put('/favorites/' + serialId,
+      const response = axios.put(API_FAVORITES + '/' + serialId,
         { serial_id: serialId },
         {
           headers: { Authorization: `Bearer ${token}` }
         });
-
+      //     console.log('Returned data:', response);
       setinFavourites(!inFavourites);
     } catch (e) {
       console.log(`Axios request failed: ${e}`);
     }
   };
-
-
   console.log(serial)
 
-  const usersEvaluation = () => {
-    /*     const { rating: userRating } = watchlistItem
-          ? watchlistItem
-          : { rating: 0 };
-    
-        return (
-          watchlistItem && (
-            <>
-              <div className='text-center'>
-                <h6 className='mt-3 mb-2'>Оценка: </h6>
-                <Rating
-                  value={userRating}
-                  max={10}
-                  onChange={onRatingChange}
-                  onChangeActive={onChangeActive}
-                />
-                <Box>{labels[hover !== -1 ? hover : userRating]}</Box>
-              </div>
-            </>
-          )
-        ); */
-  };
-
-  //  {------------------------------------------ - - -
   const onRatingChange = (e, newValue) => {
     setRating({ id: serial.id, rating: newValue });
   };
@@ -151,7 +102,7 @@ export const SingleSerial = () => {
       )
     );
   };
-  // - - - -------------------------------------------------}  //
+
   const genres = (serial.genres || ['Без категории']).map((genre) => (
     <span key={genre.toString()}>
       <Badge className='mx-1' bg='secondary'>{genre}</Badge>{' '}
@@ -169,6 +120,7 @@ export const SingleSerial = () => {
     </div>
   ));
 
+  // if (loading) return <div>Loading...</div>;
   if (loading) return <Loader />;
   if (hasErrors) return <div>Ошибка при загрузке.</div>;
 
@@ -191,14 +143,13 @@ export const SingleSerial = () => {
             className='card-img-top'
             alt={serial.title}
           />
-          {isLoggedIn
-            ? <><Button className='w-100 mt-4' onClick={addInFavourites}>
+          { isLoggedIn
+            ? <Button className='w-100 mt-4' onClick={addInFavourites}>
               {!inFavourites
                 ? `Добавить в Избранное`
                 : `Удалить из Избранного`
               }
             </Button>
-              {usersEvaluation()}</>
             : <></>
           }
 
@@ -260,6 +211,3 @@ export const SingleSerial = () => {
 
 
 
-/*
-/api/favorites/{serial}/eval/{eval} - (метод PUT) для добавления оценки пользователя к избранному сериалу. Это не рейтинг. Доступные опции [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], т.е. примерный адрес api/favorites/5/eval/8 Обязательно сериал с id 5 должен быть в избранных, т.е. возможность добавления оценки возможна только на странице избранного.
-*/
