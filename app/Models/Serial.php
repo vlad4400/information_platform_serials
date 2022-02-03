@@ -21,7 +21,7 @@ class Serial extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id');
+        return $this->belongsToMany(User::class, 'favorites', 'serial_id', 'user_id')->withPivot('status', 'eval');
     }
 
     public function season()
