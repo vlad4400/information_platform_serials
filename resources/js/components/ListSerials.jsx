@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { switchFavorite } from '../services/SerialsService';
-import { setFavoritesFailure, setLoading as setLoadingFavorites, setLoadingComplete as setLoadingCompleteFavorites } from '../store/favorites.slice';
+import { deleteFavourite, restoreFavourites } from '../store/favourites.slice';
 import { switchSerialIsFavoriteById } from '../store/serials.slice';
 
 export default ({title, serials, loading, isAuth = false}) => {
@@ -12,17 +12,16 @@ export default ({title, serials, loading, isAuth = false}) => {
     const dispatch = useDispatch();
     
     const onClickAddToFavorite = (id) => {
-        dispatch(setLoadingFavorites());
         dispatch(switchSerialIsFavoriteById(id));
-
-        switchFavorite(id).then()
-        .catch(() => {
-            dispatch(switchSerialIsFavoriteById(id));
-            dispatch(setFavoritesFailure());
-        })
-        .finally(() => {
-            dispatch(setLoadingCompleteFavorites());
-        });
+        dispatch(deleteFavourite({id}));
+        switchFavorite(id)
+            .then()
+            .catch(() => {
+                dispatch(switchSerialIsFavoriteById(id));
+                dispatch(restoreFavourites());
+            })
+            .finally(() => {
+            });
     }
     
     const Item = ({ri, serial }) => (

@@ -1,11 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-//import serialsAPI from '../api/serialsAPI';
-import axios from 'axios';
-//import { API_FAVORITES } from '../constants/api';
 import authAxios from '../services/authAxios';
 
 const initialState = {
   favourites: [],
+  favouritesCopy: [],
   loading: false,
   hasErrors: false,
 };
@@ -15,7 +13,7 @@ const favouritesSlice = createSlice({
   initialState,
   reducers: {
     setFavourites: (state, { payload }) => {
-      state.favourites = payload;
+      state.favourites = payload.map(serial => ({...serial, isFavorite: true}));
     },
     setLoading: (state) => {
       state.loading = true;
@@ -26,6 +24,13 @@ const favouritesSlice = createSlice({
     setFavouritesFailure: (state) => {
       state.hasErrors = true;
     },
+    deleteFavourite: (state, {payload: {id}}) => {
+      state.favouritesCopy = [...state.favourites];
+      state.favourites = state.favourites.filter(serial => serial.id !== id);
+    },
+    restoreFavourites: (state) => {
+      state.favourites = state.favouritesCopy;
+    }
   },
 });
 
@@ -33,8 +38,14 @@ const favouritesSlice = createSlice({
 export const selectFavourites = (state) => state.favourites;
 
 // Actions
-export const { setFavourites, setLoading, setLoadingComplete, setFavouritesFailure } =
-  favouritesSlice.actions;
+export const {
+  setFavourites,
+  setLoading,
+  setLoadingComplete,
+  setFavouritesFailure,
+  deleteFavourite,
+  restoreFavourites,
+} = favouritesSlice.actions;
 export default favouritesSlice.reducer;
 
 // Thunks

@@ -18,7 +18,7 @@ const serialsSlice = createSlice({
           if (serial.favorite) {
             return {
               ...serial,
-              isFavorite: !!serial.favorite.find(id => id == payload.userId)
+              isFavorite: !!serial.favorite.find(({user_id}) => user_id == payload.userId)
             }
           } else {
             return serial;
