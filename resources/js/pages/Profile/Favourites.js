@@ -4,18 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import Container from '../../components/Container';
 import ListSerials from '../../components/ListSerials';
 import { selectAuth } from '../../store/auth.slice';
-import { getFavorites, selectFavorites } from '../../store/favorites.slice';
+import { getFavourites, selectFavourites } from '../../store/favourites.slice';
 
 export const Favourites = () => {
   const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(selectAuth);
 
   useEffect(() => {
-    dispatch(getFavorites());
+    dispatch(getFavourites());
   }, [dispatch]);
 
-  const { favorites, loading, hasErrors } = useSelector(selectFavorites);
-  const { isLoggedIn } = useSelector(selectAuth);
-  //console.log('favorites', favorites);
+  const { favourites, loading, hasErrors } = useSelector(selectFavourites);
 
   return (
     <Container>
@@ -23,14 +22,12 @@ export const Favourites = () => {
         ? <p>Произошла ошибка...</p>
         : <ListSerials
           title={'Каталог сериалов'}
-          serials={favorites}
+          serials={favourites}
           loading={loading}
           showNavigation={true}
-          // isAuth={isLoggedIn}
           isAuth={isLoggedIn}
           hideBtnAdd={true}
         />
-
       }
     </Container>
   );
