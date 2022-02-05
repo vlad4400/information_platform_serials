@@ -72,7 +72,7 @@ export const login =
       try {
         // const csrf = await authAxios.get('/sanctum/csrf-cookie');
         const { data } = await AuthService.login(name, password);
-        console.log('Login data', data);
+        //   console.log('Login data', data);
         dispatch(setUser(data));
         return data;
       } catch (err) {
