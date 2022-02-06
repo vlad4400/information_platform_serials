@@ -47,21 +47,28 @@ export default ({title, serials, loading, isAuth = false}) => {
                     >
                     <span>{ri+1}. {serial.title} ({serial.year})</span>
                 </Link>
-                <span style={{ display: 'flex', gap: '5px' }}>
-                { isAuth
-                    ? <Button 
-                        variant="outline-success"
-                        size={'sm'}
-                        style={{marginRight: '10px'}}
-                        className={serial.isFavorite ? 'btn-remove-minus' : 'btn-add-plus'}
-                        onClick={() => onClickAddToFavorite(serial.id)}
-                    >{serial.isFavorite ? '-' : '+'}</Button>
-                    : <></>
-                }
-                <span style={{
-                    width: '50px',
-                    textAlign: 'right'
-                }}>{serial.rate ? `${serial.rate}/10` : ''}</span>
+                
+                <span style={{ display: 'flex', gap: '5px', alignItems: 'baseline' }}>
+                    <span style={{
+                        textAlign: 'right',
+                        marginRight: '10px',
+                        fontSize: '14px',
+                        color: 'grey',
+                    }}>{serial.my_eval ? `Мой рейтинг: ${serial.my_eval}/10` : ''}</span>
+                    { isAuth
+                        ? <Button 
+                            variant="outline-success"
+                            size={'sm'}
+                            style={{marginRight: '10px'}}
+                            className={serial.isFavorite ? 'btn-remove-minus' : 'btn-add-plus'}
+                            onClick={() => onClickAddToFavorite(serial.id)}
+                        >{serial.isFavorite ? '-' : '+'}</Button>
+                        : <></>
+                    }
+                    <span style={{
+                        width: '50px',
+                        textAlign: 'right'
+                    }}>{serial.rate ? `${serial.rate}/10` : ''}</span>
                 </span>
             </span>
 
