@@ -4,23 +4,24 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { switchFavorite } from '../services/SerialsService';
-import { deleteFavourite, restoreFavourites } from '../store/favourites.slice';
-import { switchSerialIsFavoriteById } from '../store/serials.slice';
+import { deleteFavourite, setLoadingFavouriteStatus, setLoadingFavouriteStatusComplete } from '../store/favourites.slice';
+import { setLoadingSerialStatus, setLoadingSerialStatusComplete, switchSerialIsFavoriteById } from '../store/serials.slice';
 
 export default ({title, serials, loading, isAuth = false}) => {
-
     const dispatch = useDispatch();
     
     const onClickAddToFavorite = (id) => {
-        dispatch(switchSerialIsFavoriteById(id));
-        dispatch(deleteFavourite({id}));
+        dispatch(setLoadingSerialStatus(id));
+        dispatch(setLoadingFavouriteStatus(id));
+
         switchFavorite(id)
-            .then()
-            .catch(() => {
+            .then(() => {
                 dispatch(switchSerialIsFavoriteById(id));
-                dispatch(restoreFavourites());
+                dispatch(deleteFavourite(id));
             })
             .finally(() => {
+                dispatch(setLoadingSerialStatusComplete(id));
+                dispatch(setLoadingFavouriteStatusComplete(id));
             });
     }
     
@@ -57,12 +58,23 @@ export default ({title, serials, loading, isAuth = false}) => {
                     }}>{serial.my_eval ? `Мой рейтинг: ${serial.my_eval}/10` : ''}</span>
                     { isAuth
                         ? <Button 
-                            variant="outline-success"
-                            size={'sm'}
-                            style={{marginRight: '10px'}}
-                            className={serial.isFavorite ? 'btn-remove-minus' : 'btn-add-plus'}
+                            variant={serial.isFavorite ? 'outline-danger' : 'primary'}
+                            size="sm"
                             onClick={() => onClickAddToFavorite(serial.id)}
-                        >{serial.isFavorite ? '-' : '+'}</Button>
+                            disabled={serial.isLoading}
+                            >
+                            {   serial.isLoading
+                                    ? <Spinner
+                                        as="span"
+                                        animation="grow"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                        />
+                                    : <></>
+                            }
+                            { serial.isFavorite ? 'Удалить' : 'Добавить' }
+                        </Button>
                         : <></>
                     }
                     <span style={{

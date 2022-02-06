@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { forEach } from 'lodash';
 import authAxios from '../services/authAxios';
 
 const initialState = {
   favourites: [],
-  favouritesCopy: [],
   loading: false,
   hasErrors: false,
 };
@@ -24,13 +24,21 @@ const favouritesSlice = createSlice({
     setFavouritesFailure: (state) => {
       state.hasErrors = true;
     },
-    deleteFavourite: (state, {payload: {id}}) => {
-      state.favouritesCopy = [...state.favourites];
+    deleteFavourite: (state, {payload: id}) => {
       state.favourites = state.favourites.filter(serial => serial.id !== id);
     },
-    restoreFavourites: (state) => {
-      state.favourites = state.favouritesCopy;
-    }
+    setLoadingFavouriteStatus: (state, {payload: id}) => {
+      let serial = state.favourites.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = true;
+      }
+    },
+    setLoadingFavouriteStatusComplete: (state, {payload: id}) => {
+      let serial = state.favourites.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = false;
+      }
+    },
   },
 });
 
@@ -44,7 +52,8 @@ export const {
   setLoadingComplete,
   setFavouritesFailure,
   deleteFavourite,
-  restoreFavourites,
+  setLoadingFavouriteStatus,
+  setLoadingFavouriteStatusComplete,
 } = favouritesSlice.actions;
 export default favouritesSlice.reducer;
 
