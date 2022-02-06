@@ -4,10 +4,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-import { updateFavouriteStatus } from '../services/FavouritesService';
 import { switchFavorite } from '../services/SerialsService';
+import { updateFavouriteStatus } from '../services/FavouritesService';
 import { deleteFavourite, setFavouriteStatus, setLoadingFavouriteStatus, setLoadingFavouriteStatusComplete } from '../store/favourites.slice';
 import { StatusFilters } from '../store/filters.slice';
+import { startLoadingOne as search_startLoadingOne, stopLoadingOne as search_stopLoadingOne, switchFavorite as search_switchFavoriteOne } from '../store/search.slice';
 import { setLoadingSerialStatus, setLoadingSerialStatusComplete, switchSerialIsFavoriteById } from '../store/serials.slice';
 import Loader from '../utilities/Loader';
 
@@ -17,15 +18,18 @@ export default ({title, serials, loading, isAuth = false}) => {
     const onClickAddToFavorite = (id) => {
         dispatch(setLoadingSerialStatus(id));
         dispatch(setLoadingFavouriteStatus(id));
+        dispatch(search_startLoadingOne(id));
 
         switchFavorite(id)
             .then(() => {
                 dispatch(switchSerialIsFavoriteById(id));
                 dispatch(deleteFavourite(id));
+                dispatch(search_switchFavoriteOne(id));
             })
             .finally(() => {
                 dispatch(setLoadingSerialStatusComplete(id));
                 dispatch(setLoadingFavouriteStatusComplete(id));
+                dispatch(search_stopLoadingOne(id));
             });
     }
 

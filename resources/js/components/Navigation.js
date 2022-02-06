@@ -30,7 +30,7 @@ export default function Navigation() {
   const [searchInput, setSearchInput] = useState('');
 
   const searchSerial = () => {
-    localStorage.setItem('keySearch', searchInput);
+    localStorage.setItem('keySearch', searchInput.trim());
     // console.log(searchInput)
     /*
         const params = { key: searchInput }
