@@ -4,6 +4,8 @@ import serialsAPI from '../api/serialsAPI';
 const initialState = {
   serial: {},
   loading: false,
+  loadingState: false,
+  loadingRating: false,
   hasErrors: false,
 };
 
@@ -23,6 +25,24 @@ const serialSlice = createSlice({
     setSerialFailure: (state) => {
       state.hasErrors = true;
     },
+    setLoadingStatus: (state) => {
+      state.loadingState = true;
+    },
+    setLoadingStatusComplete: (state) => {
+      state.loadingState = false;
+    },
+    setLoadingRating: (state) => {
+      state.loadingRating = true;
+    },
+    setLoadingRatingComplete: (state) => {
+      state.loadingRating = false;
+    },
+    setSerialRating: (state, {payload: {userId, rating}}) => {
+      const serial = state.serial?.favorite?.find(fav => fav.user_id === userId);
+      if (serial) {
+        serial.eval = rating;
+      }
+    }
   },
 });
 
@@ -30,8 +50,17 @@ const serialSlice = createSlice({
 export const selectSerial = (state) => state.serial;
 
 // Actions
-export const { setSerial, setLoading, setLoadingComplete, setSerialFailure } =
-  serialSlice.actions;
+export const {
+  setSerial,
+  setLoading,
+  setLoadingComplete,
+  setSerialFailure,
+  setLoadingStatus,
+  setLoadingStatusComplete,
+  setLoadingRating,
+  setLoadingRatingComplete,
+  setSerialRating,
+} = serialSlice.actions;
 export default serialSlice.reducer;
 
 // Thunks

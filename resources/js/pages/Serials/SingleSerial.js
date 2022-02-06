@@ -1,44 +1,32 @@
 ﻿//страница сериала
-import Loader from '../../utilities/Loader';
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getSerial, selectSerial } from '../../store/serial.slice';
-import {
-  Row,
-  Col,
-  Button,
-  Badge,
-  Dropdown,
-  ButtonGroup,
-  Form,
-} from 'react-bootstrap';
-import { StatusFilters } from '../../store/filters.slice';
 import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
+import React, { useEffect, useState } from 'react';
+import { Badge, Button, Col, Row, Spinner } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import { labels } from '../../constants/labels';
-import { useWatchlist } from '../../hooks/useWatchlist';
-import authAxios from '../../services/authAxios';
-import { selectAuth } from '../../store/auth.slice';
+import * as ROUTES from '../../constants/routes';
 import AuthService from '../../services/AuthService';
+import { updateFavouriteRating } from '../../services/FavouritesService';
+import { switchFavorite } from '../../services/SerialsService';
+import { selectAuth } from '../../store/auth.slice';
+import { deleteFavourite, setLoadingFavouriteStatus, setLoadingFavouriteStatusComplete } from '../../store/favourites.slice';
+import { startLoadingOne as search_startLoadingOne, stopLoadingOne as search_stopLoadingOne, switchFavorite as search_switchFavoriteOne } from '../../store/search.slice';
+import { getSerial, selectSerial, setLoadingRating, setLoadingRatingComplete, setLoadingStatus as serial_setLoadingStatus, setLoadingStatusComplete as serial_setLoadingStatusComplete, setSerialRating } from '../../store/serial.slice';
+import { setLoadingSerialStatus, setLoadingSerialStatusComplete, switchSerialIsFavoriteById } from '../../store/serials.slice';
+import Loader from '../../utilities/Loader';
 
 export const SingleSerial = () => {
   const dispatch = useDispatch();
   const { serialId } = useParams();
-  const { serial, loading, hasErrors } = useSelector(selectSerial);
-  const {
-    watchlistItem,
-    addToWatchlist,
-    removeFromWatchlist,
-    setRating,
-    setStatus,
-  } = useWatchlist(serialId);
+  const { serial, loading, hasErrors, loadingState, loadingRating } = useSelector(selectSerial);
   const { isLoggedIn } = useSelector(selectAuth);
 
   const user = AuthService.getCurrentUser();
   let userId = 0;
   if (user) {
     userId = user.user_id;
+    var fav = serial?.favorite?.find(fav => fav.user_id == userId);
   }
 
   useEffect(() => {
@@ -46,9 +34,10 @@ export const SingleSerial = () => {
   }, [dispatch, serialId]);
 
   const [hover, setHover] = useState(-1);
-
   const [inFavourites, setinFavourites] = useState(false);
   const [evaluation, setEvaluation] = useState(0);
+
+  var changeRating = -1;
 
   useEffect(() => {
     if (serial.favorite) {
@@ -71,80 +60,61 @@ export const SingleSerial = () => {
   }, [serial.favorite]);
 
   const addInFavourites = () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = authAxios.put('/favorites/' + serialId,
-        { serial_id: serialId },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      setinFavourites(!inFavourites);
-    } catch (e) {
-      console.log(`Axios request failed: ${e}`);
-    }
+    dispatch(setLoadingSerialStatus(serialId));
+    dispatch(setLoadingFavouriteStatus(serialId));
+    dispatch(search_startLoadingOne(serialId));
+    dispatch(serial_setLoadingStatus());
+
+    switchFavorite(serialId)
+      .then(() => {
+          dispatch(switchSerialIsFavoriteById(serialId));
+          dispatch(deleteFavourite(serialId));
+          dispatch(search_switchFavoriteOne(serialId));
+          setinFavourites(!inFavourites);
+      })
+      .finally(() => {
+          dispatch(setLoadingSerialStatusComplete(serialId));
+          dispatch(setLoadingFavouriteStatusComplete(serialId));
+          dispatch(search_stopLoadingOne(serialId));
+          dispatch(serial_setLoadingStatusComplete());
+      });
   };
 
-  const usersEvaluation = (event) => {
-    event.preventDefault();
-    const newValue = event.target.value;
-    if (newValue) {
-      try {
-        const token = localStorage.getItem('token');
-        const response = authAxios.put('/favorites/' + serialId + '/eval/' + newValue,
-          { serial_id: serialId },
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-        setEvaluation(10);
-      } catch (e) {
-        console.log(`Axios request failed: ${e}`);
-      }
-    }
-  };
-
-  const onRatingChange = (e, newValue) => {
-    setRating({ id: serial.id, rating: newValue });
-  };
-  const onChangeActive = (e, newHover) => {
-    setHover(newHover);
-  };
-
-  const onAddToWatchlist = (status) => {
-    if (!watchlistItem) {
-      const storeSerial = {
-        id: serial.id,
-        title: serial.title,
-        status: status,
-        rating: null,
-      };
-      addToWatchlist(storeSerial);
-    } else {
-      setStatus({ id: serial.id, status: status });
-    }
+  const onRatingChange = (e, newRating) => {
+    dispatch(setLoadingRating());
+    updateFavouriteRating({id: serialId, rating: newRating})
+      .then(success => dispatch(setSerialRating({userId, rating: newRating})))
+      .finally(() => dispatch(setLoadingRatingComplete()));
   };
 
   const renderRating = () => {
-    const { rating: userRating } = watchlistItem
-      ? watchlistItem
-      : { rating: 0 };
-
-    return (
-      watchlistItem && (
-        <>
-          <div className='text-center'>
-            <h6 className='mt-3 mb-2'>Оценка: </h6>
-            <Rating
-              value={userRating}
-              max={10}
-              onChange={onRatingChange}
-              onChangeActive={onChangeActive}
-            />
-            <Box>{labels[hover !== -1 ? hover : userRating]}</Box>
-          </div>
-        </>
-      )
-    );
-  };
+    const userRating = fav?.eval ? +fav.eval : 0;
+    return <>
+      <div className='text-center'>
+        <h6
+          className='mt-3 mb-2'
+          style={{color: 'grey', fontSize: '12px'}}
+        >Моя оценка: {
+          !loadingRating
+            ? labels[changeRating === -1 ? userRating : changeRating]
+            : <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+        }</h6>
+        <Rating
+          value={userRating}
+          max={10}
+          onChange={onRatingChange}
+          style={{fontSize: '1.35rem'}}
+          disabled={loadingRating}
+        />
+      </div>
+    </>;
+  }
 
   const genres = (serial.genres || ['Без категории']).map((genre) => (
     <span key={genre.toString()}>
@@ -187,33 +157,41 @@ export const SingleSerial = () => {
           />
           {isLoggedIn
             ? <>
-              <Button className='w-100 mt-4' onClick={addInFavourites}>
-                {!inFavourites
-                  ? `Добавить в Избранное`
-                  : `Удалить из Избранного`
-                }
-              </Button>
-              {inFavourites
-                ?
-                <Form.Select aria-label="select" size="sm" onChange={usersEvaluation}>
-                  <option>Оценка {evaluation}</option>
-                  <option value='1'>1 - Фуууу</option>
-                  <option value='2'>2 - Потеря времени</option>
-                  <option value='3'>3 - Ни о чем</option>
-                  <option value='4'>4 - Так себе</option>
-                  <option value='5'>5 - Середнячок</option>
-                  <option value='6'>6 - Уже лучше</option>
-                  <option value='7'>7 - Хорошо</option>
-                  <option value='8'>8 - Очень хорошо</option>
-                  <option value='9'>9 - Отлично</option>
-                  <option value='10'>10 - Супер!</option>
-                </Form.Select>
-                : <></>
-              }
-            </>
-            : <></>
+                <Button
+                  variant={inFavourites ? 'outline-danger' : 'primary'}
+                  className='w-100 mt-4'
+                  onClick={addInFavourites}
+                  disabled={loadingState}
+                  style={{paddingLeft: '0', paddingRight: '0'}}
+                  size="sm"
+                  >
+                  {loadingState
+                    ? <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        />
+                    : <></>
+                  }
+                  {!inFavourites
+                    ? `Добавить в Избранное`
+                    : `Удалить из Избранного`
+                  }
+                </Button>
+                {inFavourites && renderRating()}
+                <Link to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}>
+                  <Button
+                    variant={'primary'}
+                    className='w-100 mt-4'
+                    style={{paddingLeft: '0', paddingRight: '0'}}
+                    size="sm"
+                  >Мои Избранные</Button>
+                </Link>
+              </>
+              : <></>
           }
-          {renderRating()}
         </Col>
         <Col lg={7} pl={4}>
           <Row>
