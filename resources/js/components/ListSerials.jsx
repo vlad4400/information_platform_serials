@@ -9,6 +9,7 @@ import { switchFavorite } from '../services/SerialsService';
 import { deleteFavourite, setFavouriteStatus, setLoadingFavouriteStatus, setLoadingFavouriteStatusComplete } from '../store/favourites.slice';
 import { StatusFilters } from '../store/filters.slice';
 import { setLoadingSerialStatus, setLoadingSerialStatusComplete, switchSerialIsFavoriteById } from '../store/serials.slice';
+import Loader from '../utilities/Loader';
 
 export default ({title, serials, loading, isAuth = false}) => {
     const dispatch = useDispatch();
@@ -162,9 +163,7 @@ export default ({title, serials, loading, isAuth = false}) => {
                         : <>Нет сериалов.</>
                     }
                 </>
-                : <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <Spinner animation="border" />
-                </div>
+                : <Loader />
             }
         </div>
     )
