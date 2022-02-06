@@ -1,15 +1,18 @@
 import { Figure, Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
+import { updateFavouriteStatus } from '../services/FavouritesService';
 import { switchFavorite } from '../services/SerialsService';
-import { deleteFavourite, setLoadingFavouriteStatus, setLoadingFavouriteStatusComplete } from '../store/favourites.slice';
+import { deleteFavourite, setFavouriteStatus, setLoadingFavouriteStatus, setLoadingFavouriteStatusComplete } from '../store/favourites.slice';
+import { StatusFilters } from '../store/filters.slice';
 import { setLoadingSerialStatus, setLoadingSerialStatusComplete, switchSerialIsFavoriteById } from '../store/serials.slice';
 
 export default ({title, serials, loading, isAuth = false}) => {
     const dispatch = useDispatch();
-    
+
     const onClickAddToFavorite = (id) => {
         dispatch(setLoadingSerialStatus(id));
         dispatch(setLoadingFavouriteStatus(id));
@@ -24,6 +27,14 @@ export default ({title, serials, loading, isAuth = false}) => {
                 dispatch(setLoadingFavouriteStatusComplete(id));
             });
     }
+
+    const onStatusChange = (payload) => {
+        dispatch(setLoadingFavouriteStatus(payload.id));
+
+        updateFavouriteStatus(payload)
+        .then((success) => dispatch(setFavouriteStatus(payload)))
+        .finally(() => dispatch(setLoadingFavouriteStatusComplete(payload.id)));
+    };
     
     const Item = ({ri, serial }) => (
         <div style={{display: 'flex', margin: '0 5px' }}>
@@ -49,19 +60,56 @@ export default ({title, serials, loading, isAuth = false}) => {
                     <span>{ri+1}. {serial.title} ({serial.year})</span>
                 </Link>
                 
-                <span style={{ display: 'flex', gap: '5px', alignItems: 'baseline' }}>
+                <span style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                     <span style={{
                         textAlign: 'right',
                         marginRight: '10px',
                         fontSize: '14px',
                         color: 'grey',
                     }}>{serial.my_eval ? `Мой рейтинг: ${serial.my_eval}/10` : ''}</span>
+                    { isAuth && serial.status
+                        ?   <Dropdown>
+                                <Dropdown.Toggle
+                                    style={{width: '156px'}}
+                                    variant="outline-primary"
+                                    id="dropdown-basic"
+                                    size="sm"
+                                    disabled={serial.isLoading}>
+                                    {   serial.isLoading
+                                        ? <Spinner
+                                            as="span"
+                                            animation="grow"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                            />
+                                        : <></>
+                                    }
+                                    {serial.status}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                {Object.keys(StatusFilters)
+                                    .filter(key => {
+                                        const status = StatusFilters[key];
+                                        return status !== serial.status && status !== 'Все';
+                                    })
+                                    .map(key => {
+                                        const status = StatusFilters[key];
+                                        return (<Dropdown.Item key={key} onClick={() => onStatusChange({id: serial.id, status})}>{status}</Dropdown.Item>);
+                                    })
+                                }
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        :   <></>
+                    }
                     { isAuth
                         ? <Button 
                             variant={serial.isFavorite ? 'outline-danger' : 'primary'}
                             size="sm"
                             onClick={() => onClickAddToFavorite(serial.id)}
                             disabled={serial.isLoading}
+                            style={{width: '114px'}}
                             >
                             {   serial.isLoading
                                     ? <Spinner
@@ -74,6 +122,17 @@ export default ({title, serials, loading, isAuth = false}) => {
                                     : <></>
                             }
                             { serial.isFavorite ? 'Удалить' : 'Добавить' }
+                            {   serial.isLoading
+                                    ? <Spinner
+                                        as="span"
+                                        animation="grow"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                        style={{visibility: 'hidden'}}
+                                        />
+                                    : <></>
+                            }
                         </Button>
                         : <></>
                     }
