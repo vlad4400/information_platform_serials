@@ -33,12 +33,12 @@ export default ({title, serials, loading, isAuth = false}) => {
             });
     }
 
-    const onStatusChange = (payload) => {
-        dispatch(setLoadingFavouriteStatus(payload.id));
+    const onStatusChange = ({id, status}) => {
+        dispatch(setLoadingFavouriteStatus(id));
 
-        updateFavouriteStatus(payload)
-        .then((success) => dispatch(setFavouriteStatus(payload)))
-        .finally(() => dispatch(setLoadingFavouriteStatusComplete(payload.id)));
+        updateFavouriteStatus({id, status})
+            .then((success) => dispatch(setFavouriteStatus({id, status})))
+            .finally(() => dispatch(setLoadingFavouriteStatusComplete(id)));
     };
     
     const Item = ({ri, serial }) => (
