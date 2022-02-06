@@ -76,15 +76,6 @@ export default function Navigation() {
               {isLoggedIn
                 ? <NavDropdown.Item
                   as={NavLink}
-                  to={`${ROUTES.PROFILE}/${ROUTES.WATCHLIST}`}
-                >
-                  Список просмотра
-                </NavDropdown.Item>
-                : <></>
-              }
-              {isLoggedIn
-                ? <NavDropdown.Item
-                  as={NavLink}
                   to={`${ROUTES.PROFILE}/${ROUTES.FAVOURITES}`}
                 >
                   Избранное
@@ -115,7 +106,7 @@ export default function Navigation() {
 const LoggedInView = ({ logOut }) => (
   <Nav>
     <NavDropdown className='me-2' title='Профиль'>
-      <NavDropdown.Item as={NavLink} to={ROUTES.PROFILE}>
+      <NavDropdown.Item as={NavLink} to={`${ROUTES.PROFILE}/${ROUTES.SETTINGS}`}>
         Профиль
       </NavDropdown.Item>
       <NavDropdown.Item as={Button} onClick={logOut}>
