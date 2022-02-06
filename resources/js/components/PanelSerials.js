@@ -1,5 +1,5 @@
+import Loader from '../utilities/Loader';
 import Card from './Card';
-import Spinner from 'react-bootstrap/Spinner';
 
 export default ({title, serials, loading}) => {
 
@@ -30,9 +30,7 @@ export default ({title, serials, loading}) => {
                     }}>
                     <Cards serials={serials}/>
                 </div>
-                : <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <Spinner animation="border" />
-                </div>
+                : <Loader />
             }
         </div>
     )

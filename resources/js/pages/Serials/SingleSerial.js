@@ -213,31 +213,6 @@ export const SingleSerial = () => {
             </>
             : <></>
           }
-
-          <Dropdown as={ButtonGroup} className='w-100 mt-4'>
-            <Button
-              disabled={!!watchlistItem}
-              onClick={() => onAddToWatchlist(StatusFilters.Active)}
-            >
-              Добавить в список
-            </Button>
-            <Dropdown.Toggle split />
-            <Dropdown.Menu align='end'>
-              <Dropdown.Item
-                onClick={() => onAddToWatchlist(StatusFilters.Active)}
-              >
-                Смотрю
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => onAddToWatchlist(StatusFilters.Completed)}
-              >
-                Просмотрено
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => removeFromWatchlist(serial.id)}>
-                Удалить из списка
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
           {renderRating()}
         </Col>
         <Col lg={7} pl={4}>

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const StatusFilters = {
   All: 'Все',
+  WantToWatch: 'Хочу посмотреть',
   Active: 'Смотрю',
   Completed: 'Просмотрено',
 };

@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-//import serialsAPI from '../api/serialsAPI';
 import authAxios from '../services/authAxios';
-
 
 const initialState = {
   searchSerials: [],
@@ -14,8 +11,20 @@ const searchSerialsSlice = createSlice({
   name: 'searchSerials',
   initialState,
   reducers: {
-    setSearchSerials: (state, { payload }) => {
-      state.searchSerials = payload;
+    setSearchSerials: (state, {payload: {userId, serials} }) => {
+      state.searchSerials = serials.map(
+        serial => {
+          if (serial.favorite) {
+            return {
+              ...serial,
+              isFavorite: !!serial.favorite.find(({user_id}) => user_id == userId),
+              isLoading: false,
+            }
+          } else {
+            return serial;
+          }
+        }
+      );
     },
     setLoading: (state) => {
       state.loading = true;
@@ -26,6 +35,24 @@ const searchSerialsSlice = createSlice({
     setSearchSerialsFailure: (state) => {
       state.hasErrors = true;
     },
+    switchFavorite: (state, {payload: id}) => {
+      let serial = state.searchSerials.find(serial => serial.id === id);
+      if (serial) {
+        serial.isFavorite = !serial.isFavorite;
+      }
+    },
+    startLoadingOne: (state, {payload: id}) => {
+      let serial = state.searchSerials.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = true;
+      }
+    },
+    stopLoadingOne: (state, {payload: id}) => {
+      let serial = state.searchSerials.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = false;
+      }
+    },
   },
 });
 
@@ -34,19 +61,24 @@ const searchSerialsSlice = createSlice({
 export const selectSearchSerials = (state) => state.searchSerials;
 
 // Actions
-export const { setSearchSerials, setLoading, setLoadingComplete, setSearchSerialsFailure } =
-  searchSerialsSlice.actions;
+export const {
+  setSearchSerials,
+  setLoading,
+  setLoadingComplete,
+  setSearchSerialsFailure,
+  switchFavorite,
+  startLoadingOne,
+  stopLoadingOne,
+} = searchSerialsSlice.actions;
 export default searchSerialsSlice.reducer;
 
 // Thunks
 
-export const getSearchSerials = (key) => async (dispatch) => {
+export const getSearchSerials = ({key, userId}) => async (dispatch) => {
   dispatch(setLoading());
   try {
     const { data } = await authAxios.get(`search/${key}`)
-    //console.log(data)
-
-    dispatch(setSearchSerials(data));
+    dispatch(setSearchSerials({userId, serials: data}));
   } catch (err) {
     dispatch(setSearchSerialsFailure());
   } finally {

@@ -13,7 +13,6 @@ import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
 import serialsReducer from './serials.slice';
 import serialsLastReducer from './serials-last.slice';
-import favoritesReducer from './favorites.slice';
 import serialReducer from './serial.slice';
 import authReducer from './auth.slice';
 import watchlistReducer from './watchlist.slice';
@@ -24,7 +23,6 @@ import searchSerialsReducer from './search.slice';
 const rootReducer = combineReducers({
   serials: serialsReducer,
   serialsLast: serialsLastReducer,
-  favorites: favoritesReducer,
   serial: serialReducer,
   auth: authReducer,
   watchlist: watchlistReducer,

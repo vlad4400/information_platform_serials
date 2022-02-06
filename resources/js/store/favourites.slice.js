@@ -1,21 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
-//import serialsAPI from '../api/serialsAPI';
-import axios from 'axios';
-//import { API_FAVORITES } from '../constants/api';
+import { forEach } from 'lodash';
 import authAxios from '../services/authAxios';
 
 const initialState = {
   favourites: [],
+  favouritesCopy: [],
   loading: false,
   hasErrors: false,
+  status: 'Все',
 };
+
+const filterFavouritesByStatus = (state, status) => {
+  state.status = status;
+  if (status === 'Все') {
+    state.favourites = [...state.favouritesCopy];
+  } else {
+    state.favourites = [...state.favouritesCopy.filter(favourite => favourite.status === status)];
+  }
+}
 
 const favouritesSlice = createSlice({
   name: 'favourites',
   initialState,
   reducers: {
     setFavourites: (state, { payload }) => {
-      state.favourites = payload;
+      state.favourites = payload.map(serial => ({...serial, isFavorite: true}));
+      state.favouritesCopy = [...state.favourites];
+      filterFavouritesByStatus(state, state.status);
     },
     setLoading: (state) => {
       state.loading = true;
@@ -26,6 +37,43 @@ const favouritesSlice = createSlice({
     setFavouritesFailure: (state) => {
       state.hasErrors = true;
     },
+    deleteFavourite: (state, {payload: id}) => {
+      state.favourites = state.favourites.filter(serial => serial.id !== id);
+      state.favouritesCopy = [...state.favourites];
+    },
+    setLoadingFavouriteStatus: (state, {payload: id}) => {
+      let serial = state.favourites.find(serial => serial.id === id);
+      let serialCopy = state.favouritesCopy.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = true;
+      }
+      if (serialCopy) {
+        serialCopy.isLoading = true;
+      }
+    },
+    setLoadingFavouriteStatusComplete: (state, {payload: id}) => {
+      let serial = state.favourites.find(serial => serial.id === id);
+      let serialCopy = state.favouritesCopy.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = false;
+      }
+      if (serialCopy) {
+        serialCopy.isLoading = false;
+      }
+    },
+    selectFavouritesByStatus: (state, {payload: status}) => {
+      filterFavouritesByStatus(state, status);
+    },
+    setFavouriteStatus: (state, {payload: {id, status}}) => {
+      let serial = state.favourites.find(serial => serial.id === id);
+      let serialCopy = state.favouritesCopy.find(serial => serial.id === id);
+      if (serial) {
+        serial.status = status;
+      }
+      if (serialCopy) {
+        serialCopy.status = status;
+      }
+    }
   },
 });
 
@@ -33,8 +81,17 @@ const favouritesSlice = createSlice({
 export const selectFavourites = (state) => state.favourites;
 
 // Actions
-export const { setFavourites, setLoading, setLoadingComplete, setFavouritesFailure } =
-  favouritesSlice.actions;
+export const {
+  setFavourites,
+  setLoading,
+  setLoadingComplete,
+  setFavouritesFailure,
+  deleteFavourite,
+  setLoadingFavouriteStatus,
+  setLoadingFavouriteStatusComplete,
+  selectFavouritesByStatus,
+  setFavouriteStatus,
+} = favouritesSlice.actions;
 export default favouritesSlice.reducer;
 
 // Thunks

@@ -6,6 +6,7 @@ const initialState = {
   serials: [],
   loading: false,
   hasErrors: false,
+  orderTitle: '',
 };
 
 const serialsSlice = createSlice({
@@ -18,7 +19,8 @@ const serialsSlice = createSlice({
           if (serial.favorite) {
             return {
               ...serial,
-              isFavorite: !!serial.favorite.find(id => id == payload.userId)
+              isFavorite: !!serial.favorite.find(({user_id}) => user_id == payload.userId),
+              isLoading: false,
             }
           } else {
             return serial;
@@ -43,6 +45,21 @@ const serialsSlice = createSlice({
     setSerialsFailure: (state) => {
       state.hasErrors = true;
     },
+    setLoadingSerialStatus: (state, {payload: id}) => {
+      let serial = state.serials.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = true;
+      }
+    },
+    setLoadingSerialStatusComplete: (state, {payload: id}) => {
+      let serial = state.serials.find(serial => serial.id === id);
+      if (serial) {
+        serial.isLoading = false;
+      }
+    },
+    setOrderTitle: (state, {payload: title}) => {
+      state.orderTitle = title;
+    }
   },
 });
 
@@ -53,8 +70,16 @@ export const getSerialById = (state, id) => {
 }
 
 // Actions
-export const { setSerials, switchSerialIsFavoriteById, setLoading, setLoadingComplete, setSerialsFailure } =
-  serialsSlice.actions;
+export const {
+  setSerials,
+  switchSerialIsFavoriteById,
+  setLoading,
+  setLoadingComplete,
+  setSerialsFailure,
+  setLoadingSerialStatus,
+  setLoadingSerialStatusComplete,
+  setOrderTitle,
+} = serialsSlice.actions;
 export default serialsSlice.reducer;
 
 // Thunks
