@@ -1,5 +1,6 @@
 // Конфиг axios для аутентификации пользователя
 import axios from 'axios';
+import { SIGN_IN } from '../constants/routes';
 import { showAlert } from '../utilities/showAlert';
 
 export const API_URL = '/api';
@@ -29,7 +30,9 @@ authAxios.interceptors.response.use(
   (error) => {
     const { response, request } = error;
     if (response) {
-      //     console.log(response);
+      if (response.status == 401) {
+        window.location = `${window.location.protocol}//${window.location.host}${SIGN_IN}`;
+      }
       if (response.status >= 400 && response.status < 500) {
         const message =
           response.data?.error || response.data?.message || error.toString();
