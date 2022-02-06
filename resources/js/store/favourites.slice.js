@@ -38,8 +38,8 @@ const favouritesSlice = createSlice({
       state.hasErrors = true;
     },
     deleteFavourite: (state, {payload: id}) => {
+      state.favouritesCopy = state.favouritesCopy.filter(serial => serial.id !== id);
       state.favourites = state.favourites.filter(serial => serial.id !== id);
-      state.favouritesCopy = [...state.favourites];
     },
     setLoadingFavouriteStatus: (state, {payload: id}) => {
       let serial = state.favourites.find(serial => serial.id === id);
