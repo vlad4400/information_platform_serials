@@ -6,7 +6,7 @@ const initialState = {
   serials: [],
   loading: false,
   hasErrors: false,
-  orderTitle: 'От наиболее новых',
+  orderTitle: '',
 };
 
 const serialsSlice = createSlice({

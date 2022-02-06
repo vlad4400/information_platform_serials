@@ -11,6 +11,7 @@ export const Serials = () => {
   const dispatch = useDispatch();
   const { serials, loading, hasErrors, orderTitle } = useSelector(selectSerials);
   const { isLoggedIn, userId } = useSelector(selectAuth);
+  dispatch(setOrderTitle('От наибольшего рейтинга'));
   
   const handleSort = (e) => {
     switch(e) {
