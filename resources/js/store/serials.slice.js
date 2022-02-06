@@ -6,6 +6,7 @@ const initialState = {
   serials: [],
   loading: false,
   hasErrors: false,
+  orderTitle: 'От наиболее новых',
 };
 
 const serialsSlice = createSlice({
@@ -56,6 +57,9 @@ const serialsSlice = createSlice({
         serial.isLoading = false;
       }
     },
+    setOrderTitle: (state, {payload: title}) => {
+      state.orderTitle = title;
+    }
   },
 });
 
@@ -74,6 +78,7 @@ export const {
   setSerialsFailure,
   setLoadingSerialStatus,
   setLoadingSerialStatusComplete,
+  setOrderTitle,
 } = serialsSlice.actions;
 export default serialsSlice.reducer;
 
