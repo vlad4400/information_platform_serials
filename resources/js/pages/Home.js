@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Container from '../components/Container';
 import ListSerials from '../components/ListSerials';
 import PanelSerials from '../components/PanelSerials';
-import { selectSerials } from '../store/serials.slice';
-import { selectSerialsLast } from '../store/serials-last.slice';
 import { selectAuth } from '../store/auth.slice';
-import { getTop50Serials } from '../store/serials-last.slice';
+import { getTop50Serials as getTop50SerialsLast, selectSerialsLast } from '../store/serials-last.slice';
+import { getTop50Serials, selectSerials } from '../store/serials.slice';
 
 export const Home = () => {
   const { serials, loading, hasErrors } = useSelector(selectSerials);
@@ -14,7 +13,8 @@ export const Home = () => {
   const {isLoggedIn, userId} = useSelector(selectAuth);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getTop50Serials(isLoggedIn ? userId : undefined));
+    dispatch(getTop50SerialsLast(isLoggedIn ? userId : undefined));
+    dispatch(getTop50Serials(isLoggedIn ? userId : undefined))
   }, [dispatch]);
 
   return (

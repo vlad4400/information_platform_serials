@@ -38,8 +38,8 @@ const favouritesSlice = createSlice({
       state.hasErrors = true;
     },
     deleteFavourite: (state, {payload: id}) => {
+      state.favouritesCopy = state.favouritesCopy.filter(serial => serial.id !== id);
       state.favourites = state.favourites.filter(serial => serial.id !== id);
-      state.favouritesCopy = [...state.favourites];
     },
     setLoadingFavouriteStatus: (state, {payload: id}) => {
       let serial = state.favourites.find(serial => serial.id === id);
@@ -65,14 +65,11 @@ const favouritesSlice = createSlice({
       filterFavouritesByStatus(state, status);
     },
     setFavouriteStatus: (state, {payload: {id, status}}) => {
-      let serial = state.favourites.find(serial => serial.id === id);
       let serialCopy = state.favouritesCopy.find(serial => serial.id === id);
-      if (serial) {
-        serial.status = status;
-      }
       if (serialCopy) {
         serialCopy.status = status;
       }
+      filterFavouritesByStatus(state, state.status);
     }
   },
 });
